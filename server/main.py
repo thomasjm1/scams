@@ -3,6 +3,7 @@ import logging
 import os
 
 from flask import Flask, Response
+from peewee import SqliteDatabase
 from playhouse import shortcuts
 from playhouse.db_url import connect
 
@@ -17,6 +18,7 @@ app = Flask(__name__)
 app.config['PEEWEE_DATABASE_URI'] = os.environ['PEEWEE_DATABASE_URI']
 
 database = connect(app.config['PEEWEE_DATABASE_URI'])
+
 database_proxy.initialize(database)
 database_proxy.connect()
 database_proxy.create_tables([Message], safe=True)
@@ -43,7 +45,8 @@ def index():
             sender="Jeremy",
             recipient="Jeremy",
             content="Hello World",
-            state=MessageState.PENDING)
+            state=MessageState.PENDING
+        )
     )
     messages = message_repository.retrieve_messages()
     outputs = [shortcuts.model_to_dict(message) for message in messages]
@@ -60,6 +63,10 @@ def server_error(e):
 
 
 if __name__ == '__main__':
-    # This is used when running locally. Gunicorn is used to run the
-    # application on Google App Engine. See entrypoint in app.yaml.
+    print("Running in debug mode with sqlite database")
+    sqlite_db = SqliteDatabase('local.db')
+    database_proxy.initialize(sqlite_db)
+    database_proxy.connect()
+    database_proxy.create_tables([Message], safe=True)
+    database_proxy.close()
     app.run(host='127.0.0.1', port=8080, debug=True)
