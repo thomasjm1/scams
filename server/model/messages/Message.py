@@ -13,9 +13,6 @@ class Message(MessageBaseModel):
     state = IntegerField(null=False)
     created = DateTimeField(default=datetime.datetime.now)
 
-    def transfer(self):
-        return 
-
 
 class MessageState(IntEnum):
     PENDING = 0
