@@ -50,7 +50,8 @@ def index():
     )
     messages = message_repository.retrieve_messages()
     outputs = [shortcuts.model_to_dict(message) for message in messages]
-    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200, mimetype='application/json')
+    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200,
+                    mimetype='application/json')
 
 
 @app.errorhandler(500)
