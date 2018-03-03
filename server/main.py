@@ -1,72 +1,56 @@
-# Copyright 2015 Google Inc. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
-import datetime
+import json
 import logging
-import socket
 import os
 
-from flask import Flask, request
-from google.cloud import datastore
+from flask import Flask, Response
+from peewee import SqliteDatabase
+from playhouse import shortcuts
+from playhouse.db_url import connect
 
-#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "credentials.json"
+from model.messages.Message import Message
+from model.messages.Message import MessageState
+from model.messages.MessageBaseModel import database_proxy
+from model.utilities.DateTimeEncoder import DateTimeEncoder
+from repositories.MessageRepository import MessageRepository
 
 app = Flask(__name__)
 
+app.config['PEEWEE_DATABASE_URI'] = os.environ['PEEWEE_DATABASE_URI']
 
-def is_ipv6(addr):
-    """Checks if a given address is an IPv6 address."""
-    try:
-        socket.inet_pton(socket.AF_INET6, addr)
-        return True
-    except socket.error:
-        return False
+database = connect(app.config['PEEWEE_DATABASE_URI'])
+
+database_proxy.initialize(database)
+database_proxy.connect()
+database_proxy.create_tables([Message], safe=True)
+database_proxy.close()
 
 
-# [START example]
+@app.before_request
+def before_request():
+    if database_proxy.is_closed():
+        database_proxy.connect()
+
+
+@app.after_request
+def after_request(response):
+    database_proxy.close()
+    return response
+
+
 @app.route('/')
 def index():
-	
-    ds = datastore.Client.from_service_account_json(
-        'credentials.json')
-
-    user_ip = request.remote_addr
-
-    # Keep only the first two octets of the IP address.
-    if is_ipv6(user_ip):
-        user_ip = ':'.join(user_ip.split(':')[:2])
-    else:
-        user_ip = '.'.join(user_ip.split('.')[:2])
-
-    entity = datastore.Entity(key=ds.key('visit'))
-    entity.update({
-        'user_ip': user_ip,
-        'timestamp': datetime.datetime.utcnow()
-    })
-
-    ds.put(entity)
-
-    query = ds.query(kind='visit', order=('-timestamp',))
-
-    results = [
-        'Time: {timestamp} Addr: {user_ip}'.format(**x)
-        for x in query.fetch(limit=10)]
-
-    output = 'Last 10 visits:\n{}'.format('\n'.join(results))
-
-    return output, 200, {'Content-Type': 'text/plain; charset=utf-8'}
-# [END example]
+    message_repository = MessageRepository()
+    message_repository.create_message(
+        Message(
+            sender="Jeremy",
+            recipient="Jeremy",
+            content="Hello World",
+            state=MessageState.PENDING
+        )
+    )
+    messages = message_repository.retrieve_messages()
+    outputs = [shortcuts.model_to_dict(message) for message in messages]
+    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200, mimetype='application/json')
 
 
 @app.errorhandler(500)
@@ -79,6 +63,10 @@ def server_error(e):
 
 
 if __name__ == '__main__':
-    # This is used when running locally. Gunicorn is used to run the
-    # application on Google App Engine. See entrypoint in app.yaml.
+    print("Running in debug mode with sqlite database")
+    sqlite_db = SqliteDatabase('local.db')
+    database_proxy.initialize(sqlite_db)
+    database_proxy.connect()
+    database_proxy.create_tables([Message], safe=True)
+    database_proxy.close()
     app.run(host='127.0.0.1', port=8080, debug=True)
