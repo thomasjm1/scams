@@ -80,8 +80,6 @@ taxes
 court
 seized
 seize
-w2
-w4
 report
 unpaid
 case
