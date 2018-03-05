@@ -1,5 +1,4 @@
 import logging
-
 from model.messages.Message import Message
 from repositories.PersistenceError import PersistenceError
 
@@ -20,4 +19,3 @@ class MessageRepository(object):
     def retrieve_messages(self):
         self.logger.debug("Retrieving all message")
         return Message.select()
-

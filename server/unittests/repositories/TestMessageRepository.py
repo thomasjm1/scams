@@ -1,5 +1,7 @@
 import unittest
+import sys
 
+sys.path.append("../../")
 from model.messages.Message import Message, MessageState
 from repositories.MessageRepository import MessageRepository
 from unittests.repositories.DbTest import DbTest

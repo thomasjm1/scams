@@ -15,14 +15,13 @@ from repositories.MessageRepository import MessageRepository
 
 app = Flask(__name__)
 
-app.config['PEEWEE_DATABASE_URI'] = os.environ['PEEWEE_DATABASE_URI']
-
-database = connect(app.config['PEEWEE_DATABASE_URI'])
-
-database_proxy.initialize(database)
-database_proxy.connect()
-database_proxy.create_tables([Message], safe=True)
-database_proxy.close()
+if "PEEWEE_DATABASE_URI" in os.environ:
+    app.config['PEEWEE_DATABASE_URI'] = os.environ['PEEWEE_DATABASE_URI']
+    database = connect(app.config['PEEWEE_DATABASE_URI'])
+    database_proxy.initialize(database)
+    database_proxy.connect()
+    database_proxy.create_tables([Message], safe=True)
+    database_proxy.close()
 
 
 @app.before_request
@@ -50,7 +49,8 @@ def index():
     )
     messages = message_repository.retrieve_messages()
     outputs = [shortcuts.model_to_dict(message) for message in messages]
-    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200, mimetype='application/json')
+    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200,
+                    mimetype='application/json')
 
 
 @app.errorhandler(500)
