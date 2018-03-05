@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
-            Intent intent = new Intent(this, SettingActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_profile) {
@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         } else if (id == R.id.nav_share) {
 
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_report) {
 
         }
 

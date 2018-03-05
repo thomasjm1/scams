@@ -8,7 +8,7 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Add a friend" />
+            android:title="Add a Friend" />
         <item
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_gallery"
@@ -19,8 +19,12 @@
             android:title="Settings" />
         <item
             android:id="@+id/nav_profile"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="?android:attr/fingerprintAuthDrawable"
             android:title="Profile" />
+        <item
+            android:id="@+id/nav_connections"
+            android:icon="@android:drawable/stat_sys_phone_call"
+            android:title="Connections" />
     </group>
 
     <item android:title="Communicate">
@@ -28,11 +32,15 @@
             <item
                 android:id="@+id/nav_share"
                 android:icon="@drawable/ic_menu_share"
-                android:title="Report" />
+                android:title="Share" />
             <item
-                android:id="@+id/nav_send"
+                android:id="@+id/nav_report"
                 android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:title="Report Fault" />
+            <item
+                android:id="@+id/nav_report2"
+                android:icon="?android:attr/alertDialogIcon"
+                android:title="Report to FTC" />
         </menu>
     </item>
 
