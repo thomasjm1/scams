@@ -3,7 +3,7 @@ from peewee import Proxy, Model, PrimaryKeyField
 database_proxy = Proxy()
 
 
-class ClientInentityBaseModel(Model):
+class ClientIdentityBaseModel(Model):
     id = PrimaryKeyField
 
     class Meta:

@@ -1,5 +1,5 @@
 import logging
-from model.clientIdentity.ClientIdentity import ClientInentity
+from model.clientIdentity.ClientIdentity import ClientIdentity
 from repositories.PersistenceError import PersistenceError
 
 
@@ -18,6 +18,6 @@ class ClientIdentityRepository(object):
 
     def retrieve_identity(self):
         self.logger.debug("Retrieving all client identities")
-        return ClientInentity.select()
+        return ClientIdentity.select()
 
     #def update_identity(self, identity):
