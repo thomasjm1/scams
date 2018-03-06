@@ -8,10 +8,19 @@ Android client application
 
 https://developer.android.com/studio/index.html
 
-
 2. Open the project folder called 'client' under 'scam' folder from Android Studio 
 
-3. Click the green arrow on the top of the toolbar, then you can see the client view
+File -> Open -> 'client' directory from local copy of repository
+
+3. Click the green arrow ('Run') on the top of the toolbar. This will begin running the application on an emulated Android device. We use a 'Nexus 5X' device running 'Android API 25'. 
+
+Once the emulated device is opened, you can walkthough the various UI elements. Additionally, the emulator allows one to simulate a phone call though:
+
+1. Click '...' button next to Android device
+2. Click 'Phone' tab
+3. Click 'Call Device'
+
+The recording and transcription is still in progress, but our code identifies the call and begins recording. The recording does not function on the emulated device due to limitations with the emulator. Events appear in the 'Logging' window within Android studio. ('View' -> 'Tool Windows' -> 'Logcat')
 
 
 ##Functions need to be completed:

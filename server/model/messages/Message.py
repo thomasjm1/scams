@@ -3,10 +3,10 @@ from enum import IntEnum
 
 from peewee import *
 
-from model.messages.MessageBaseModel import MessageBaseModel
+from model.BaseModel import BaseModel
 
 
-class Message(MessageBaseModel):
+class Message(BaseModel):
     sender = CharField(null=False)
     recipient = CharField(null=False)
     content = CharField(null=False)

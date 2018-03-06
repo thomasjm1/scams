@@ -1,8 +1,10 @@
 from enum import IntEnum
 from peewee import *
-from model.clientIdentity.ClientIdentityBaseModel import ClientIdentityBaseModel
 
-class ClientIdentity(ClientIdentityBaseModel):
+from model.BaseModel import BaseModel
+
+
+class ClientIdentity(BaseModel):
     identifier = CharField(null=False)
     profile = CharField(null=False)
     recovery = CharField(null=False)
