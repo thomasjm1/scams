@@ -1,1 +1,4 @@
 server/venv/
+server/.idea/workspace.xml
+server/.idea/server.iml
+*.pyc

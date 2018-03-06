@@ -1,15 +1,27 @@
 package edu.cmu.eps.scams;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import edu.cmu.eps.scams.notifications.NotificationFacade;
+import edu.cmu.eps.scams.recordings.RecordEventReceiver;
+import edu.cmu.eps.scams.recordings.RecordingEvents;
+import edu.cmu.eps.scams.recordings.RecordingService;
+
 public class HistoryActivity extends AppCompatActivity {
+
+    private static final String TAG = "HistoryActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,13 +29,13 @@ public class HistoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_history);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        final Context context = this.getApplicationContext();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                NotificationFacade facade = new NotificationFacade(context);
+                facade.create(context, "Hello World", "Option selected!");
             }
         });
     }
