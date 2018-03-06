@@ -38,12 +38,6 @@ public class HistoryActivity extends AppCompatActivity {
                 facade.create(context, "Hello World", "Option selected!");
             }
         });
-
-        IntentFilter filter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
-        this.registerReceiver(new RecordEventReceiver(), filter);
-
-        Intent intent = new Intent(this, RecordingService.class).putExtra("operation", RecordingEvents.NONE.name());
-        startService(intent);
     }
 
     @Override

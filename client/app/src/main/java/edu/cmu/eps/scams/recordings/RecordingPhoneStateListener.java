@@ -8,6 +8,7 @@ import android.util.Log;
 
 /**
  * Created by thoma on 3/5/2018.
+ * Listens for changes to phone state and send to recording service
  */
 
 public class RecordingPhoneStateListener extends PhoneStateListener {

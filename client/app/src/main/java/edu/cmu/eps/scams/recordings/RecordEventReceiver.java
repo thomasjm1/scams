@@ -10,6 +10,8 @@ import android.util.Log;
 /*
 * This class provides functionality for identify state changes of interest for phone calls. Such as
 * when the phone is ringing.
+*
+* Currently unused due to permissions issues in Android 26
 * */
 public class RecordEventReceiver extends BroadcastReceiver {
 
