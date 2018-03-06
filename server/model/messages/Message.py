@@ -12,6 +12,8 @@ class Message(MessageBaseModel):
     content = CharField(null=False)
     state = IntegerField(null=False)
     created = DateTimeField(default=datetime.datetime.now)
+    received = DateTimeField(default=datetime.datetime.now)
+    recipient_received = DateTimeField(default=datetime.datetime.now)
 
 
 class MessageState(IntEnum):
