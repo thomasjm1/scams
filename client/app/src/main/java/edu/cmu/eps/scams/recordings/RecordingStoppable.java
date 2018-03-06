@@ -1,6 +1,7 @@
 package edu.cmu.eps.scams.recordings;
 
 import android.media.MediaRecorder;
+import android.provider.SyncStateContract;
 import android.util.Log;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import edu.cmu.eps.scams.utilities.Stoppable;
 
 /**
  * Created by thoma on 3/5/2018.
+ * This class encapsulates star and stop functionality for recording from the MediaRecorder.
  */
 
 public class RecordingStoppable extends Stoppable {
@@ -32,15 +34,22 @@ public class RecordingStoppable extends Stoppable {
 
     @Override
     protected void setup() {
+        Log.d(TAG, String.format("Setup recording stoppable with: %s", this.recordingFile.getAbsolutePath()));
         this.recorder = new MediaRecorder();
-        this.recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        this.recorder.setAudioSource(MediaRecorder.AudioSource.VOICE_COMMUNICATION);
         this.recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         this.recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         this.recorder.setOutputFile(this.recordingFile.getAbsolutePath());
+        recorder.setOnErrorListener((MediaRecorder mediaRecorder, int details, int extra) -> {
+            Log.d(TAG, String.format("OnErrorListener %d %d", details, extra));
+        });
+        recorder.setOnInfoListener((MediaRecorder mediaRecorder, int details, int extra) -> {
+            Log.d(TAG, String.format("OnErrorListener %d %d", details, extra));
+        });
         try {
             this.recorder.prepare();
             this.recorder.start();
-        } catch (IOException exception) {
+        } catch (IOException | RuntimeException exception) {
             Log.d(TAG, String.format("Failed to begin recording due to %s", exception.getMessage()));
             throw new RuntimeException("Cannot start recording", exception);
         }

@@ -21,7 +21,7 @@ public abstract class Stoppable implements Runnable {
         try {
             this.setup();
         } catch (RuntimeException exception) {
-            Log.d(TAG, "Encountered runtime exception on setup");
+            Log.d(TAG, String.format("Encountered runtime exception on setup: %s", exception.getMessage()));
             return;
         }
         while (this.isStopped() == false) {

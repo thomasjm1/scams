@@ -1,17 +1,23 @@
 package edu.cmu.eps.scams;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import edu.cmu.eps.scams.notifications.NotificationFacade;
+import edu.cmu.eps.scams.recordings.RecordEventReceiver;
+import edu.cmu.eps.scams.recordings.RecordingEvents;
+import edu.cmu.eps.scams.recordings.RecordingService;
 
 public class HistoryActivity extends AppCompatActivity {
 
@@ -32,12 +38,12 @@ public class HistoryActivity extends AppCompatActivity {
                 facade.create(context, "Hello World", "Option selected!");
             }
         });
-        try {
-            NotificationFacade facade = new NotificationFacade(context);
-            facade.create(context, "Hello World", "App created!");
-        } catch (Exception e) {
-            Log.d(TAG, "onCreate: " + e.getMessage());
-        }
+
+        IntentFilter filter = new IntentFilter(TelephonyManager.ACTION_PHONE_STATE_CHANGED);
+        this.registerReceiver(new RecordEventReceiver(), filter);
+
+        Intent intent = new Intent(this, RecordingService.class).putExtra("operation", RecordingEvents.NONE.name());
+        startService(intent);
     }
 
     @Override

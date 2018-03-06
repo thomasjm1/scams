@@ -2,6 +2,9 @@ package edu.cmu.eps.scams.utilities;
 
 import android.util.Log;
 
+/*
+* This class builds Runnable objects and executes them on a thread.
+* */
 public class RunnableService {
 
     private static final String TAG = "RunnableService";
@@ -14,7 +17,7 @@ public class RunnableService {
         this.thread = null;
     }
 
-    protected void start() {
+    public void start() {
         if (this.thread == null) {
             this.thread = new Thread(this.runnableFactory.build());
             this.thread.start();
@@ -23,7 +26,7 @@ public class RunnableService {
         }
     }
 
-    protected void stop() {
+    public void stop() {
         if (this.thread == null) {
             Log.d(TAG,"Recording thread already stopped");
         } else {

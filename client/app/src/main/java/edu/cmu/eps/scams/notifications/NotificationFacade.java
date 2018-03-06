@@ -10,6 +10,7 @@ import edu.cmu.eps.scams.R;
 
 /**
  * Created by thoma on 3/4/2018.
+ * This class wraps around the notification interface provided by Android.
  */
 
 public class NotificationFacade {
