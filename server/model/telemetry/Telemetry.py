@@ -1,9 +1,10 @@
 import datetime
 from peewee import *
-from model.telemetry.TelemetryBaseModel import TelemetryBaseModel
+
+from model.BaseModel import BaseModel
 
 
-class Telemetry(TelemetryBaseModel):
+class Telemetry(BaseModel):
     t_type = CharField(null=False)
     content = CharField(null=False)
     created = DateTimeField(default=datetime.datetime.now)

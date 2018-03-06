@@ -10,7 +10,7 @@ from playhouse.db_url import connect
 from model.messages.Message import Message
 from model.messages.Message import MessageState
 from model.messages.MessageBaseModel import database_proxy
-from model.utilities.DateTimeEncoder import DateTimeEncoder
+from utilities.DateTimeEncoder import DateTimeEncoder
 from repositories.MessageRepository import MessageRepository
 
 app = Flask(__name__)
