@@ -41,6 +41,7 @@ public class RecordingService extends Service {
         Log.d(TAG, "Recording service created");
         TelephonyManager telephonyManager = this.getApplicationContext().getSystemService(TelephonyManager.class);
         telephonyManager.listen(new RecordingPhoneStateListener(this.getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
+
     }
 
     @Override

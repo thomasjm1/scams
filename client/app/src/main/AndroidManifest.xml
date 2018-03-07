@@ -7,7 +7,8 @@
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -35,15 +36,20 @@
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar" />
 
-
-        <service
-            android:name=".recordings.RecordingService"
-            android:enabled="true"
-            android:exported="false"></service>
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <service
+            android:name=".recordings.RecordingService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <service
+            android:name=".recognition.VoiceRecognitionService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>
