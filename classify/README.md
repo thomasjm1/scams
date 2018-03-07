@@ -2,6 +2,10 @@
 
 Algorithm to determine the likelihood of a call being a scam, or legitimate.
 
+# Method of Execution
+
+Simply run the process_keywords.py script in the classify directory, once the repository is cloned. In case Python running capability is not already set up, install Python for Windows using https://www.python.org/downloads/windows/, open IDLE (the Python GUI), navigate to the process_keywords.py script and use F5 as the keyboard shortcut to run it.
+
 # Current Work:
   The current algorithm focuses on statistical processing and simple redaction of call transcript:
 1. The python program process_keywords.py takes a transcripts as input from the transcripts folder.
