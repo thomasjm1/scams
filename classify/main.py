@@ -24,8 +24,10 @@ def main():
     verbose = False
 
     for f in my_tests:
+        print('\n')
         print f
         transcript = [f]
-        is_phishing(keybank, transcript, common, redact, verbose)
+        match = is_phishing(keybank, transcript, common, redact, verbose)
+        print('Perfectage high risk words: ' + str(match))
 
 main()
