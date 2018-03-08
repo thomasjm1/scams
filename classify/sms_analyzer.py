@@ -33,10 +33,7 @@ def SMSSpamCollection_Analyzer(fname):
                 break
             else:
                 line_count += 1
-
-    print(line)
-    print words
     return words
 
-
-SMSSpamCollection_Analyzer('transcripts/smsspamcollection/smsspamcollection')
+if __name__ == '__main__':
+    print()
