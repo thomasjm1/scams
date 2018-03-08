@@ -86,25 +86,25 @@ def main():
     verbose = False
     
     print('Test 1:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test1.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test1.txt', 'keybank/common_words.txt', redact, verbose)
 
     print('\nTest 2 - Full:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test2_long.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test2_long.txt', 'keybank/common_words.txt', redact, verbose)
 
     print('\nTest 2 - Short:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test2_short.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test2_short.txt', 'keybank/common_words.txt', redact, verbose)
 
     print('\nTest 3 - Full:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test3_long.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test3_long.txt', 'keybank/common_words.txt', redact, verbose)
     
     print('\nTest 3 - Short:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test3_short.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test3_short.txt', 'keybank/common_words.txt', redact, verbose)
 
     print('\nTest 4:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test4.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test4.txt', 'keybank/common_words.txt', redact, verbose)
 
     print('\nTest 5:')
-    is_phishing('keybank/keybank_f1.txt', 'transcripts/test5.txt', 'keybank/common_words.txt', redact, verbose)
+    is_phishing('keybank/keybank_f1.txt', 'transcripts/my_tests/test5.txt', 'keybank/common_words.txt', redact, verbose)
 
 
 main()
