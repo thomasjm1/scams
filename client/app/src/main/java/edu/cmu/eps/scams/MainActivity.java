@@ -18,6 +18,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.lang.reflect.Array;
+
 import edu.cmu.eps.scams.recognition.VoiceRecognitionService;
 import edu.cmu.eps.scams.recordings.RecordEventReceiver;
 import edu.cmu.eps.scams.recordings.RecordingEvents;
@@ -50,12 +52,13 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
         //Send Intent to start background service for recording
         Intent recordingServiceIntent = new Intent(this, RecordingService.class)
                 .putExtra("operation", RecordingEvents.NONE.name());
         startService(recordingServiceIntent);
         ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.RECORD_AUDIO},
+                new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                 527);
         Intent voiceRecognitionServiceIntent = new Intent(this, VoiceRecognitionService.class)
                 .putExtra("operation", RecordingEvents.NONE.name());

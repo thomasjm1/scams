@@ -21,7 +21,6 @@ public class RecordingService extends Service {
     private static final String RECORDINGS_DIRECTORY = "recordings";
 
     private final RunnableService runnableService;
-    private final RecordEventReceiver recordEventReceiver;
 
     public RecordingService() {
         this.runnableService = new RunnableService(
@@ -33,7 +32,6 @@ public class RecordingService extends Service {
                         )
                 )
         );
-        this.recordEventReceiver = new RecordEventReceiver();
     }
 
     @Override

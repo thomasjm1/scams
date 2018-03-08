@@ -6,6 +6,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.recognition.VoiceRecognitionService;
 
 /**
@@ -19,8 +20,11 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
 
     private final Context context;
 
+    private final NotificationFacade notificationFacade;
+
     public RecordingPhoneStateListener(Context context) {
         this.context = context;
+        this.notificationFacade = new NotificationFacade(context);
     }
 
     @Override
@@ -32,6 +36,7 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                         .putExtra("operation", RecordingEvents.STOP.name()));
                 context.startService(new Intent(context, VoiceRecognitionService.class)
                         .putExtra("operation", RecordingEvents.STOP.name()));
+                this.notificationFacade.create(this.context, "Phone Status", "Phone is idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
                 Log.d(TAG, "PHONE IS OFF THE HOOK");
@@ -39,6 +44,7 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                         .putExtra("operation", RecordingEvents.START.name()));
                 context.startService(new Intent(context, VoiceRecognitionService.class)
                         .putExtra("operation", RecordingEvents.START.name()));
+                this.notificationFacade.create(this.context, "Phone Status", "Phone is off hook");
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 Log.d(TAG, "PHONE IS RINGING");
@@ -46,6 +52,7 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                         .putExtra("operation", RecordingEvents.START.name()));
                 context.startService(new Intent(context, VoiceRecognitionService.class)
                         .putExtra("operation", RecordingEvents.START.name()));
+                this.notificationFacade.create(this.context, "Phone Status", "Phone is ringing");
                 break;
         }
     }

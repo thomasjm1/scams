@@ -1,5 +1,7 @@
 package edu.cmu.eps.scams.files;
 
+import android.util.Log;
+
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.UUID;
@@ -11,6 +13,7 @@ import java.util.UUID;
 
 public class DirectoryOutputFileFactory implements IOutputFileFactory {
 
+    private static final String TAG = "DirectoryOutputFileFactory";
     private final File appDirectory;
     private final String subDirectoryName;
     private final File directory;
@@ -20,13 +23,16 @@ public class DirectoryOutputFileFactory implements IOutputFileFactory {
         this.subDirectoryName = subDirectoryName;
         this.directory = new File(this.appDirectory.getAbsolutePath(), this.subDirectoryName);
         if (this.directory.exists() == false) {
-            this.directory.mkdir();
+            Log.d(TAG, String.format("Building directories for %s", this.directory.getAbsolutePath()));
+            this.directory.mkdirs();
         }
     }
 
     @Override
     public File build() {
-        return new File(this.directory.getAbsolutePath() + "/" + this.buildFilename());
+        File result = new File(this.appDirectory.getAbsolutePath() + "/" + this.buildFilename());
+        Log.d(TAG, String.format("Building file %s", result.getAbsolutePath()));
+        return result;
     }
 
     private String buildFilename() {
