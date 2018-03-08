@@ -74,7 +74,7 @@ def is_phishing(keyword_file, transcript, common_file, redact, verbose):
     key_words = get_bank_words(keyword_file)
     common_words = get_bank_words(common_file)
 
-    if (len(transcript) == 1):
+    if (transcript[0][-4:] == '.txt'):
         call_words_list = get_transcript_words(transcript[0], redact, verbose)
     else:
         call_words_list = transcript

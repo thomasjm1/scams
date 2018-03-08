@@ -17,6 +17,23 @@ my_tests = ['transcripts/my_tests/test1.txt',
             'transcripts/my_tests/test9.txt'
             ]
 
+def verbose_simple_spam():   
+    redact = True
+    verbose = True
+    
+    transcript = ['transcripts/my_tests/test2_short.txt']
+    match = is_phishing(keybank, transcript, common, redact, verbose)
+    print('Perfectage high risk words: ' + str(match) + '%')
+
+def verbose_simple_not_spam():
+    redact = True
+    verbose = True
+    
+    transcript = ['transcripts/my_tests/test7.txt']
+    match = is_phishing(keybank, transcript, common, redact, verbose)
+    print('Perfectage high risk words: ' + str(match) + '%')
+
+
 # run tests
 def main():
 
@@ -28,6 +45,8 @@ def main():
         print f
         transcript = [f]
         match = is_phishing(keybank, transcript, common, redact, verbose)
-        print('Perfectage high risk words: ' + str(match))
+        print('Perfectage high risk words: ' + str(match) + '%')
 
-main()
+verbose_simple_spam()
+#verbose_simple_not_spam()
+#main()
