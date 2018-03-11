@@ -2,14 +2,15 @@ package edu.cmu.eps.scams.recordings;
 
 import android.app.Service;
 import android.content.Intent;
+import android.icu.text.AlphabeticIndex;
 import android.os.Environment;
+import android.os.HandlerThread;
 import android.os.IBinder;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
+import android.os.Looper;
+import android.os.Message;
 import android.util.Log;
 
 import edu.cmu.eps.scams.files.DirectoryOutputFileFactory;
-import edu.cmu.eps.scams.utilities.RunnableService;
 
 /*
 * This class provides an Android "Service" that instructs a background thread to start and stop
@@ -18,60 +19,40 @@ import edu.cmu.eps.scams.utilities.RunnableService;
 public class RecordingService extends Service {
 
     private static final String TAG = "RecordingService";
-    private static final String RECORDINGS_DIRECTORY = "recordings";
+    private static final String HANDLER_THREAD_NAME = "RECORDING_HANDLER_THREAD";
+    private static final String RECORDING_DIRECTORY = "recordings";
 
-    private final RunnableService runnableService;
+    private HandlerThread handlerThread;
+    private Looper handlerLooper;
+    private RecordingServiceHandler serviceHandler;
 
     public RecordingService() {
-        this.runnableService = new RunnableService(
-                new RecordingStoppableFactory(
-                        new DirectoryOutputFileFactory(
-                                //this.getApplicationContext().getFilesDir(),
-                                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-                                RECORDINGS_DIRECTORY
-                        )
-                )
-        );
     }
 
     @Override
     public void onCreate() {
-        Log.d(TAG, "Recording service created");
-        TelephonyManager telephonyManager = this.getApplicationContext().getSystemService(TelephonyManager.class);
-        telephonyManager.listen(new RecordingPhoneStateListener(this.getApplicationContext()), PhoneStateListener.LISTEN_CALL_STATE);
-
+        Log.d(TAG, "Create recording service handler thread");
+        this.handlerThread = new HandlerThread(HANDLER_THREAD_NAME);
+        this.handlerThread.start();
+        this.handlerLooper = this.handlerThread.getLooper();
+        this.serviceHandler = new RecordingServiceHandler(
+                this.handlerLooper,
+                new DirectoryOutputFileFactory(Environment.getExternalStoragePublicDirectory(
+                Environment.DIRECTORY_DOWNLOADS), RECORDING_DIRECTORY));
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "RecordingService started");
-        int result = START_NOT_STICKY;
-        if (intent == null) {
-            Log.d(TAG, "RecordingService no event");
-            result = START_NOT_STICKY;
-        } else {
-            RecordingEvents operation = RecordingEvents.valueOf(intent.getStringExtra("operation"));
-            switch (operation) {
-                case START:
-                    Log.d(TAG, "RecordingService start recording");
-                    this.runnableService.start();
-                    result = START_STICKY;
-                    break;
-                case STOP:
-                    Log.d(TAG, "RecordingService stop recording");
-                    this.runnableService.stop();
-                    result = START_STICKY;
-                    break;
-                default:
-                    Log.d(TAG, "RecordingService no event");
-                    break;
-            }
-        }
-        return result;
+        Log.d(TAG, "Recording service onStartCommand received");
+        Message message = this.serviceHandler.obtainMessage();
+        message.arg1 = startId;
+        message.arg2 = intent.getIntExtra("operation", RecordingEvents.NONE.ordinal());
+        this.serviceHandler.sendMessage(message);
+        return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return null;
     }
 }

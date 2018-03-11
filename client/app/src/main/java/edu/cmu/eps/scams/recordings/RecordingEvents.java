@@ -8,5 +8,9 @@ package edu.cmu.eps.scams.recordings;
 public enum RecordingEvents {
     START,
     STOP,
-    NONE
+    NONE;
+
+    public static RecordingEvents fromInt(int value) {
+        return RecordingEvents.values()[value];
+    }
 }
