@@ -38,7 +38,8 @@ public class RecordingService extends Service {
         this.serviceHandler = new RecordingServiceHandler(
                 this.handlerLooper,
                 new DirectoryOutputFileFactory(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_DOWNLOADS), RECORDING_DIRECTORY));
+                Environment.DIRECTORY_DOWNLOADS), RECORDING_DIRECTORY),
+                this.getApplicationContext());
     }
 
     @Override

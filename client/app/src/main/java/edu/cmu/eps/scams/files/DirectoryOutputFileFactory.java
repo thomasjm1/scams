@@ -17,6 +17,7 @@ public class DirectoryOutputFileFactory implements IOutputFileFactory {
     private final File appDirectory;
     private final String subDirectoryName;
     private final File directory;
+    private final String extension;
 
     public DirectoryOutputFileFactory(File appDirectory, String subDirectoryName) {
         this.appDirectory = appDirectory;
@@ -26,16 +27,17 @@ public class DirectoryOutputFileFactory implements IOutputFileFactory {
             Log.d(TAG, String.format("Building directories for %s", this.directory.getAbsolutePath()));
             this.directory.mkdirs();
         }
+        this.extension = "mp4";
     }
 
     @Override
     public File build() {
-        File result = new File(this.appDirectory.getAbsolutePath() + "/" + this.buildFilename());
+        File result = new File(this.appDirectory.getAbsolutePath() + "/" + this.subDirectoryName + "/" + this.buildFilename());
         Log.d(TAG, String.format("Building file %s", result.getAbsolutePath()));
         return result;
     }
 
     private String buildFilename() {
-        return String.format("%s.rec", UUID.randomUUID().toString().replace("-", ""));
+        return String.format("%s.%s", UUID.randomUUID().toString().replace("-", ""), this.extension);
     }
 }
