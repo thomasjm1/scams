@@ -21,9 +21,5 @@ public class ServicesFacade {
         Intent recordingServiceIntent = new Intent(activity, PhoneEventService.class)
                 .putExtra("operation", RecordingEvents.NONE.name());
         activity.startService(recordingServiceIntent);
-        //Send Intent to start background service for recording
-        //Intent voiceRecognitionServiceIntent = new Intent(activity, VoiceRecognitionService.class)
-        //        .putExtra("operation", RecordingEvents.NONE.name());
-        //activity.startService(voiceRecognitionServiceIntent);
     }
 }

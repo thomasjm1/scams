@@ -1,13 +1,16 @@
 package edu.cmu.eps.scams.recordings;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
-import android.icu.text.AlphabeticIndex;
 import android.os.Environment;
 import android.os.HandlerThread;
 import android.os.IBinder;
 import android.os.Looper;
 import android.os.Message;
+import android.os.SystemClock;
 import android.util.Log;
 
 import edu.cmu.eps.scams.files.DirectoryOutputFileFactory;
@@ -45,15 +48,33 @@ public class RecordingService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "Recording service onStartCommand received");
-        Message message = this.serviceHandler.obtainMessage();
-        message.arg1 = startId;
-        message.arg2 = intent.getIntExtra("operation", RecordingEvents.NONE.ordinal());
-        this.serviceHandler.sendMessage(message);
+        if (intent != null) {
+            Message message = this.serviceHandler.obtainMessage();
+            message.arg1 = startId;
+            message.arg2 = intent.getIntExtra("operation", RecordingEvents.NONE.ordinal());
+            this.serviceHandler.sendMessage(message);
+        } else {
+            Message message = this.serviceHandler.obtainMessage();
+            message.arg1 = startId;
+            message.arg2 = RecordingEvents.NONE.ordinal();
+        }
         return START_STICKY;
     }
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d(TAG, "RecordingService is being destroyed by system");
+        this.handlerThread.quitSafely();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Log.d(TAG, "RecordingService task removed");
+        super.onTaskRemoved(rootIntent);
     }
 }

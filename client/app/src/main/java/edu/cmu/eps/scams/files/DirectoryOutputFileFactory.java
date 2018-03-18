@@ -27,7 +27,7 @@ public class DirectoryOutputFileFactory implements IOutputFileFactory {
             Log.d(TAG, String.format("Building directories for %s", this.directory.getAbsolutePath()));
             this.directory.mkdirs();
         }
-        this.extension = "mp4";
+        this.extension = "wav";
     }
 
     @Override
