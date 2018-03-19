@@ -1,4 +1,4 @@
-package edu.cmu.eps.scams.recordings;
+package edu.cmu.eps.scams.services;
 
 import android.content.Context;
 import android.content.Intent;
@@ -7,7 +7,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import edu.cmu.eps.scams.notifications.NotificationFacade;
-import edu.cmu.eps.scams.recognition.VoiceRecognitionService;
+import edu.cmu.eps.scams.services.RecordingEvents;
+import edu.cmu.eps.scams.services.RecordingService;
 
 /**
  * Created by thoma on 3/5/2018.

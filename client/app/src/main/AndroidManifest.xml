@@ -42,12 +42,12 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <service
-            android:name=".recordings.PhoneEventService"
+            android:name=".services.PhoneEventService"
             android:enabled="true"
             android:exported="false" />
 
         <service
-            android:name=".recordings.RecordingService"
+            android:name=".services.RecordingService"
             android:enabled="true"
             android:exported="false"></service>
     </application>

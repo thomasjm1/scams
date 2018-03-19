@@ -1,4 +1,4 @@
-package edu.cmu.eps.scams.recordings;
+package edu.cmu.eps.scams.services;
 
 import android.content.Context;
 import android.os.Handler;
@@ -7,7 +7,8 @@ import android.os.Message;
 import android.util.Log;
 
 import edu.cmu.eps.scams.files.IOutputFileFactory;
-import edu.cmu.eps.scams.recognition.VoiceRecognitionFacade;
+import edu.cmu.eps.scams.recordings.AudioRecordFacade;
+import edu.cmu.eps.scams.recordings.IRecorder;
 
 /**
  * Created by thoma on 3/10/2018.

@@ -20,12 +20,6 @@ public class AudioRecordFacade extends BaseRecorder {
 
     private static final String TAG = "AudioRecordFacade";
 
-    private static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
-    private static final int SAMPLE_RATE = 44100;
-    private static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-    private static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
-    private static final int BUFFER_SIZE = 100 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
-    private static final int READ_BUFFER_SIZE = 10 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
 
     private AudioRecord recorder;
     private FileOutputStream fileOutputStream;

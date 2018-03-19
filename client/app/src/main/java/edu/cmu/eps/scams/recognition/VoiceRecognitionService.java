@@ -1,20 +1,13 @@
 package edu.cmu.eps.scams.recognition;
 
-import android.Manifest;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.telephony.PhoneStateListener;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import edu.cmu.eps.scams.recordings.RecordingEvents;
-import edu.cmu.eps.scams.recordings.RecordingPhoneStateListener;
+import edu.cmu.eps.scams.services.RecordingEvents;
 
 public class VoiceRecognitionService extends Service {
 
