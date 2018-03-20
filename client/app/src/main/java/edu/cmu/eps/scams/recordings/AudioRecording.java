@@ -3,8 +3,6 @@ package edu.cmu.eps.scams.recordings;
 import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
-import android.provider.MediaStore;
-
 import java.io.File;
 
 /**
@@ -18,8 +16,8 @@ public class AudioRecording {
     public static final int SAMPLE_RATE = 44100;
     public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
     public static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
-    public static final int BUFFER_SIZE = 100 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
-    public static final int READ_BUFFER_SIZE = 10 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
+    public static final int BUFFER_SIZE = 500 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
+    public static final int READ_BUFFER_SIZE = BUFFER_SIZE / 2;
 
     public final File file;
     public final long startTime;

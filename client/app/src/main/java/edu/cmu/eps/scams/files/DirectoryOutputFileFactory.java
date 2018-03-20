@@ -3,7 +3,6 @@ package edu.cmu.eps.scams.files;
 import android.util.Log;
 
 import java.io.File;
-import java.nio.file.Paths;
 import java.util.UUID;
 
 /**

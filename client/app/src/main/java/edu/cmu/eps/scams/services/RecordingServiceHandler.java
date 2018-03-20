@@ -1,14 +1,18 @@
 package edu.cmu.eps.scams.services;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import java.util.Collection;
+
 import edu.cmu.eps.scams.files.IOutputFileFactory;
 import edu.cmu.eps.scams.recordings.AudioRecordFacade;
 import edu.cmu.eps.scams.recordings.IRecorder;
+import edu.cmu.eps.scams.recordings.PhoneCallResult;
 
 /**
  * Created by thoma on 3/10/2018.
@@ -20,10 +24,12 @@ public class RecordingServiceHandler extends Handler {
     private final IOutputFileFactory fileFactory;
     private final IRecorder recorder;
     private final int loopEventDelay;
-    private boolean stopFlag;
+    private final Context context;
+    private String incomingNumber;
 
     public RecordingServiceHandler(Looper looper, IOutputFileFactory fileFactory, Context context) {
         super(looper);
+        this.context = context;
         this.fileFactory = fileFactory;
         this.loopEventDelay = 1000;
         this.recorder = new AudioRecordFacade();
@@ -43,19 +49,31 @@ public class RecordingServiceHandler extends Handler {
                     break;
                 case START:
                     Log.d(TAG, "Start recording event");
-                    this.recorder.start(this.fileFactory.build());
-                    this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
-                    this.stopFlag = false;
+                    if (this.recorder.isRecording() == false) {
+                        this.incomingNumber = message.getData().getString("incomingNumber");
+                        this.recorder.start(this.fileFactory.build());
+                        this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
+                    }
                     break;
                 case STOP:
                     Log.d(TAG, "Stop recording event");
                     this.recorder.stop();
-                    this.stopFlag = true;
                     break;
                 case LOOP:
                     Log.d(TAG, "Loop recording event");
-                    if (this.stopFlag == false) {
-                        this.recorder.loopEvent();
+                    if (this.recorder.isRecording()) {
+                        Collection<PhoneCallResult> results = this.recorder.loopEvent();
+                        if (results.size() > 0) {
+                            Log.d(TAG, "Loop event returned a PhoneCallResult to process");
+                            PhoneCallResult input = results.iterator().next();
+                            Log.d(TAG, "Loop event sending start to transcription service");
+                            this.context.startService(new Intent(context, TranscriptionService.class)
+                                    .putExtra("audio_recording", input.audioRecording.getAbsolutePath())
+                                    .putExtra("incoming_number", this.incomingNumber)
+                                    .putExtra("ring_timestamp", input.ringTimestamp)
+                                    .putExtra("audio_length", input.audioLength)
+                            );
+                        }
                         this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
                     }
                     break;

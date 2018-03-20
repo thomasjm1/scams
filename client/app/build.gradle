@@ -20,6 +20,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    packagingOptions {
+        exclude 'META-INF/project.properties'
+    }
+
 }
 
 dependencies {
@@ -32,4 +37,6 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
     compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile group: 'org.json', name: 'json', version: '20180130'
+
 }

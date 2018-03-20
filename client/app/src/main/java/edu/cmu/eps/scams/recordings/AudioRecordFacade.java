@@ -1,16 +1,19 @@
 package edu.cmu.eps.scams.recordings;
 
-import android.media.AudioFormat;
 import android.media.AudioRecord;
-import android.media.MediaRecorder;
-import android.os.SystemClock;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import edu.cmu.eps.scams.utilities.WavUtility;
+import static edu.cmu.eps.scams.recordings.AudioRecording.AUDIO_SOURCE;
+import static edu.cmu.eps.scams.recordings.AudioRecording.BUFFER_SIZE;
+import static edu.cmu.eps.scams.recordings.AudioRecording.CHANNEL_MASK;
+import static edu.cmu.eps.scams.recordings.AudioRecording.ENCODING;
+import static edu.cmu.eps.scams.recordings.AudioRecording.READ_BUFFER_SIZE;
+import static edu.cmu.eps.scams.recordings.AudioRecording.SAMPLE_RATE;
 
 /**
  * Created by thoma on 3/11/2018.
@@ -22,30 +25,28 @@ public class AudioRecordFacade extends BaseRecorder {
 
 
     private AudioRecord recorder;
-    private FileOutputStream fileOutputStream;
+    private AudioRecordOutputStrategy outputStrategy;
     private final byte[] buffer;
-    private int bytesRead;
-    private File file;
+    private final int intervals;
+    private final int intervalLength;
 
     public AudioRecordFacade() {
         this.buffer = new byte[READ_BUFFER_SIZE];
+        this.intervals = 10;
+        this.intervalLength = 10000;
     }
 
     @Override
     protected void startRecording(File target) throws RecordingException {
         Log.d(TAG, "Starting recording with AudioRecord");
-        this.bytesRead = 0;
-        this.file = target;
         try {
             this.recorder = new AudioRecord(AUDIO_SOURCE, SAMPLE_RATE, CHANNEL_MASK, ENCODING, BUFFER_SIZE);
             Log.d(TAG, "Built AudioRecord");
-            this.fileOutputStream = new FileOutputStream(target);
-            Log.d(TAG, "Opened output file stream");
-            // Write out the wav file header
-            WavUtility.writeWavHeader(fileOutputStream, CHANNEL_MASK, SAMPLE_RATE, ENCODING);
-            Log.d(TAG, "Wrote WAV file header to output file stream");
+            this.outputStrategy = new AudioRecordOutputStrategy(target, this.intervals, this.intervalLength);
             Log.d(TAG, "Starting to record");
             this.recorder.startRecording();
+            Log.d(TAG, "Initializing output");
+            this.outputStrategy.init();
             Log.d(TAG, "Recording in progress");
         } catch (IOException exception) {
             Log.d(TAG, String.format("Exception during start of recording: %s", exception.getMessage()));
@@ -53,33 +54,39 @@ public class AudioRecordFacade extends BaseRecorder {
     }
 
     @Override
-    public void loopEvent() {
-        Log.d(TAG, "Recording loop event");
+    public Collection<PhoneCallResult> loopEvent() {
+        Collection<PhoneCallResult> results = new ArrayList<>();
         if (this.isRecording()) {
-            this.readFromAudioRecord();
+            Log.d(TAG, "Recording loop event");
+            Collection<AudioRecording> recordings = this.readFromAudioRecord(false);
+            for (AudioRecording recording : recordings) {
+                results.add(new PhoneCallResult(recording.startTime, recording.file, (int)(recording.endTime - recording.startTime)));
+            }
         }
+        return results;
     }
 
-    private int readFromAudioRecord() {
-        int result = 0;
-        try {
-            int read = this.recorder.read(buffer, 0, buffer.length);
-            // WAVs cannot be > 4 GB due to the use of 32 bit unsigned integers.
-            if (this.bytesRead + read > 4294967295L) {
-                Log.d(TAG, "File max size exceeded");
-            } else {
-                fileOutputStream.write(buffer, 0, read);
-                this.bytesRead += read;
-            }
-            result = read;
-        } catch (IOException exception) {
-            Log.d(TAG, String.format("Encountered IO exception while writing: %s", exception.getMessage()));
+    private Collection<AudioRecording> readFromAudioRecord(boolean completion) {
+        Collection<AudioRecording> results = new ArrayList<>();
+        int read = this.recorder.read(buffer, 0, buffer.length);
+        if (read > 0) {
+            Log.d(TAG, String.format("Read %d bytes", read));
+            results = this.outputStrategy.write(buffer, 0, read);
         }
-        return result;
+        if (completion) {
+            while (read > 0) {
+                read = this.recorder.read(buffer, 0, buffer.length);
+                if (read > 0) {
+                    Log.d(TAG, String.format("Read %d bytes", read));
+                    results = this.outputStrategy.write(buffer, 0, read);
+                }
+            }
+        }
+        return results;
     }
 
     @Override
-    public void stopRecording() throws RecordingException {
+    public PhoneCallResult stopRecording() throws RecordingException {
         try {
             Log.d(TAG, "Stopping recording");
             if (this.recorder.getRecordingState() == AudioRecord.RECORDSTATE_RECORDING) {
@@ -88,27 +95,16 @@ public class AudioRecordFacade extends BaseRecorder {
         } catch (IllegalStateException exception) {
             Log.d(TAG, String.format("Exception during stopping of recording: %s", exception.getMessage()));
         }
-        int lastRead = 1;
-        while (lastRead > 0) {
-            lastRead = this.readFromAudioRecord();
-        }
+        Collection<AudioRecording> recordings = this.readFromAudioRecord(true);
+        recordings.addAll(this.outputStrategy.finish());
         if (this.recorder.getState() == AudioRecord.STATE_INITIALIZED) {
             Log.d(TAG, "Releasing AudioRecord");
             this.recorder.release();
         }
-        if (fileOutputStream != null) {
-            try {
-                Log.d(TAG, "Closing output file");
-                fileOutputStream.close();
-            } catch (IOException exception) {
-                Log.d(TAG, String.format("IO exception: %s", exception.getMessage()));
-            }
-        }
-        try {
-            Log.d(TAG, "Update the WAV file header");
-            WavUtility.updateWavHeader(this.file);
-        } catch (IOException exception) {
-            Log.d(TAG, "Exception encountered on closing of WAV file");
-        }
+        AudioRecording recording = recordings.toArray(new AudioRecording[10])[0];
+        return new PhoneCallResult(
+                recording.startTime,
+                recording.file,
+                (int)(recording.endTime - recording.startTime));
     }
 }

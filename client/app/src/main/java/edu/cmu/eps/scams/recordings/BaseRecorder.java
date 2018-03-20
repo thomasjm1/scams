@@ -1,8 +1,5 @@
 package edu.cmu.eps.scams.recordings;
 
-import android.media.AudioFormat;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
 import android.util.Log;
 
 import java.io.File;
@@ -41,22 +38,23 @@ public abstract class BaseRecorder implements IRecorder {
         }
     }
 
-    public void stop() {
+    public PhoneCallResult stop() {
         if (this.recordingFlag.getAndSet(false) == true) {
             try {
-                Log.d(TAG, "Stopping audio record");
-                this.stopRecording();
+                Log.d(TAG, "Stopping audioRecording record");
+                return this.stopRecording();
             } catch (RecordingException exception) {
                 Log.d(TAG, String.format("Failed to stop recording due to %s", exception.getMessage()));
                 throw new RuntimeException("Failed to stop recording", exception);
             }
         } else {
             Log.d(TAG, "Recording not in progress");
+            return null;
         }
     }
 
     protected abstract void startRecording(File target) throws RecordingException;
 
-    protected abstract void stopRecording() throws RecordingException;
+    protected abstract PhoneCallResult stopRecording() throws RecordingException;
 
 }

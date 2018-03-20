@@ -1,5 +1,7 @@
 package edu.cmu.eps.scams.files;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
@@ -10,6 +12,8 @@ import java.util.TreeMap;
  */
 
 public class OutputStreamMap {
+
+    private static final String TAG = "OutputStreamMap";
 
     private final TreeMap<String, OutputStream> map;
 
@@ -25,13 +29,14 @@ public class OutputStreamMap {
         return this.map.remove(name);
     }
 
-    public Map<String, Boolean> write(byte[] data) {
+    public Map<String, Boolean> write(byte[] data, int offset, int length) {
         Map<String, Boolean> results = new TreeMap<>();
         for (Map.Entry<String, OutputStream> item : this.map.entrySet()) {
             try {
-                item.getValue().write(data);
+                item.getValue().write(data, offset, length);
                 results.put(item.getKey(), true);
             } catch (IOException exception) {
+                Log.d(TAG, String.format("Failed to write to output stream: %s", exception.getMessage()));
                 results.put(item.getKey(), false);
             }
         }

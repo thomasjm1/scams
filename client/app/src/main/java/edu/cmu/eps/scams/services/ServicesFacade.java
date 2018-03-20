@@ -18,5 +18,7 @@ public class ServicesFacade {
         Intent recordingServiceIntent = new Intent(activity, PhoneEventService.class)
                 .putExtra("operation", RecordingEvents.NONE.name());
         activity.startService(recordingServiceIntent);
+        Intent transcriptionServiceIntent = new Intent(activity, TranscriptionService.class);
+        activity.startService(transcriptionServiceIntent);
     }
 }

@@ -50,6 +50,11 @@
             android:name=".services.RecordingService"
             android:enabled="true"
             android:exported="false"></service>
+
+        <service
+            android:name=".services.TranscriptionService"
+            android:enabled="true"
+            android:exported="false"></service>
     </application>
 
 </manifest>

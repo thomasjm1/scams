@@ -13,7 +13,7 @@ import edu.cmu.eps.scams.files.DirectoryOutputFileFactory;
 
 /*
 * This class provides an Android "Service" that instructs a background thread to start and stop
-* recording audio from the microphone.
+* recording audioRecording from the microphone.
 * */
 public class RecordingService extends Service {
 
