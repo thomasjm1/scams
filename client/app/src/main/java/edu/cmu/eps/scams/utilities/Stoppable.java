@@ -30,7 +30,8 @@ public abstract class Stoppable implements Runnable {
             } catch (InterruptedException exception) {
                 Log.d(TAG, "Interrupted during loop");
             } catch (RuntimeException exception) {
-                Log.d(TAG, "Loop threw exception, stopping thread");
+                Log.d(TAG, String.format("Loop threw exception %s, stopping thread", exception.getMessage()));
+                this.stop();
             }
         }
         try {

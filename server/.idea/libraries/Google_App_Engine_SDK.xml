@@ -15,6 +15,7 @@
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/fancy_urllib" />
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/google-api-python-client" />
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/grizzled" />
+      <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/grpcio-1.9.1" />
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/httplib2" />
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/ipaddr" />
       <root url="file://C:/Program Files (x86)/Google/Cloud SDK/google-cloud-sdk/platform/google_appengine/lib/jinja2-2.6" />
