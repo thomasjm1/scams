@@ -60,7 +60,7 @@ public class AudioRecordFacade extends BaseRecorder {
             Log.d(TAG, "Recording loop event");
             Collection<AudioRecording> recordings = this.readFromAudioRecord(false);
             for (AudioRecording recording : recordings) {
-                results.add(new PhoneCallResult(recording.startTime, recording.file, (int)(recording.endTime - recording.startTime)));
+                results.add(new PhoneCallResult(recording.startTime, recording.file, (recording.endTime - recording.startTime)));
             }
         }
         return results;
@@ -105,6 +105,6 @@ public class AudioRecordFacade extends BaseRecorder {
         return new PhoneCallResult(
                 recording.startTime,
                 recording.file,
-                (int)(recording.endTime - recording.startTime));
+                (recording.endTime - recording.startTime));
     }
 }

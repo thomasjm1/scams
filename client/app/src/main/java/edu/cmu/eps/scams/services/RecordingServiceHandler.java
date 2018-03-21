@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.util.Collection;
@@ -25,6 +26,7 @@ public class RecordingServiceHandler extends Handler {
     private final IRecorder recorder;
     private final int loopEventDelay;
     private final Context context;
+    private final TelephonyManager telephonyManager;
     private String incomingNumber;
 
     public RecordingServiceHandler(Looper looper, IOutputFileFactory fileFactory, Context context) {
@@ -33,6 +35,7 @@ public class RecordingServiceHandler extends Handler {
         this.fileFactory = fileFactory;
         this.loopEventDelay = 1000;
         this.recorder = new AudioRecordFacade();
+        this.telephonyManager = this.context.getSystemService(TelephonyManager.class);
     }
 
     @Override
@@ -73,6 +76,10 @@ public class RecordingServiceHandler extends Handler {
                                     .putExtra("ring_timestamp", input.ringTimestamp)
                                     .putExtra("audio_length", input.audioLength)
                             );
+                        }
+                        if (this.telephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
+                            Log.d(TAG, "Stop recording due to idle state");
+                            this.recorder.stop();
                         }
                         this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
                     }

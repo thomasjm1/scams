@@ -15,6 +15,7 @@ public class AudioRecording {
     public static final int AUDIO_SOURCE = MediaRecorder.AudioSource.MIC;
     public static final int SAMPLE_RATE = 44100;
     public static final int ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+    public static final String ENCODING_NAME = "LINEAR16";
     public static final int CHANNEL_MASK = AudioFormat.CHANNEL_IN_MONO;
     public static final int BUFFER_SIZE = 500 * AudioRecord.getMinBufferSize(SAMPLE_RATE, CHANNEL_MASK, ENCODING);
     public static final int READ_BUFFER_SIZE = BUFFER_SIZE / 2;
