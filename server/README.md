@@ -10,7 +10,7 @@ Server application written in Python (3.6) using various libraries for HTTP func
     * python resources/get-pip.py
     * verify successful installation with: pip -V
 1. Install Python dependencies
-    * pip -r requirements.txt
+    * pip install -r requirements.txt
 1. Run locally
     * python main.py
 1. Run unittests
