@@ -44,7 +44,7 @@ def register():
 @jwt_required
 def protected():
     current_user = get_jwt_identity()
-    return Response(json.dumps({'logged_in_as': current_user}), status=200, mimeType='application/json')
+    return Response(json.dumps({'logged_in_as': current_user}), status=200, mimetype='application/json')
 
 
 @authentication.errorhandler(500)

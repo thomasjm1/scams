@@ -37,3 +37,20 @@ class TestAuthenticationApi(unittest.TestCase):
         login_json = json.loads(response.data)
         access_token = login_json['access_token']
         self.assertTrue(access_token is not None)
+
+    def test_access_token(self):
+        response = self.client.post(
+            '/api/authentication/login',
+            data=json.dumps({'identifier': 'test', 'secret': 'test'}),
+            content_type='application/json'
+        )
+        self.assertTrue(response.status_code == 200)
+        login_json = json.loads(response.data)
+        access_token = login_json['access_token']
+        self.assertTrue(access_token is not None)
+        protected_response = self.client.get(
+            '/api/authentication/protected',
+            content_type='application/json',
+            headers={'Authorization': 'Bearer {}'.format(access_token)}
+        )
+        self.assertTrue(protected_response.status_code == 200)

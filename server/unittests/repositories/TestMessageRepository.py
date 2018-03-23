@@ -1,6 +1,4 @@
 import unittest
-import sys
-
 
 from model.messages.Message import Message, MessageState
 from repositories.MessageRepository import MessageRepository
