@@ -12,3 +12,10 @@ env_variables:
 
 beta_settings:
     cloud_sql_instances: eps-scams:us-east1:eps-scams-01
+
+manual_scaling:
+  instances: 1
+resources:
+  cpu: 1
+  memory_gb: 0.5
+  disk_size_gb: 10

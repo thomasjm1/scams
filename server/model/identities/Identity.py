@@ -4,13 +4,13 @@ from peewee import *
 from model.BaseModel import BaseModel
 
 
-class ClientIdentity(BaseModel):
+class Identity(BaseModel):
     identifier = CharField(null=False)
     profile = CharField(null=False)
     recovery = CharField(null=False)
     status = IntegerField(null=False)
 
 
-class ClientIdentityState(IntEnum):
-    NOTINUSE = 0
-    INUSE = 1
+class IdentityState(IntEnum):
+    NOT_IN_USE = 0
+    IN_USE = 1

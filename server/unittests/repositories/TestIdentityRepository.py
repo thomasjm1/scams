@@ -1,34 +1,34 @@
 import unittest
 
-from model.clientIdentity.ClientIdentity import ClientIdentity, ClientIdentityState
-from repositories.ClientIdentityRepository import ClientIdentityRepository
+from model.identities.Identity import Identity, IdentityState
+from repositories.IdentityRepository import IdentityRepository
 from unittests.repositories.DbTest import DbTest
 
 
-class TestClientIdentityRepository(DbTest):
+class TestIdentityRepository(DbTest):
     def setUp(self):
-        self.repository = ClientIdentityRepository()
+        self.repository = IdentityRepository()
 
     def test_create_client_identity(self):
         client_identity = self.repository.create_identity(
-            ClientIdentity(
+            Identity(
                 # test data
                 identifier="Test Identifier",
                 profile="Test Profile",
                 recovery="Test Recovery",
-                status=ClientIdentityState.INUSE
+                status=IdentityState.IN_USE
             )
         )
         self.assertEqual(client_identity.identifier, 'Test Identifier')
 
     def test_retrieve_client_identity(self):
         client_identity = self.repository.create_identity(
-            ClientIdentity(
+            Identity(
                 # test data
                 identifier="Test Identifier",
                 profile="Test Profile",
                 recovery="Test Recovery",
-                status=ClientIdentityState.INUSE
+                status=IdentityState.IN_USE
             )
         )
         self.assertEqual(client_identity.identifier, 'Test Identifier')

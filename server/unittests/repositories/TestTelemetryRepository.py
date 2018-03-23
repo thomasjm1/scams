@@ -13,21 +13,21 @@ class TestTelemetryRepository(DbTest):
         telemetry = self.repository.creat_telemetry(
             Telemetry(
                 # test data
-                t_type="TYPE1",
+                data_type="TYPE1",
                 content="TelemetryTest"
             )
         )
-        self.assertEqual(telemetry.t_type, 'TYPE1')
+        self.assertEqual(telemetry.data_type, 'TYPE1')
 
     def test_retrieve_telemetry(self):
         telemetry = self.repository.creat_telemetry(
             Telemetry(
                 # test data
-                t_type="TYPE1",
+                data_type="TYPE1",
                 content="TelemetryTest"
             )
         )
-        self.assertEqual(telemetry.t_type, 'TYPE1')
+        self.assertEqual(telemetry.data_type, 'TYPE1')
         telemetries = self.repository.retrieve_telemetry()
         self.assertGreater(len(telemetries), 1)
 
