@@ -14,3 +14,4 @@ class DevelopmentConfig(Config):
 
 class TestingConfig(Config):
     TESTING = True
+    JWT_SECRET_KEY = 'helloworldvalue'

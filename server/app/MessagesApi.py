@@ -23,22 +23,6 @@ def after_request(response):
     return response
 
 
-@messages.route('/')
-def index():
-    message_repository = MessageRepository()
-    message_repository.create_message(
-        Message(
-            sender="Jeremy",
-            recipient="Jeremy",
-            content="Hello World",
-            state=MessageState.PENDING
-        )
-    )
-    message_results = message_repository.retrieve_messages()
-    outputs = [shortcuts.model_to_dict(message) for message in message_results]
-    return Response(json.dumps(outputs, cls=DateTimeEncoder), status=200, mimetype='application/json')
-
-
 @messages.errorhandler(500)
 def server_error(e):
     logging.exception('An error occurred during a request.')

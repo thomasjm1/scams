@@ -7,6 +7,7 @@ from playhouse.db_url import connect
 
 from app import ConfigModule
 from app.AuthenticationApi import authentication
+from app.BaseApi import base
 from app.MessagesApi import messages
 from model.BaseModel import database_proxy
 from model.messages.Message import Message
@@ -37,5 +38,6 @@ def create_app(test_flag):
     jwt = JWTManager(app)
     app.register_blueprint(authentication)
     app.register_blueprint(messages)
+    app.register_blueprint(base)
 
     return app
