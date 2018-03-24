@@ -18,3 +18,7 @@ class TestBaseApi(unittest.TestCase):
     def test_index(self):
         response = self.client.get('/')
         self.assertTrue(response.status_code == 200)
+
+
+if __name__ == '__main__':
+    unittest.main()

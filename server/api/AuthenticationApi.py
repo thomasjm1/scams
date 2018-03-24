@@ -1,7 +1,9 @@
 import json
 
-from flask import Blueprint, request, Response, logging
+from flask import Blueprint, request, Response, logging, g
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+
+from api.BaseApi import authentication_required
 
 authentication = Blueprint('authentication', __name__, url_prefix='/api/authentication')
 
@@ -36,15 +38,15 @@ def register():
         return Response(json.dumps({"msg": "Missing secret parameter"}), status=400, mimetype='application/json')
     if identifier != 'test' or secret != 'test':
         return Response(json.dumps({"msg": "Bad identifier or secret"}), status=401, mimetype='application/json')
-    access_token = create_access_token(identity=identifier)
     return Response(json.dumps({'register': 'ok'}), status=200, mimetype='application/json')
 
 
 @authentication.route('/protected', methods=['GET'])
 @jwt_required
+@authentication_required
 def protected():
-    current_user = get_jwt_identity()
-    return Response(json.dumps({'logged_in_as': current_user}), status=200, mimetype='application/json')
+    identifier = g.identifier
+    return Response(json.dumps({'logged_in_as': identifier}), status=200, mimetype='application/json')
 
 
 @authentication.errorhandler(500)

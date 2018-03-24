@@ -54,3 +54,7 @@ class TestAuthenticationApi(unittest.TestCase):
             headers={'Authorization': 'Bearer {}'.format(access_token)}
         )
         self.assertTrue(protected_response.status_code == 200)
+
+
+if __name__ == '__main__':
+    unittest.main()

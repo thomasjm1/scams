@@ -6,9 +6,9 @@ from peewee import SqliteDatabase
 from playhouse.db_url import connect
 
 from app import ConfigModule
-from app.AuthenticationApi import authentication
-from app.BaseApi import base
-from app.MessagesApi import messages
+from api.AuthenticationApi import authentication
+from api.BaseApi import base
+from api.MessagesApi import messages
 from model.BaseModel import database_proxy
 from model.messages.Message import Message
 
