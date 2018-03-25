@@ -7,6 +7,7 @@ from model.BaseModel import BaseModel
 
 
 class Message(BaseModel):
+    identifier = CharField(null=False)
     sender = CharField(null=False)
     recipient = CharField(null=False)
     content = CharField(null=False)

@@ -12,6 +12,7 @@ class TestMessageRepository(DbTest):
     def test_create_message(self):
         message = self.repository.create_message(
             Message(
+                identifier="HelloWorld",
                 sender="Jeremy",
                 recipient="Jeremy",
                 content="Hello World",
@@ -23,6 +24,7 @@ class TestMessageRepository(DbTest):
     def test_retrieve_message(self):
         message = self.repository.create_message(
             Message(
+                identifier="HelloWorld",
                 sender="Jeremy",
                 recipient="Jeremy",
                 content="Hello World",

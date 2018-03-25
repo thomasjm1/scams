@@ -12,8 +12,8 @@ class TestIdentityRepository(DbTest):
     def test_create_client_identity(self):
         client_identity = self.repository.create_identity(
             Identity(
-                # test data
                 identifier="Test Identifier",
+                secret="secret",
                 profile="Test Profile",
                 recovery="Test Recovery",
                 status=IdentityState.IN_USE
@@ -24,15 +24,15 @@ class TestIdentityRepository(DbTest):
     def test_retrieve_client_identity(self):
         client_identity = self.repository.create_identity(
             Identity(
-                # test data
                 identifier="Test Identifier",
+                secret="secret",
                 profile="Test Profile",
                 recovery="Test Recovery",
                 status=IdentityState.IN_USE
             )
         )
         self.assertEqual(client_identity.identifier, 'Test Identifier')
-        client_identities = self.repository.retrieve_identity()
+        client_identities = self.repository.retrieve_identities()
         self.assertGreater(len(client_identities), 1)
 
 

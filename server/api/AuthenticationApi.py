@@ -1,44 +1,79 @@
 import json
 
 from flask import Blueprint, request, Response, logging, g
-from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, jwt_required
 
 from api.BaseApi import authentication_required
+from api.ResponseWrapper import ResponseWrapper
+from model.BaseModel import database_proxy
+from model.identities.Identity import Identity, IdentityState
+from repositories.IdentityRepository import IdentityRepository
 
 authentication = Blueprint('authentication', __name__, url_prefix='/api/authentication')
+
+
+@authentication.before_request
+def before_request():
+    if database_proxy.is_closed():
+        database_proxy.connect()
+
+
+@authentication.after_request
+def after_request(response):
+    database_proxy.close()
+    return response
 
 
 @authentication.route('/login', methods=['POST'])
 def login():
     if not request.is_json:
-        return Response(json.dumps({"msg": "Missing JSON in request"}), status=400, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.login", {'message': "Expected JSON"}), status=400,
+                        mimetype='application/json')
     json_data = request.get_json()
     identifier = json_data['identifier']
     secret = json_data['secret']
     if not identifier:
-        return Response(json.dumps({"msg": "Missing identity parameter"}), status=400, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.login", {'message': "Missing identifier"}),
+                        status=400, mimetype='application/json')
     if not secret:
-        return Response(json.dumps({"msg": "Missing secret parameter"}), status=400, mimetype='application/json')
-    if identifier != 'test' or secret != 'test':
-        return Response(json.dumps({"msg": "Bad identifier or secret"}), status=401, mimetype='application/json')
-    access_token = create_access_token(identity=identifier)
-    return Response(json.dumps({'access_token': access_token}), status=200, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.login", {'message': "Missing secret"}), status=400,
+                        mimetype='application/json')
+    identity_repository = IdentityRepository()
+    identity = identity_repository.retrieve_identity_by_identifier(identifier)
+    access_token = create_access_token(identity=identity.identifier)
+    return Response(
+        ResponseWrapper.wrap(identifier, "authentication.login", {'access_token': access_token}),
+        status=200,
+        mimetype='application/json')
 
 
 @authentication.route('/register', methods=['POST'])
 def register():
     if not request.is_json:
-        return Response(json.dumps({"msg": "Missing JSON in request"}), status=400, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.register", {'message': "Expected JSON"}),
+                        status=400, mimetype='application/json')
+
     json_data = request.get_json()
     identifier = json_data['identifier']
     secret = json_data['secret']
     if not identifier:
-        return Response(json.dumps({"msg": "Missing identity parameter"}), status=400, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.register", {'message': "Missing identifier"}),
+                        status=400, mimetype='application/json')
     if not secret:
-        return Response(json.dumps({"msg": "Missing secret parameter"}), status=400, mimetype='application/json')
-    if identifier != 'test' or secret != 'test':
-        return Response(json.dumps({"msg": "Bad identifier or secret"}), status=401, mimetype='application/json')
-    return Response(json.dumps({'register': 'ok'}), status=200, mimetype='application/json')
+        return Response(ResponseWrapper.wrap("none", "authentication.register", {'message': "Missing secret"}),
+                        status=400, mimetype='application/json')
+    profile = json_data['profile']
+    recovery = json_data['recovery']
+    identity_repository = IdentityRepository()
+    identity = identity_repository.create_identity(Identity(
+        identifier=identifier,
+        secret=secret,
+        profile=profile,
+        recovery=recovery,
+        status=IdentityState.IN_USE
+    ))
+    return Response(ResponseWrapper.wrap(identifier, "authentication.register", identity), status=200,
+                    mimetype='application/json')
 
 
 @authentication.route('/protected', methods=['GET'])

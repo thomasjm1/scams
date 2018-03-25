@@ -1,15 +1,12 @@
-import datetime
-import json
-
 from flask import Blueprint, logging, Response, g, request
 from flask_jwt_extended import jwt_required
-from playhouse.shortcuts import model_to_dict
 
 from api.BaseApi import authentication_required
+from api.ResponseWrapper import ResponseWrapper
 from model.BaseModel import database_proxy
 from model.messages.Message import Message, MessageState
 from repositories.MessageRepository import MessageRepository
-from utilities.JsonUtility import JsonUtility
+from utilities.RandomUtility import RandomUtility
 from utilities.TimestampUtility import TimestampUtility
 
 messages = Blueprint('messages', __name__, url_prefix='/api/messages')
@@ -35,6 +32,7 @@ def create():
     message_parameters = request.get_json()
     message_repository = MessageRepository()
     message = message_repository.create_message(Message(
+        identifier=RandomUtility.random_string(32),
         sender=identifier,
         recipient=message_parameters['recipient'],
         content=message_parameters['content'],
@@ -43,25 +41,45 @@ def create():
         received=TimestampUtility.now(),
         recipient_received=None
     ))
-    result = Response(JsonUtility.to_json({'identifier': identifier, 'operation': 'create', 'result': model_to_dict(message)}), status=200,
+    result = Response(ResponseWrapper.wrap(identifier, 'messages.create', message),
+                      status=200,
                       mimetype='application/json')
     return result
 
 
 @messages.route('/', methods=['GET'])
 @jwt_required
+@authentication_required
 def retrieve():
     identifier = g.get('identifier', None)
-    return Response(JsonUtility.to_json({'identifier': identifier, 'operation': 'retrieve'}), status=200,
-                    mimetype='application/json')
+    if identifier is None:
+        result = Response(ResponseWrapper.wrap(identifier, 'messages.retrieve', {'message': 'Authentication error'}),
+                          status=403,
+                          mimetype='application/json')
+    else:
+        message_repository = MessageRepository()
+        results = message_repository.retrieve_messages_by_sender(identifier)
+        result = Response(ResponseWrapper.wrap(identifier, 'messages.retrieve', results),
+                          status=200,
+                          mimetype='application/json')
+    return result
 
 
 @messages.route('/', methods=['PUT'])
 @jwt_required
+@authentication_required
 def update():
     identifier = g.get('identifier', None)
-    return Response(JsonUtility.to_json({'identifier': identifier, 'operation': 'update'}), status=200,
-                    mimetype='application/json')
+    message_parameters = request.get_json()
+    message_repository = MessageRepository()
+    message = message_repository.update_message(
+        message_parameters['identifier'],
+        message_parameters['recipient_received'],
+        MessageState.RECEIVED)
+    result = Response(ResponseWrapper.wrap(identifier, 'messages.update', message),
+                      status=200,
+                      mimetype='application/json')
+    return result
 
 
 @messages.errorhandler(500)

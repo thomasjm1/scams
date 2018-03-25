@@ -10,7 +10,9 @@ from api.AuthenticationApi import authentication
 from api.BaseApi import base
 from api.MessagesApi import messages
 from model.BaseModel import database_proxy
+from model.identities.Identity import Identity
 from model.messages.Message import Message
+from model.telemetry.Telemetry import Telemetry
 
 logger = logging.getLogger(__name__)
 
@@ -21,10 +23,11 @@ def create_app(test_flag):
     if test_flag is True:
         logger.debug("Setting up in testing mode")
         app.config.from_object(ConfigModule.TestingConfig)
-        sqlite_db = SqliteDatabase('local.db')
+        sqlite_file = 'local.db'
+        sqlite_db = SqliteDatabase(sqlite_file)
         database_proxy.initialize(sqlite_db)
         database_proxy.connect()
-        database_proxy.create_tables([Message], safe=True)
+        database_proxy.create_tables([Message,Identity, Telemetry], safe=True)
         database_proxy.close()
     else:
         logger.debug("Setting up in production mode")

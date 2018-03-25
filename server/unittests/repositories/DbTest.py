@@ -1,6 +1,8 @@
 import logging
 import sys
 import unittest
+
+import os
 from peewee import *
 
 from model.messages.Message import Message
@@ -14,7 +16,9 @@ rootLogger.setLevel(logging.DEBUG)
 rootLogger.addHandler(consoleHandler)
 
 # Configure test database
-database = SqliteDatabase('local.db')
+sqlite_file = 'local.db'
+os.remove(sqlite_file)
+database = SqliteDatabase(sqlite_file)
 database.connect()
 database_proxy.initialize(database)
 database.create_tables([Message, Telemetry, Identity], safe=True)
