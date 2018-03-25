@@ -52,16 +52,11 @@ def create():
 @authentication_required
 def retrieve():
     identifier = g.get('identifier', None)
-    if identifier is None:
-        result = Response(ResponseWrapper.wrap(identifier, 'messages.retrieve', {'message': 'Authentication error'}),
-                          status=403,
-                          mimetype='application/json')
-    else:
-        message_repository = MessageRepository()
-        results = message_repository.retrieve_messages_by_sender(identifier)
-        result = Response(ResponseWrapper.wrap(identifier, 'messages.retrieve', results),
-                          status=200,
-                          mimetype='application/json')
+    message_repository = MessageRepository()
+    results = message_repository.retrieve_messages_by_sender(identifier)
+    result = Response(ResponseWrapper.wrap(identifier, 'messages.retrieve', results),
+                      status=200,
+                      mimetype='application/json')
     return result
 
 

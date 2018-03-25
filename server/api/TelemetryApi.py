@@ -1,9 +1,14 @@
 import json
 
-from flask import Blueprint, logging, Response
+from flask import Blueprint, logging, Response, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
+from api.BaseApi import authentication_required
+from api.ResponseWrapper import ResponseWrapper
 from model.BaseModel import database_proxy
+from model.telemetry.Telemetry import Telemetry
+from repositories.TelemetryRepository import TelemetryRepository
+from utilities.TimestampUtility import TimestampUtility
 
 telemetry = Blueprint('telemetry', __name__, url_prefix='/api/telemetry')
 
@@ -22,9 +27,21 @@ def after_request(response):
 
 @telemetry.route('/', methods=['POST'])
 @jwt_required
+@authentication_required
 def create():
     identifier = get_jwt_identity()
-    return Response(json.dumps({'identifier': identifier, 'operation': 'send'}), status=200, mimetype='application/json')
+    telemetry_parameters = request.get_json()
+    telemetry_repository = TelemetryRepository()
+    result = telemetry_repository.creat_telemetry(
+        Telemetry(
+            creator=identifier,
+            data_type=telemetry_parameters['data_type'],
+            content=telemetry_parameters['content'],
+            created=telemetry_parameters['created'],
+            received=TimestampUtility.now()
+        )
+    )
+    return Response(ResponseWrapper.wrap(identifier, 'telemetry.create', result), status=200, mimetype='application/json')
 
 
 @telemetry.errorhandler(500)

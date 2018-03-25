@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from peewee import SqliteDatabase
 from playhouse.db_url import connect
 
+from api.TelemetryApi import telemetry
 from app import ConfigModule
 from api.AuthenticationApi import authentication
 from api.BaseApi import base
@@ -41,6 +42,7 @@ def create_app(test_flag):
     jwt = JWTManager(app)
     app.register_blueprint(authentication)
     app.register_blueprint(messages)
+    app.register_blueprint(telemetry)
     app.register_blueprint(base)
 
     return app
