@@ -7,13 +7,14 @@ from model.BaseModel import BaseModel
 
 
 class Message(BaseModel):
+    identifier = CharField(null=False)
     sender = CharField(null=False)
     recipient = CharField(null=False)
     content = CharField(null=False)
     state = IntegerField(null=False)
     created = DateTimeField(default=datetime.datetime.now)
     received = DateTimeField(default=datetime.datetime.now)
-    recipient_received = DateTimeField(default=datetime.datetime.now)
+    recipient_received = DateTimeField(default=datetime.datetime.now, null=True)
 
 
 class MessageState(IntEnum):

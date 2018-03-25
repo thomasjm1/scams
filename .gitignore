@@ -4,3 +4,4 @@ server/.idea/server.iml
 *.pyc
 server/venv1/
 server/local.db
+server/unittests/api/local.db

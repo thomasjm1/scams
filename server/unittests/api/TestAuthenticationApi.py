@@ -4,10 +4,15 @@ import unittest
 
 import sys
 
+import os
+
 from app import AppFactory
+
+os.remove('local.db')
 
 
 class TestAuthenticationApi(unittest.TestCase):
+
     def setUp(self):
         console_handler = logging.StreamHandler(sys.stdout)
         root_logger = logging.getLogger()
@@ -19,34 +24,58 @@ class TestAuthenticationApi(unittest.TestCase):
     def test_register(self):
         response = self.client.post(
             '/api/authentication/register',
-            data=json.dumps({'identifier': 'test', 'secret': 'test'}),
+            data=json.dumps({
+                'identifier': 'test',
+                'secret': 'test',
+                'profile': 'profile',
+                'recovery': 'recovery'}),
             content_type='application/json'
         )
         self.assertTrue(response.status_code == 200)
         register_json = json.loads(response.data)
-        register_result = register_json['register']
+        register_result = register_json['result']
         self.assertTrue(register_result is not None)
 
     def test_login(self):
+        register_response = self.client.post(
+            '/api/authentication/register',
+            data=json.dumps({
+                'identifier': 'test2',
+                'secret': 'test2',
+                'profile': 'profile',
+                'recovery': 'recovery'}),
+            content_type='application/json'
+        )
+        self.assertTrue(register_response.status_code == 200)
         response = self.client.post(
             '/api/authentication/login',
-            data=json.dumps({'identifier': 'test', 'secret': 'test'}),
+            data=json.dumps({'identifier': 'test2', 'secret': 'test2'}),
             content_type='application/json'
         )
         self.assertTrue(response.status_code == 200)
         login_json = json.loads(response.data)
-        access_token = login_json['access_token']
+        access_token = login_json['result']['access_token']
         self.assertTrue(access_token is not None)
 
     def test_access_token(self):
+        register_response = self.client.post(
+            '/api/authentication/register',
+            data=json.dumps({
+                'identifier': 'test3',
+                'secret': 'test3',
+                'profile': 'profile',
+                'recovery': 'recovery'}),
+            content_type='application/json'
+        )
+        self.assertTrue(register_response.status_code == 200)
         response = self.client.post(
             '/api/authentication/login',
-            data=json.dumps({'identifier': 'test', 'secret': 'test'}),
+            data=json.dumps({'identifier': 'test3', 'secret': 'test3'}),
             content_type='application/json'
         )
         self.assertTrue(response.status_code == 200)
         login_json = json.loads(response.data)
-        access_token = login_json['access_token']
+        access_token = login_json['result']['access_token']
         self.assertTrue(access_token is not None)
         protected_response = self.client.get(
             '/api/authentication/protected',
@@ -54,3 +83,7 @@ class TestAuthenticationApi(unittest.TestCase):
             headers={'Authorization': 'Bearer {}'.format(access_token)}
         )
         self.assertTrue(protected_response.status_code == 200)
+
+
+if __name__ == '__main__':
+    unittest.main()

@@ -5,6 +5,7 @@ from model.BaseModel import BaseModel
 
 
 class Telemetry(BaseModel):
+    creator = CharField(null=False)
     data_type = CharField(null=False)
     content = CharField(null=False)
     created = DateTimeField(default=datetime.datetime.now)
