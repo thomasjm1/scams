@@ -13,12 +13,12 @@ import java.net.URL;
 import org.json.*;
 
 
-public class HttpAction {
+public class HTTPAction {
     private URL urlObj;
     private HttpURLConnection conn;
 
 
-    public HttpAction(String url) throws Exception{
+    public HTTPAction(String url) throws Exception{
         urlObj = new URL(url);
         conn = (HttpURLConnection)urlObj.openConnection();
     }
