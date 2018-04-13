@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
 
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 
@@ -23,6 +24,7 @@ public class HistoryActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         final Context context = this.getApplicationContext();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ListView listView = (ListView) findViewById(R.id.history_list_view);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

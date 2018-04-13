@@ -1,9 +1,14 @@
+import os
 import unittest
 
 from model.identities.Identity import Identity, IdentityState
 from repositories.IdentityRepository import IdentityRepository
 from unittests.repositories.DbTest import DbTest
 
+try:
+    os.remove('local.db')
+except:
+    pass
 
 class TestIdentityRepository(DbTest):
     def setUp(self):

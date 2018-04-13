@@ -8,7 +8,10 @@ import os
 
 from app import AppFactory
 
-os.remove('local.db')
+try:
+    os.remove('local.db')
+except:
+    pass
 
 
 class TestAuthenticationApi(unittest.TestCase):
@@ -22,7 +25,7 @@ class TestAuthenticationApi(unittest.TestCase):
         self.client = self.app.test_client()
 
     def test_register(self):
-        response = self.client.post(
+        register_response = self.client.post(
             '/api/authentication/register',
             data=json.dumps({
                 'identifier': 'test',
@@ -31,8 +34,8 @@ class TestAuthenticationApi(unittest.TestCase):
                 'recovery': 'recovery'}),
             content_type='application/json'
         )
-        self.assertTrue(response.status_code == 200)
-        register_json = json.loads(response.data)
+        self.assertTrue(register_response.status_code == 200)
+        register_json = json.loads(register_response.data)
         register_result = register_json['result']
         self.assertTrue(register_result is not None)
 

@@ -10,6 +10,7 @@
 
 
     <ListView
+        android:id="@+id/history_list_view"
         android:layout_width="352dp"
         android:layout_height="479dp"
         android:entries="@array/options"
