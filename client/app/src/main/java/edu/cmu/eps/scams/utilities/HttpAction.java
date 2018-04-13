@@ -1,3 +1,4 @@
+package edu.cmu.eps.scams.utilities;
 /**
  * Created by Ao Chen on 4/3/18.
  *
@@ -16,7 +17,6 @@ import org.json.*;
 public class HTTPAction {
     private URL urlObj;
     private HttpURLConnection conn;
-
 
     public HTTPAction(String url) throws Exception{
         urlObj = new URL(url);

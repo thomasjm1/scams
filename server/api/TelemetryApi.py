@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, logging, Response, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from api.BaseApi import authentication_required
+from api.BaseApi import authentication_required, logger
 from api.ResponseWrapper import ResponseWrapper
 from model.BaseModel import database_proxy
 from model.telemetry.Telemetry import Telemetry
@@ -46,7 +46,7 @@ def create():
 
 @telemetry.errorhandler(500)
 def server_error(e):
-    logging.exception('An error occurred during a request.')
+    logger.exception('An error occurred during a request.')
     return """
     An internal error occurred: <pre>{}</pre>
     See logs for full stacktrace.

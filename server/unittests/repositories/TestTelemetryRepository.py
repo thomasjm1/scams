@@ -1,9 +1,14 @@
+import os
 import unittest
 
 from model.telemetry.Telemetry import Telemetry
 from repositories.TelemetryRepository import TelemetryRepository
 from unittests.repositories.DbTest import DbTest
 
+try:
+    os.remove('local.db')
+except:
+    pass
 
 class TestTelemetryRepository(DbTest):
     def setUp(self):

@@ -27,8 +27,7 @@ def create_app(test_flag):
         sqlite_file = 'local.db'
         sqlite_db = SqliteDatabase(sqlite_file)
         database_proxy.initialize(sqlite_db)
-        database_proxy.connect()
-        database_proxy.create_tables([Message,Identity, Telemetry], safe=True)
+        database_proxy.create_tables([Message, Identity, Telemetry], safe=True)
         database_proxy.close()
     else:
         logger.debug("Setting up in production mode")
@@ -36,13 +35,11 @@ def create_app(test_flag):
         app.config['PEEWEE_DATABASE_URI'] = os.environ['PEEWEE_DATABASE_URI']
         database = connect(app.config['PEEWEE_DATABASE_URI'])
         database_proxy.initialize(database)
-        database_proxy.connect()
-        database_proxy.create_tables([Message], safe=True)
+        database_proxy.create_tables([Message, Identity, Telemetry], safe=True)
         database_proxy.close()
     jwt = JWTManager(app)
     app.register_blueprint(authentication)
     app.register_blueprint(messages)
     app.register_blueprint(telemetry)
     app.register_blueprint(base)
-
     return app

@@ -1,9 +1,7 @@
 from enum import IntEnum
 from peewee import *
-from playhouse.shortcuts import model_to_dict
 
 from model.BaseModel import BaseModel
-from utilities.JsonUtility import JsonUtility
 
 
 class Identity(BaseModel):

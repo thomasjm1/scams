@@ -3,7 +3,7 @@ import json
 from flask import Blueprint, request, Response, logging, g
 from flask_jwt_extended import create_access_token, jwt_required
 
-from api.BaseApi import authentication_required
+from api.BaseApi import authentication_required, logger
 from api.ResponseWrapper import ResponseWrapper
 from model.BaseModel import database_proxy
 from model.identities.Identity import Identity, IdentityState
@@ -86,7 +86,7 @@ def protected():
 
 @authentication.errorhandler(500)
 def server_error(e):
-    logging.exception('An error occurred during a request.')
+    logger.exception('An error occurred during a request.')
     return """
     An internal error occurred: <pre>{}</pre>
     See logs for full stacktrace.
