@@ -102,4 +102,24 @@ public class ApplicationLogic implements IApplicationLogic {
         }
         return result;
     }
+
+    @Override
+    public void sendTelemetry(Telemetry telemetry) {
+
+    }
+
+    @Override
+    public void sendMessage(OutgoingMessage outgoingMessage) {
+
+    }
+
+    @Override
+    public List<OutgoingMessage> receiveMessages() {
+        return null;
+    }
+
+    @Override
+    public ClassifierParameters getClassifierParameters() {
+        return null;
+    }
 }

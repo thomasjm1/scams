@@ -2,8 +2,6 @@ package edu.cmu.eps.scams.logic;
 
 import java.util.List;
 
-import edu.cmu.eps.scams.HistoryActivity;
-
 /**
  * Created by jeremy on 4/13/2018.
  */
@@ -24,5 +22,12 @@ public interface IApplicationLogic {
 
     boolean updateAppSettings(AppSettings appSettings);
 
+    void sendTelemetry(Telemetry telemetry);
+
+    void sendMessage(OutgoingMessage outgoingMessage);
+
+    List<OutgoingMessage> receiveMessages();
+
+    ClassifierParameters getClassifierParameters();
 }
 

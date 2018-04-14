@@ -8,6 +8,10 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
+import edu.cmu.eps.scams.logic.ClassifierParameters;
+import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.LogicFactory;
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.transcription.TranscriptionRunnable;
 
 public class TranscriptionService extends Service {
@@ -17,6 +21,8 @@ public class TranscriptionService extends Service {
     private HandlerThread handlerThread;
     private Looper handlerLooper;
     private Handler handler;
+    private IApplicationLogic logic;
+    private ClassifierParameters classifierParameters;
 
     public TranscriptionService() {
     }
@@ -28,6 +34,8 @@ public class TranscriptionService extends Service {
         this.handlerThread.start();
         this.handlerLooper = this.handlerThread.getLooper();
         this.handler = new Handler(this.handlerLooper);
+        this.logic = LogicFactory.build(this);
+        this.classifierParameters = this.logic.getClassifierParameters();
     }
 
     @Override
@@ -46,7 +54,11 @@ public class TranscriptionService extends Service {
                     audioRecordingPath,
                     incomingNumber,
                     ringTimestamp,
-                    audioLength));
+                    audioLength,
+                    this.classifierParameters,
+                    this.logic,
+                    new NotificationFacade(this),
+                    this));
         }
         return result;
     }
