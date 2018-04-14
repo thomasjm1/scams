@@ -83,10 +83,10 @@ public class TestRoomStorage {
 
     @Test
     public void insertSettings() throws Exception {
-        this.storage.insert(new AppSettings("Testing"));
+        this.storage.insert(new AppSettings("Testing", registered, secret, profile, recovery));
         AppSettings results = this.storage.retrieveSettings();
         assertThat(results.getIdentifier(), equalTo("Testing"));
-        this.storage.insert(new AppSettings("Testing2"));
+        this.storage.insert(new AppSettings("Testing2", registered, secret, profile, recovery));
         AppSettings updateResults = this.storage.retrieveSettings();
         assertThat(updateResults.getIdentifier(), equalTo("Testing2"));
     }

@@ -7,6 +7,7 @@ import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 
 /**
@@ -67,7 +68,7 @@ public class HistoryRecords implements IApplicationLogic {
     }
 
     @Override
-    public List<OutgoingMessage> receiveMessages() {
+    public List<IncomingMessage> receiveMessages() {
         return null;
     }
 

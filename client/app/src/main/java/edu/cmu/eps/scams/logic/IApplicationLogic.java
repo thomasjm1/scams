@@ -6,6 +6,7 @@ import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 
 /**
@@ -32,7 +33,9 @@ public interface IApplicationLogic {
 
     void sendMessage(OutgoingMessage outgoingMessage);
 
-    List<OutgoingMessage> receiveMessages();
+    List<IncomingMessage> receiveMessages();
+
+    void acknowledgeMessage(IncomingMessage message);
 
     ClassifierParameters getClassifierParameters();
 }

@@ -8,7 +8,7 @@ import edu.cmu.eps.scams.logic.model.ClientIdentity;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 
-public interface IServerApi {
+public interface IServerFacade {
 
     void sendMessage(OutgoingMessage toSend) throws CommunicationException;
 

@@ -1,26 +1,35 @@
 package edu.cmu.eps.scams.utilities;
 /**
  * Created by Ao Chen on 4/3/18.
- *
+ * <p>
  * This is a utility class that can be used to send http requests to server.
  * There are three methods: GET, POST and PUT.
- *
+ * <p>
  * To use this class, you need add extra lib "org.json", which is available at
  * "https://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.json%22%20AND%20a%3A%22json%22"
  */
+
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import org.json.*;
 
 
 public class HTTPAction {
     private URL urlObj;
     private HttpURLConnection conn;
+    private String token;
 
-    public HTTPAction(String url) throws Exception{
+    public HTTPAction(String url) throws Exception {
         urlObj = new URL(url);
-        conn = (HttpURLConnection)urlObj.openConnection();
+        conn = (HttpURLConnection) urlObj.openConnection();
+        this.token = null;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+        this.conn.setRequestProperty("Authorization", String.format("Bearer %s", this.token));
     }
 
 
@@ -29,7 +38,7 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject GetData() throws Exception{
+    public JSONObject GetData() throws Exception {
 
         conn.setRequestMethod("GET");
         return ReadResponse(conn);
@@ -42,10 +51,8 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PostData(JSONObject jsonObject) throws Exception{
-
+    public JSONObject PostData(JSONObject jsonObject) throws Exception {
         conn.setRequestMethod("POST");
-
         WriteInput(conn, jsonObject);
         return ReadResponse(conn);
     }
@@ -57,7 +64,7 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PutData(JSONObject jsonObject) throws Exception{
+    public JSONObject PutData(JSONObject jsonObject) throws Exception {
 
         conn.setRequestMethod("PUT");
 
@@ -72,7 +79,7 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    private JSONObject ReadResponse(HttpURLConnection conn) throws Exception{
+    private JSONObject ReadResponse(HttpURLConnection conn) throws Exception {
 
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
@@ -80,7 +87,7 @@ public class HTTPAction {
 
         StringBuffer sb = new StringBuffer();
         String line;
-        while ((line = in.readLine()) != null){
+        while ((line = in.readLine()) != null) {
             sb.append(line);
         }
         JSONObject res = new JSONObject(sb.toString());
@@ -94,7 +101,7 @@ public class HTTPAction {
      * @param jsonObject
      * @throws Exception
      */
-    private void WriteInput(HttpURLConnection conn, JSONObject jsonObject) throws Exception{
+    private void WriteInput(HttpURLConnection conn, JSONObject jsonObject) throws Exception {
         conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
         conn.setDoOutput(true);
         conn.setDoInput(true);
