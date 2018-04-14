@@ -30,12 +30,12 @@ public class TranscriptionRunnable implements Runnable {
     @Override
     public void run() {
         try {
-            Pair<String, Double> text = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
-            Log.d(TAG, String.format("Transcription: %s with %f", text.first, text.second));
-            Log.d(TAG, String.format("Transcription: %s with %f", text.first, text.second));
-            Log.d(TAG, String.format("Transcription: %s with %f", text.first, text.second));
-            Log.d(TAG, String.format("Transcription: %s with %f", text.first, text.second));
-            Log.d(TAG, String.format("Transcription: %s with %f", text.first, text.second));
+            TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
+            Log.d(TAG, String.format("Transcription: %s with %f", result.getText(), result.getConfidence()));
+            Log.d(TAG, String.format("Transcription: %s with %f", result.getText(), result.getConfidence()));
+            Log.d(TAG, String.format("Transcription: %s with %f", result.getText(), result.getConfidence()));
+            Log.d(TAG, String.format("Transcription: %s with %f", result.getText(), result.getConfidence()));
+            Log.d(TAG, String.format("Transcription: %s with %f", result.getText(), result.getConfidence()));
         } catch (Exception exception) {
             Log.d(TAG, String.format("Transcription encountered error: %s", exception.getMessage()));
         }

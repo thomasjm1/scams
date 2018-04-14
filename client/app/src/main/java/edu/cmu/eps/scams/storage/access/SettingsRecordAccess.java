@@ -15,7 +15,7 @@ public interface SettingsRecordAccess {
     @Query("SELECT * FROM settingsrecord ORDER BY id DESC")
     List<SettingsRecord> getAll();
 
-    @Query("SELECT * FROM historyrecord WHERE id IN (:settingsRecordIds)")
+    @Query("SELECT * FROM settingsrecord WHERE id IN (:settingsRecordIds)")
     List<SettingsRecord> loadAllByIds(int[] settingsRecordIds);
 
     @Insert

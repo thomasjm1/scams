@@ -22,10 +22,10 @@ public class TestTranscriptionUtility {
         byte[] content = TranscriptionUtility.readFile(file);
         String contentString = Base64.getEncoder().encodeToString(content);
             try {
-            Pair<String, Double> results = TranscriptionUtility.transcribe("LINEAR16", 44100, contentString);
-            assertTrue(results.first.length() > 0);
+            TranscriptionResult results = TranscriptionUtility.transcribe("LINEAR16", 44100, contentString);
+            assertTrue(results.getText().length() > 0);
         } catch (Exception e) {
-            String value = e.getMessage();
+            fail(e.getMessage());
         }
     }
 }

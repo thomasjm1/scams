@@ -7,6 +7,7 @@ import edu.cmu.eps.scams.logic.Association;
 import edu.cmu.eps.scams.logic.History;
 
 public interface ILocalStorage {
+
     void insert(Association toCreate) throws StorageException;
 
     List<Association> retrieveAssociations() throws StorageException;
@@ -14,6 +15,8 @@ public interface ILocalStorage {
     void deleteAssociation(Association association) throws StorageException;
 
     List<History> retrieveHistory() throws StorageException;
+
+    void insertHistory(String description, long timestamp, String number) throws StorageException;
 
     void deleteHistory(History history) throws StorageException;
 

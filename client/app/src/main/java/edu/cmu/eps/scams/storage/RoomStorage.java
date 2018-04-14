@@ -71,6 +71,19 @@ public class RoomStorage implements ILocalStorage {
     }
 
     @Override
+    public void insertHistory(String description, long timestamp, String number) throws StorageException {
+        try {
+            HistoryRecord record = new HistoryRecord();
+            record.setDescription(description);
+            record.setNumber(number);
+            record.setTimestamp(timestamp);
+            this.appDatabase.historyRecordAccess().insertAll(record);
+        } catch (Exception e) {
+            throw new StorageException(e);
+        }
+    }
+
+    @Override
     public void deleteHistory(History history) throws StorageException {
         try {
             List<HistoryRecord> records = this.appDatabase.historyRecordAccess().loadAllByIds(new int[]{history.getId()});

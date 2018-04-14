@@ -30,15 +30,15 @@ public class TranscriptionUtility {
 
     private static final String TAG = "TranscriptionUtility";
 
-    private static final String KEY = "ya29.c.El-FBfLiS68OtqydNXPBOQSSRO__HuCMnOylr2qjybHO916uoX1r9BNzh8H8LUHTtD5NmLHkmHXiyUdbgaWDuhW3W58JVcYHSWvuxhIyal_z1ECxJsUA-sZkxsORbXKdJg";
+    private static final String KEY = "ya29.GlydBcxJiiVnz827s4pj-d83WfhZOaJaeWNiGmolKr6mIEtMGPk1AFgVmSChUxPuvHrvHcPTptSKu0LY8jkqtr-OZz2jbNz4k5ZiodsYPqaErk8qqb6zRpekB1ijRA";
 
-    public static Pair<String, Double> transcribe(String encoding, int sampleRate, File file) throws IOException, TranscriptionException {
+    public static TranscriptionResult transcribe(String encoding, int sampleRate, File file) throws IOException, TranscriptionException {
         byte[] data = TranscriptionUtility.readFile(file);
         String dataString = android.util.Base64.encodeToString(data, Base64.NO_WRAP);
         return TranscriptionUtility.transcribe(encoding, sampleRate, dataString);
     }
 
-    public static Pair<String, Double> transcribe(String encoding, int sampleRate, String dataString) throws IOException, TranscriptionException {
+    public static TranscriptionResult transcribe(String encoding, int sampleRate, String dataString) throws IOException, TranscriptionException {
         String postString = TranscriptionUtility.buildJsonRequest(encoding, sampleRate, dataString);
         byte[] postData = postString.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
@@ -68,7 +68,7 @@ public class TranscriptionUtility {
         }
     }
 
-    public static Pair<String, Double> parseJsonResults(String jsonString) throws JSONException {
+    public static TranscriptionResult parseJsonResults(String jsonString) throws JSONException {
         JSONObject rootObject = new JSONObject(jsonString);
         JSONArray resultsArray = rootObject.getJSONArray("results");
         JSONObject resultItem = resultsArray.getJSONObject(0);
@@ -76,7 +76,7 @@ public class TranscriptionUtility {
         JSONObject alternativeItem = alternativesArray.getJSONObject(0);
         String text = alternativeItem.getString("transcript");
         double confidence = alternativeItem.getDouble("confidence");
-        return new Pair<>(text, confidence);
+        return new TranscriptionResult(text, confidence);
     }
 
     public static String readInputStreamToString(InputStream inputStream) throws IOException {
