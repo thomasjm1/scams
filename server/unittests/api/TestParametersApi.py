@@ -12,7 +12,7 @@ from utilities.RandomUtility import RandomUtility
 from utilities.TimestampUtility import TimestampUtility
 
 
-class TestMessagesApi(unittest.TestCase):
+class TestParametersApi(unittest.TestCase):
     def setUp(self):
         console_handler = logging.StreamHandler(sys.stdout)
         root_logger = logging.getLogger()
@@ -41,56 +41,39 @@ class TestMessagesApi(unittest.TestCase):
 
     def test_create(self):
         create_response = self.client.post(
-            '/api/messages/',
+            '/api/parameters/',
             data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
-            content_type='application/json',
-            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
-        )
+                {
+                    'content': 'hello world',
+                    'created': TimestampUtility.now(),
+                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
+                }),
+            content_type='application/json')
         self.assertTrue(create_response.status_code == 200)
         create_json = json.loads(create_response.data)
-        self.assertTrue(create_json['operation'] == 'messages.create')
+        self.assertTrue(create_json['message'] == 'classifier parameters updated')
 
     def test_retrieve(self):
         create_response = self.client.post(
-            '/api/messages/',
+            '/api/parameters/',
             data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
-            content_type='application/json',
-            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
-        )
+                {
+                    'content': 'hello world',
+                    'created': TimestampUtility.now(),
+                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
+                }),
+            content_type='application/json')
         self.assertTrue(create_response.status_code == 200)
         create_json = json.loads(create_response.data)
+        self.assertTrue(create_json['message'] == 'classifier parameters updated')
         retrieve_response = self.client.get(
-            '/api/messages/',
+            '/api/parameters/',
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
-        identifier = create_json['result']['identifier']
         self.assertTrue(retrieve_response.status_code == 200)
         retrieve_json = json.loads(retrieve_response.data)
-        self.assertTrue(retrieve_json['operation'] == 'messages.retrieve')
-
-    def test_update(self):
-        create_response = self.client.post(
-            '/api/messages/',
-            data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
-            content_type='application/json',
-            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
-        )
-        self.assertTrue(create_response.status_code == 200)
-        create_json = json.loads(create_response.data)
-        update_response = self.client.put(
-            '/api/messages/',
-            data=JsonUtility.to_json(
-                {'identifier': create_json['result']['identifier'], 'recipient_received': TimestampUtility.now()}),
-            content_type='application/json',
-            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
-        )
-        self.assertTrue(update_response.status_code == 200)
-        create_json = json.loads(update_response.data)
-        self.assertTrue(create_json['operation'] == 'messages.update')
+        self.assertTrue(retrieve_json['operation'] == 'parameters.retrieve')
 
 
 if __name__ == '__main__':

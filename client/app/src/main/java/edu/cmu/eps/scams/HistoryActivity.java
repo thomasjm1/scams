@@ -10,18 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
 import android.view.LayoutInflater;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-import edu.cmu.eps.scams.logic.History;
+import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.HistoryRecords;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.notifications.NotificationFacade;

@@ -5,6 +5,11 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Association;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.storage.ILocalStorage;
 import edu.cmu.eps.scams.storage.StorageException;
 

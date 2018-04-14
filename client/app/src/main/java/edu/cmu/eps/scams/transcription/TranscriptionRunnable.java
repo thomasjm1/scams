@@ -5,11 +5,11 @@ import android.util.Log;
 
 import java.io.File;
 
-import edu.cmu.eps.scams.logic.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.OutgoingMessage;
-import edu.cmu.eps.scams.logic.Telemetry;
+import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.recordings.AudioRecording;
 

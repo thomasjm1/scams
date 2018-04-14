@@ -1,6 +1,6 @@
 package edu.cmu.eps.scams.classify;
 
-import edu.cmu.eps.scams.logic.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 
 public class ClassifyFacade {
 

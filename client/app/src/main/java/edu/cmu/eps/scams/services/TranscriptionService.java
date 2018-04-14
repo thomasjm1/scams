@@ -8,7 +8,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
-import edu.cmu.eps.scams.logic.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.LogicFactory;
 import edu.cmu.eps.scams.notifications.NotificationFacade;

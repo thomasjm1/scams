@@ -4,17 +4,10 @@ import unittest
 
 import sys
 
-import os
-
 from app import AppFactory
 from utilities.JsonUtility import JsonUtility
 from utilities.RandomUtility import RandomUtility
 from utilities.TimestampUtility import TimestampUtility
-
-try:
-    os.remove('local.db')
-except:
-    pass
 
 
 class TestTelemetryApi(unittest.TestCase):

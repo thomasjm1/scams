@@ -2,9 +2,9 @@ package edu.cmu.eps.scams.storage;
 
 import java.util.List;
 
-import edu.cmu.eps.scams.logic.AppSettings;
-import edu.cmu.eps.scams.logic.Association;
-import edu.cmu.eps.scams.logic.History;
+import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Association;
+import edu.cmu.eps.scams.logic.model.History;
 
 public interface ILocalStorage {
 

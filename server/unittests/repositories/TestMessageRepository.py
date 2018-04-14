@@ -5,10 +5,6 @@ from model.messages.Message import Message, MessageState
 from repositories.MessageRepository import MessageRepository
 from unittests.repositories.DbTest import DbTest
 
-try:
-    os.remove('local.db')
-except:
-    pass
 
 class TestMessageRepository(DbTest):
     def setUp(self):

@@ -2,6 +2,12 @@ package edu.cmu.eps.scams.logic;
 
 import java.util.List;
 
+import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Association;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.Telemetry;
+
 /**
  * Created by jeremy on 4/13/2018.
  */

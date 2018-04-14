@@ -1,4 +1,4 @@
-package edu.cmu.eps.scams.logic;
+package edu.cmu.eps.scams.logic.model;
 
 import java.util.TreeMap;
 

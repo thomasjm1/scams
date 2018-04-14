@@ -1,4 +1,4 @@
-package edu.cmu.eps.scams.logic;
+package edu.cmu.eps.scams.logic.model;
 
 /**
  * Created by thoma on 4/13/2018.

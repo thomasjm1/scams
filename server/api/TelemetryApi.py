@@ -32,7 +32,7 @@ def create():
     identifier = get_jwt_identity()
     telemetry_parameters = request.get_json()
     telemetry_repository = TelemetryRepository()
-    result = telemetry_repository.creat_telemetry(
+    result = telemetry_repository.create_telemetry(
         Telemetry(
             creator=identifier,
             data_type=telemetry_parameters['data_type'],

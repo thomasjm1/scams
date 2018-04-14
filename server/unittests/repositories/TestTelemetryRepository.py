@@ -5,17 +5,13 @@ from model.telemetry.Telemetry import Telemetry
 from repositories.TelemetryRepository import TelemetryRepository
 from unittests.repositories.DbTest import DbTest
 
-try:
-    os.remove('local.db')
-except:
-    pass
 
 class TestTelemetryRepository(DbTest):
     def setUp(self):
         self.repository = TelemetryRepository()
 
     def test_create_telemetry(self):
-        telemetry = self.repository.creat_telemetry(
+        telemetry = self.repository.create_telemetry(
             Telemetry(
                 # test data
                 data_type="TYPE1",
@@ -26,7 +22,7 @@ class TestTelemetryRepository(DbTest):
         self.assertEqual(telemetry.data_type, 'TYPE1')
 
     def test_retrieve_telemetry(self):
-        telemetry = self.repository.creat_telemetry(
+        telemetry = self.repository.create_telemetry(
             Telemetry(
                 # test data
                 data_type="TYPE1",

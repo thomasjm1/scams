@@ -14,7 +14,6 @@ base = Blueprint('base', __name__, url_prefix='')
 
 @base.route('/')
 def index():
-
     return Response(json.dumps({'status': 'ok'}), status=200, mimetype='application/json')
 
 

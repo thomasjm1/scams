@@ -3,9 +3,9 @@ package edu.cmu.eps.scams.storage;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cmu.eps.scams.logic.AppSettings;
-import edu.cmu.eps.scams.logic.Association;
-import edu.cmu.eps.scams.logic.History;
+import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Association;
+import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.storage.model.AssociationRecord;
 import edu.cmu.eps.scams.storage.model.HistoryRecord;
 import edu.cmu.eps.scams.storage.model.SettingsRecord;
