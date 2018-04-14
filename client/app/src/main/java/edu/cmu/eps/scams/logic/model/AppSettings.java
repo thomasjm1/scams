@@ -1,11 +1,16 @@
 package edu.cmu.eps.scams.logic.model;
 
+import android.util.Base64;
+
+import java.security.SecureRandom;
+
 /**
  * Created by thoma on 4/13/2018.
  */
 
 public class AppSettings {
 
+    private static final int IDENTIFIER_BYTES = 256;
     private final String identifier;
     private final boolean registered;
     private final String secret;
@@ -41,6 +46,19 @@ public class AppSettings {
     }
 
     public static AppSettings defaults() {
-        return null;
+        SecureRandom random = new SecureRandom();
+        byte identifierBytes[] = new byte[IDENTIFIER_BYTES];
+        random.nextBytes(identifierBytes);
+
+        byte secretBytes[] = new byte[IDENTIFIER_BYTES];
+        random.nextBytes(secretBytes);
+
+        return new AppSettings(
+                android.util.Base64.encodeToString(identifierBytes, Base64.NO_WRAP),
+                false,
+                android.util.Base64.encodeToString(secretBytes, Base64.NO_WRAP),
+                "{}",
+                "{}"
+        );
     }
 }

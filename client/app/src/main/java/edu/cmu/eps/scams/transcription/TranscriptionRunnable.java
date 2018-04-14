@@ -12,6 +12,7 @@ import edu.cmu.eps.scams.logic.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.recordings.AudioRecording;
+import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 /**
  * Created by thoma on 3/19/2018.
@@ -55,7 +56,7 @@ public class TranscriptionRunnable implements Runnable {
             TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
             double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
             if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
-                Telemetry telemetry = new Telemetry(dataType, content, created);
+                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                 telemetry.getProperties().put("call.transcript", result.getText());
                 telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
                 telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
@@ -64,7 +65,7 @@ public class TranscriptionRunnable implements Runnable {
                 this.logic.sendTelemetry(telemetry);
                 this.notifications.create(this.context, "Scam Call Detected!", String.format("Call from %s is likely a scam", this.incomingNumber));
             } else if (scamLikelihood > REVIEWER_THRESHOLD) {
-                Telemetry telemetry = new Telemetry(dataType, content, created);
+                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                 telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
                 telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
                 telemetry.getProperties().put("call.number", this.incomingNumber);
@@ -77,7 +78,7 @@ public class TranscriptionRunnable implements Runnable {
                 message.getProperties().put("call.likelihood", scamLikelihood);
                 this.logic.sendMessage(message);
             } else {
-                Telemetry telemetry = new Telemetry(dataType, content, created);
+                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                 telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
                 telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
                 telemetry.getProperties().put("call.number", this.incomingNumber);

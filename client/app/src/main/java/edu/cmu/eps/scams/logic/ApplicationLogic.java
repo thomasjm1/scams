@@ -141,7 +141,11 @@ public class ApplicationLogic implements IApplicationLogic {
     public void sendMessage(OutgoingMessage outgoingMessage) {
         try {
             this.initializeServer();
-            this.serverFacade.sendMessage(outgoingMessage);
+            List<Association> associations = this.getAssociations();
+            for (Association association : associations) {
+                outgoingMessage.setRecipient(association.getIdentifier());
+                this.serverFacade.sendMessage(outgoingMessage);
+            }
         } catch (StorageException | JSONException | CommunicationException e) {
             Log.d(TAG, String.format("Failed to send message due to %s", e.getMessage()));
         }

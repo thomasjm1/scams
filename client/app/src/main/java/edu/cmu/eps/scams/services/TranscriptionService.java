@@ -10,7 +10,7 @@ import android.util.Log;
 
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
-import edu.cmu.eps.scams.logic.LogicFactory;
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.transcription.TranscriptionRunnable;
 
@@ -34,7 +34,7 @@ public class TranscriptionService extends Service {
         this.handlerThread.start();
         this.handlerLooper = this.handlerThread.getLooper();
         this.handler = new Handler(this.handlerLooper);
-        this.logic = LogicFactory.build(this);
+        this.logic = ApplicationLogicFactory.build(this);
         this.classifierParameters = this.logic.getClassifierParameters();
     }
 

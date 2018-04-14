@@ -13,6 +13,18 @@ public class SettingsRecord {
     @ColumnInfo(name = "identifier")
     private String identifier;
 
+    @ColumnInfo(name = "registered")
+    private boolean registered;
+
+    @ColumnInfo(name = "secret")
+    private String secret;
+
+    @ColumnInfo(name = "profile")
+    private String profile;
+
+    @ColumnInfo(name = "recovery")
+    private String recovery;
+
     public int getId() {
         return id;
     }
@@ -27,5 +39,37 @@ public class SettingsRecord {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public boolean isRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(boolean registered) {
+        this.registered = registered;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
+
+    public String getProfile() {
+        return profile;
+    }
+
+    public void setProfile(String profile) {
+        this.profile = profile;
+    }
+
+    public String getRecovery() {
+        return recovery;
+    }
+
+    public void setRecovery(String recovery) {
+        this.recovery = recovery;
     }
 }

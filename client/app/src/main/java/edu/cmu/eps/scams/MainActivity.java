@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import edu.cmu.eps.scams.messaging.AlarmFacade;
 import edu.cmu.eps.scams.permissions.PermissionsFacade;
 import edu.cmu.eps.scams.services.ServicesFacade;
 
@@ -51,6 +52,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        AlarmFacade.setAlarm(this);
 
         if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
                 PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {

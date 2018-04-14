@@ -12,6 +12,6 @@ public class ClassifierParameters {
     }
 
     public static ClassifierParameters defaults() {
-        return null;
+        return new ClassifierParameters("{}");
     }
 }

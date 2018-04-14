@@ -73,6 +73,11 @@ public class HistoryRecords implements IApplicationLogic {
     }
 
     @Override
+    public void acknowledgeMessage(IncomingMessage message) {
+
+    }
+
+    @Override
     public ClassifierParameters getClassifierParameters() {
         return null;
     }

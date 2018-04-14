@@ -6,11 +6,10 @@ public class OutgoingMessage {
 
     private final TreeMap<String, Object> properties;
 
-    private final String recipient;
+    private String recipient;
 
-    public OutgoingMessage(String recipient) {
+    public OutgoingMessage() {
         this.properties = new TreeMap<String, Object>();
-        this.recipient = recipient;
     }
 
     public TreeMap<String, Object> getProperties() {
@@ -19,5 +18,9 @@ public class OutgoingMessage {
 
     public String getRecipient() {
         return recipient;
+    }
+
+    public void setRecipient(String recipient) {
+        this.recipient = recipient;
     }
 }

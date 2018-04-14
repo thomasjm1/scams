@@ -116,7 +116,7 @@ public class ServerFacade implements IServerFacade {
             ServerResponse response = ServerApi.createTelemetry(
                     this.token,
                     toSend.getDataType(),
-                    toSend.getContent(),
+                    this.gson.toJson(toSend.getProperties()),
                     toSend.getCreated());
         } catch (Exception e) {
             throw new CommunicationException(e);
