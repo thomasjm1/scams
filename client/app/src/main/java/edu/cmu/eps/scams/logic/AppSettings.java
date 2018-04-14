@@ -5,4 +5,18 @@ package edu.cmu.eps.scams.logic;
  */
 
 public class AppSettings {
+
+    private final String identifier;
+
+    public AppSettings(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public static AppSettings defaults() {
+        return null;
+    }
 }

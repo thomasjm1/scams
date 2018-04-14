@@ -5,3 +5,6 @@ server/.idea/server.iml
 server/venv1/
 server/local.db
 server/unittests/api/local.db
+server/unittests/repositories/local.db
+client/.idea/caches/
+client/.idea/codeStyles/Project.xml

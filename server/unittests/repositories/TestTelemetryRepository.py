@@ -19,6 +19,7 @@ class TestTelemetryRepository(DbTest):
             Telemetry(
                 # test data
                 data_type="TYPE1",
+                creator="test",
                 content="TelemetryTest"
             )
         )
@@ -29,6 +30,7 @@ class TestTelemetryRepository(DbTest):
             Telemetry(
                 # test data
                 data_type="TYPE1",
+                creator="test",
                 content="TelemetryTest"
             )
         )
