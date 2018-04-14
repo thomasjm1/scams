@@ -14,15 +14,6 @@
 
     <string name="title_activity_settings">Settings</string>
 
-    <!-- Need to retrieve history from database -->
-    <string-array name="options">
-        <item> 412-304-0000 </item>
-        <item> 412-304-1111 </item>
-        <item> 412-304-2222 </item>
-        <item> 412-304-3333 </item>
-    </string-array>
-
-
     <string name="enable_alert">Enable Alert to Reviewers</string>
     <string name="pref_discoverable">Make me discoverable by others</string>
     <string name="pref_notify_messages">Message Notifications</string>

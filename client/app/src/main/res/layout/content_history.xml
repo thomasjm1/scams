@@ -13,7 +13,6 @@
         android:id="@+id/history_list_view"
         android:layout_width="352dp"
         android:layout_height="479dp"
-        android:entries="@array/options"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp" />
 </android.support.constraint.ConstraintLayout>
