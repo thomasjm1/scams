@@ -8,11 +8,13 @@ from api.ResponseWrapper import ResponseWrapper
 from model.BaseModel import database_proxy
 from model.telemetry.Parameters import Parameters
 from repositories.ParametersRepository import ParametersRepository
+from repositories.TelemetryRepository import TelemetryRepository
 from utilities.TimestampUtility import TimestampUtility
 
 parameters = Blueprint('parameters', __name__, url_prefix='/api/parameters')
 
 PARAMETERS_KEY = 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
+
 
 @parameters.before_request
 def before_request():
@@ -36,6 +38,23 @@ def create():
             created=TimestampUtility.now()
         ))
         result = Response(json.dumps({'message': 'classifier parameters updated'}),
+                          status=200,
+                          mimetype='application/json')
+        return result
+    else:
+        result = Response(json.dumps({'message': 'unknown'}),
+                          status=401,
+                          mimetype='application/json')
+        return result
+
+
+@parameters.route('/results', methods=['POST'])
+def results():
+    message_parameters = request.get_json()
+    if message_parameters['key'] == PARAMETERS_KEY:
+        telemetry_repository = TelemetryRepository()
+        result_set = telemetry_repository.retrieve_telemetry_by_data_type('call')
+        result = Response(ResponseWrapper.wrap("system", 'parameters.results', result_set),
                           status=200,
                           mimetype='application/json')
         return result

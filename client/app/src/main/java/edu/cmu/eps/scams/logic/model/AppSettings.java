@@ -10,7 +10,7 @@ import java.security.SecureRandom;
 
 public class AppSettings {
 
-    private static final int IDENTIFIER_BYTES = 256;
+    private static final int IDENTIFIER_BYTES = 64;
     private final String identifier;
     private final boolean registered;
     private final String secret;

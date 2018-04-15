@@ -17,5 +17,9 @@ class TelemetryRepository(object):
             raise PersistenceError("Insert of telemetry: {} returned {}".format(str(telemetry), str(rows)))
 
     def retrieve_telemetry(self):
-        self.logger.debug("Retrieving all teleteries")
+        self.logger.debug("Retrieving all telemetries")
         return Telemetry.select()
+
+    def retrieve_telemetry_by_data_type(self, data_type):
+        self.logger.debug("Retrieving all telemetries with data type {}".format(data_type))
+        return Telemetry.select().where(Telemetry.data_type == data_type)

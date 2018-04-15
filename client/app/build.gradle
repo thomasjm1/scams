@@ -47,8 +47,8 @@ dependencies {
     // Test helpers for Room
     testImplementation "android.arch.persistence.room:testing:1.0.0"
 
-    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
-    compile group: 'org.json', name: 'json', version: '20180130'
-    compile 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.journeyapps:zxing-android-embedded:3.4.0'
+    implementation group: 'org.json', name: 'json', version: '20180130'
+    implementation 'com.google.code.gson:gson:2.8.2'
 
 }

@@ -75,6 +75,18 @@ class TestParametersApi(unittest.TestCase):
         retrieve_json = json.loads(retrieve_response.data)
         self.assertTrue(retrieve_json['operation'] == 'parameters.retrieve')
 
+    def test_results(self):
+        results_response = self.client.post(
+            '/api/parameters/results',
+            data=JsonUtility.to_json(
+                {
+                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
+                }),
+            content_type='application/json')
+        self.assertTrue(results_response.status_code == 200)
+        create_json = json.loads(results_response.data)
+        self.assertTrue(create_json['operation'] == 'parameters.results')
+
 
 if __name__ == '__main__':
     unittest.main()

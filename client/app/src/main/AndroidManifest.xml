@@ -58,16 +58,12 @@
         <service
             android:name=".services.TranscriptionService"
             android:enabled="true"
-<<<<<<< HEAD
-            android:exported="false" />
+            android:exported="false" ></service>
 
         <activity android:name=".FirstTimeLogin"
             android:label="@string/title_login">
         </activity>
-=======
-            android:exported="false"></service>
 
->>>>>>> 65e11ba29a308406e41e352ade31bb20c7b32ad2
     </application>
 
 </manifest>
