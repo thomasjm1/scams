@@ -5,6 +5,7 @@ import java.util.List;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.Friend;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
@@ -22,6 +23,8 @@ public interface IApplicationLogic {
     boolean removeAssociation(Association association);
 
     List<History> getHistory();
+
+    List<Friend> getFriendList();
 
     boolean removeHistory(History history);
 

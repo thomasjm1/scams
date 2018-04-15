@@ -51,4 +51,7 @@ dependencies {
     compile group: 'org.json', name: 'json', version: '20180130'
     compile 'com.google.code.gson:gson:2.8.2'
 
+    compile 'me.dm7.barcodescanner:zxing:1.8.1'
+    compile 'me.dm7.barcodescanner:zbar:1.8.1'
+
 }

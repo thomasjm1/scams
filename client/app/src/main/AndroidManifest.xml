@@ -9,8 +9,8 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -53,21 +53,20 @@
         <service
             android:name=".services.MessagingService"
             android:enabled="true"
-            android:exported="false"></service>
-
+            android:exported="false" />
         <service
             android:name=".services.TranscriptionService"
             android:enabled="true"
-<<<<<<< HEAD
             android:exported="false" />
 
         <activity android:name=".FirstTimeLogin"
             android:label="@string/title_login">
         </activity>
-=======
-            android:exported="false"></service>
 
->>>>>>> 65e11ba29a308406e41e352ade31bb20c7b32ad2
+        <activity android:name=".ScannerActivity" />
+        <activity android:name=".FriendlistActivity"
+            android:label="@string/friend_list">
+        </activity>
     </application>
 
 </manifest>

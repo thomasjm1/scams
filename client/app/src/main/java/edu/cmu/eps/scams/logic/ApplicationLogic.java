@@ -12,6 +12,7 @@ import edu.cmu.eps.scams.communication.ServerFacade;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.Friend;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
@@ -67,11 +68,26 @@ public class ApplicationLogic implements IApplicationLogic {
     @Override
     public List<History> getHistory() {
         List<History> results = new ArrayList<>();
+
         try {
             results = storage.retrieveHistory();
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to retrieve History due to %s", e.getMessage()));
         }
+
+        return results;
+    }
+
+    @Override
+    public List<Friend> getFriendList() {
+        List<Friend> results = new ArrayList<>();
+        /*
+        try {
+            results = storage.retrieveFriendList();
+        } catch (StorageException e) {
+            Log.d(TAG, String.format("Failed to retrieve History due to %s", e.getMessage()));
+        }
+        */
         return results;
     }
 

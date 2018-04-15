@@ -148,21 +148,23 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
-            //Intent intent = new Intent(this, ScannerActivity.class);
-            //startActivity(intent);
+            Intent intent = new Intent(this, ScannerActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_history) {
             Intent intent = new Intent(this, HistoryActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-
         } else if (id == R.id.nav_profile) {
             Intent intent = new Intent(this, ProfileActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_report) {
+        } else if (id == R.id.nav_connections) {
+            Intent intent = new Intent(this, FriendlistActivity.class);
+            startActivity(intent);
+        }
+        // Additional functionalities
+            else if (id == R.id.nav_report) {
 
         }
 

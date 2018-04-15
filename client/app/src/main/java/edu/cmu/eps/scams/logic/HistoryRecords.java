@@ -6,6 +6,7 @@ import java.util.List;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.Friend;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
@@ -41,6 +42,17 @@ public class HistoryRecords implements IApplicationLogic {
 
             return historyList;
         }
+
+    @Override
+    public List<Friend> getFriendList() {
+
+        List<Friend> friendList = new ArrayList<Friend>();
+
+        friendList.add(new Friend(1, "abc", "412-111-222"));
+        friendList.add(new Friend(2, "xyz", "412-333-444"));
+
+        return friendList;
+    }
 
     @Override
     public boolean removeHistory(History history) {
