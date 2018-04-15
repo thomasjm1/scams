@@ -22,7 +22,7 @@ public class ServerApi {
             toSend.put("secret", secret);
             toSend.put("profile", profile);
             toSend.put("recovery", recovery);
-            JSONObject response = action.PostData(toSend);
+            JSONObject response = action.postRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -35,7 +35,7 @@ public class ServerApi {
             JSONObject toSend = new JSONObject();
             toSend.put("identifier", identifier);
             toSend.put("secret", secret);
-            JSONObject response = action.PostData(toSend);
+            JSONObject response = action.postRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -50,7 +50,7 @@ public class ServerApi {
             toSend.put("recipient", recipient);
             toSend.put("content", content);
             toSend.put("created", created);
-            JSONObject response = action.PostData(toSend);
+            JSONObject response = action.postRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -61,7 +61,7 @@ public class ServerApi {
         try {
             HTTPAction action = new HTTPAction(MESSAGES_URL);
             action.setToken(token);
-            JSONObject response = action.GetData();
+            JSONObject response = action.getRequest();
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -75,7 +75,7 @@ public class ServerApi {
             JSONObject toSend = new JSONObject();
             toSend.put("identifier", identifier);
             toSend.put("received", received);
-            JSONObject response = action.PutData(toSend);
+            JSONObject response = action.putRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -86,7 +86,7 @@ public class ServerApi {
         try {
             HTTPAction action = new HTTPAction(CLASSIFIER_PARAMETERS_URL);
             action.setToken(token);
-            JSONObject response = action.GetData();
+            JSONObject response = action.getRequest();
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);
@@ -101,7 +101,7 @@ public class ServerApi {
             toSend.put("dataType", dataType);
             toSend.put("content", content);
             toSend.put("created", created);
-            JSONObject response = action.PostData(toSend);
+            JSONObject response = action.postRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);

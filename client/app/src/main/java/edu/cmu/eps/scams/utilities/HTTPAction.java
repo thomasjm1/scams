@@ -12,36 +12,36 @@ package edu.cmu.eps.scams.utilities;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import org.json.*;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 public class HTTPAction {
-    private URL urlObj;
-    private HttpURLConnection conn;
+    private HttpsURLConnection httpURLConnection;
     private String token;
 
     public HTTPAction(String url) throws Exception {
-        urlObj = new URL(url);
-        conn = (HttpURLConnection) urlObj.openConnection();
+        URL urlObject = new URL(url);
+        httpURLConnection = (HttpsURLConnection) urlObject.openConnection();
         this.token = null;
     }
 
     public void setToken(String token) {
         this.token = token;
-        this.conn.setRequestProperty("Authorization", String.format("Bearer %s", this.token));
+        this.httpURLConnection.setRequestProperty("Authorization", String.format("Bearer %s", this.token));
     }
-
 
     /**
      * GET method
      * @return
      * @throws Exception
      */
-    public JSONObject GetData() throws Exception {
-
-        conn.setRequestMethod("GET");
-        return ReadResponse(conn);
+    public JSONObject getRequest() throws Exception {
+        this.httpURLConnection.setRequestMethod("GET");
+        return ReadResponse(this.httpURLConnection);
     }
 
 
@@ -51,12 +51,11 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PostData(JSONObject jsonObject) throws Exception {
-        conn.setRequestMethod("POST");
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+    public JSONObject postRequest(JSONObject jsonObject) throws Exception {
+        this.httpURLConnection.setRequestMethod("POST");
+        WriteInput(this.httpURLConnection, jsonObject);
+        return ReadResponse(this.httpURLConnection);
     }
-
 
     /**
      * PUT method
@@ -64,12 +63,10 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PutData(JSONObject jsonObject) throws Exception {
-
-        conn.setRequestMethod("PUT");
-
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+    public JSONObject putRequest(JSONObject jsonObject) throws Exception {
+        this.httpURLConnection.setRequestMethod("PUT");
+        WriteInput(this.httpURLConnection, jsonObject);
+        return ReadResponse(this.httpURLConnection);
     }
 
 
@@ -80,36 +77,33 @@ public class HTTPAction {
      * @throws Exception
      */
     private JSONObject ReadResponse(HttpURLConnection conn) throws Exception {
-
-        BufferedReader in = new BufferedReader(
+        BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
         );
-
-        StringBuffer sb = new StringBuffer();
+        StringBuilder stringBuffer = new StringBuilder();
         String line;
-        while ((line = in.readLine()) != null) {
-            sb.append(line);
+        while ((line = bufferedReader.readLine()) != null) {
+            stringBuffer.append(line);
         }
-        JSONObject res = new JSONObject(sb.toString());
-        return res;
+        return new JSONObject(stringBuffer.toString());
     }
 
 
     /**
      * Send input data to server.
-     * @param conn
+     * @param connection
      * @param jsonObject
      * @throws Exception
      */
-    private void WriteInput(HttpURLConnection conn, JSONObject jsonObject) throws Exception {
-        conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-
+    private void WriteInput(HttpURLConnection connection, JSONObject jsonObject) throws Exception {
         String json = jsonObject.toString();
-
-        OutputStream os = conn.getOutputStream();
-        os.write(json.getBytes("UTF-8"));
-        os.close();
+        byte[] postData = json.getBytes(StandardCharsets.UTF_8);
+        connection.setRequestProperty("Content-Type", "application/json");
+        connection.setRequestProperty("charset", "utf-8");
+        connection.setRequestProperty("Content-Length", Integer.toString(postData.length));
+        connection.setDoOutput(true);
+        OutputStream outputStream = connection.getOutputStream();
+        outputStream.write(postData);
+        outputStream.close();
     }
 }
