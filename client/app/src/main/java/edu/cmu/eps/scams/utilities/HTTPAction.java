@@ -29,7 +29,7 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject GetData() throws Exception{
+    public JSONObject GetData(JSONObject jsonObject) throws Exception{
 
         conn.setRequestMethod("GET");
         return ReadResponse(conn);
