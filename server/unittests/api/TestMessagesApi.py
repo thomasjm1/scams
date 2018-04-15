@@ -11,11 +11,6 @@ from utilities.JsonUtility import JsonUtility
 from utilities.RandomUtility import RandomUtility
 from utilities.TimestampUtility import TimestampUtility
 
-try:
-    os.remove('local.db')
-except:
-    pass
-
 
 class TestMessagesApi(unittest.TestCase):
     def setUp(self):

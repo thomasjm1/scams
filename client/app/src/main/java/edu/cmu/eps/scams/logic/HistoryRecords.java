@@ -3,6 +3,13 @@ package edu.cmu.eps.scams.logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Association;
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.IncomingMessage;
+import edu.cmu.eps.scams.logic.model.Telemetry;
+
 /**
  * Created by fanmichaelyang on 4/14/18.
  */
@@ -48,6 +55,31 @@ public class HistoryRecords implements IApplicationLogic {
     @Override
     public boolean updateAppSettings(AppSettings appSettings) {
         return false;
+    }
+
+    @Override
+    public void sendTelemetry(Telemetry telemetry) {
+
+    }
+
+    @Override
+    public void sendMessage(OutgoingMessage outgoingMessage) {
+
+    }
+
+    @Override
+    public List<IncomingMessage> receiveMessages() {
+        return null;
+    }
+
+    @Override
+    public void acknowledgeMessage(IncomingMessage message) {
+
+    }
+
+    @Override
+    public ClassifierParameters getClassifierParameters() {
+        return null;
     }
 
 }

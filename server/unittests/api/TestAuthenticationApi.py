@@ -8,11 +8,6 @@ import os
 
 from app import AppFactory
 
-try:
-    os.remove('local.db')
-except:
-    pass
-
 
 class TestAuthenticationApi(unittest.TestCase):
 

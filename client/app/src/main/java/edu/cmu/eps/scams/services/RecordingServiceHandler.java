@@ -40,7 +40,7 @@ public class RecordingServiceHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-        Log.d(TAG, String.format("Message received: %d %d", message.arg1, message.arg2));
+        Log.d(TAG, String.format("OutgoingMessage received: %d %d", message.arg1, message.arg2));
         RecordingEvents event = RecordingEvents.fromInt(message.arg2);
         try {
             switch (event) {

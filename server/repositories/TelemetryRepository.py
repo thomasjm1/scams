@@ -6,7 +6,7 @@ from repositories.PersistenceError import PersistenceError
 class TelemetryRepository(object):
     logger = logging.getLogger(__name__)
 
-    def creat_telemetry(self, telemetry):
+    def create_telemetry(self, telemetry):
         self.logger.debug("Inserting telemetry: {}".format(str(telemetry)))
         rows = telemetry.save()
         if rows == 1:

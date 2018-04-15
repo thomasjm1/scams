@@ -8,6 +8,10 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 
+import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.transcription.TranscriptionRunnable;
 
 public class TranscriptionService extends Service {
@@ -46,7 +50,9 @@ public class TranscriptionService extends Service {
                     audioRecordingPath,
                     incomingNumber,
                     ringTimestamp,
-                    audioLength));
+                    audioLength,
+                    new NotificationFacade(this),
+                    this));
         }
         return result;
     }
