@@ -39,8 +39,6 @@ public class MainActivity extends AppCompatActivity
 
     private static final int PERMISSIONS_REQUEST_CODE = 555;
     private static final String TAG = "MainActivity";
-    private PendingIntent alarmIntent;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity
 
 
         SharedPreferences pref = getSharedPreferences("MyPrefs", this.MODE_PRIVATE);
-        String qrString = pref.getString("qr", null);
+        String qrString = pref.getString("qr", "DEFAULT_QR_CODE_VALUE");
         //System.out.println(qrString);
 
 
