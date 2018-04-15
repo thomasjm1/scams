@@ -11,8 +11,10 @@
     <string name="title_activity_scanner">ScannerActivity</string>
     <string name="history_page">History</string>
     <string name="title_activity_profile">My Profile</string>
+    <string name="title_login">Login</string>
 
     <string name="title_activity_settings">Settings</string>
+
 
     <string name="enable_alert">Enable Alert to Reviewers</string>
     <string name="pref_discoverable">Make me discoverable by others</string>
