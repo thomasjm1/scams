@@ -1,5 +1,8 @@
 package edu.cmu.eps.scams.logic.model;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class IncomingMessage {
 
     private final String identifier;
@@ -9,11 +12,14 @@ public class IncomingMessage {
     private final Long created;
     private final Long received;
     private final Long recipientReceived;
+    private final String content;
+    private JSONObject contentObject;
 
-    public IncomingMessage(String identifier, String sender, String recipient, int state, Long created, Long received, Long recipientReceived) {
+    public IncomingMessage(String identifier, String sender, String recipient, String content, int state, Long created, Long received, Long recipientReceived) {
         this.identifier = identifier;
         this.sender = sender;
         this.recipient = recipient;
+        this.content = content;
         this.state = state;
         this.created = created;
         this.received = received;
@@ -47,4 +53,15 @@ public class IncomingMessage {
     public Long getRecipientReceived() {
         return recipientReceived;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getType() throws JSONException {
+        JSONObject jsonObject = new JSONObject(this.getContent());
+        return jsonObject.getString("type");
+    }
+
+
 }

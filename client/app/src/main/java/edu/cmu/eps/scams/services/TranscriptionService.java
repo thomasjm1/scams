@@ -21,8 +21,6 @@ public class TranscriptionService extends Service {
     private HandlerThread handlerThread;
     private Looper handlerLooper;
     private Handler handler;
-    private IApplicationLogic logic;
-    private ClassifierParameters classifierParameters;
 
     public TranscriptionService() {
     }
@@ -34,8 +32,6 @@ public class TranscriptionService extends Service {
         this.handlerThread.start();
         this.handlerLooper = this.handlerThread.getLooper();
         this.handler = new Handler(this.handlerLooper);
-        this.logic = ApplicationLogicFactory.build(this);
-        this.classifierParameters = this.logic.getClassifierParameters();
     }
 
     @Override
@@ -55,8 +51,6 @@ public class TranscriptionService extends Service {
                     incomingNumber,
                     ringTimestamp,
                     audioLength,
-                    this.classifierParameters,
-                    this.logic,
                     new NotificationFacade(this),
                     this));
         }

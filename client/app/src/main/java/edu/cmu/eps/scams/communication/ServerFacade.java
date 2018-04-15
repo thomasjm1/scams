@@ -90,6 +90,7 @@ public class ServerFacade implements IServerFacade {
                 String identifier = resultObject.getString("identifier");
                 String sender = resultObject.getString("sender");
                 String recipient = resultObject.getString("recipient");
+                String content = resultObject.getString("content");
                 int state = resultObject.getInt("state");
                 Long created = resultObject.getLong("created");
                 Long received = resultObject.getLong("received");
@@ -98,6 +99,7 @@ public class ServerFacade implements IServerFacade {
                         identifier,
                         sender,
                         recipient,
+                        content,
                         state,
                         created,
                         received,

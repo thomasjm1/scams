@@ -4,7 +4,6 @@ import java.util.List;
 
 import edu.cmu.eps.scams.logic.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
-import edu.cmu.eps.scams.logic.model.ClientIdentity;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 

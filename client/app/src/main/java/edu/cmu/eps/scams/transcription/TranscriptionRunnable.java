@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.io.File;
 
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
@@ -27,8 +28,8 @@ public class TranscriptionRunnable implements Runnable {
     private final String incomingNumber;
     private final long ringTimestamp;
     private final long audioLength;
-    private final ClassifierParameters classifierParameters;
-    private final IApplicationLogic logic;
+    private ClassifierParameters classifierParameters;
+    private IApplicationLogic logic;
     private final NotificationFacade notifications;
     private final Context context;
 
@@ -36,16 +37,12 @@ public class TranscriptionRunnable implements Runnable {
                                  String incomingNumber,
                                  long ringTimestamp,
                                  long audioLength,
-                                 ClassifierParameters classifierParameters,
-                                 IApplicationLogic logic,
                                  NotificationFacade notifications,
                                  Context context) {
         this.file = new File(audioRecordingPath);
         this.incomingNumber = incomingNumber;
         this.ringTimestamp = ringTimestamp;
         this.audioLength = audioLength;
-        this.classifierParameters = classifierParameters;
-        this.logic = logic;
         this.notifications = notifications;
         this.context = context;
     }
@@ -53,6 +50,8 @@ public class TranscriptionRunnable implements Runnable {
     @Override
     public void run() {
         try {
+            this.logic = ApplicationLogicFactory.build(this.context);
+            this.classifierParameters = this.logic.getClassifierParameters();
             TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
             double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
             if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {

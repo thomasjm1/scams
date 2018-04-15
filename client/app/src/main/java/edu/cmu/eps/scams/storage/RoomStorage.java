@@ -100,16 +100,22 @@ public class RoomStorage implements ILocalStorage {
         List<AppSettings> results = new ArrayList<>();
         try {
             List<SettingsRecord> records = this.appDatabase.settingsRecordAccess().getAll();
-            for (SettingsRecord record : records) {
-                results.add(
-                        new AppSettings(
-                                record.getIdentifier(),
-                                record.isRegistered(),
-                                record.getSecret(),
-                                record.getProfile(),
-                                record.getRecovery()));
+            if (records.size() > 0) {
+                for (SettingsRecord record : records) {
+                    results.add(
+                            new AppSettings(
+                                    record.getIdentifier(),
+                                    record.isRegistered(),
+                                    record.getSecret(),
+                                    record.getProfile(),
+                                    record.getRecovery()));
+                }
+                return results.get(0);
+            } else {
+                AppSettings settings = AppSettings.defaults();
+                this.insert(settings);
+                return settings;
             }
-            return results.get(0);
         } catch (Exception e) {
             throw new StorageException(e);
         }
