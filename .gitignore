@@ -8,3 +8,4 @@ server/unittests/api/local.db
 server/unittests/repositories/local.db
 client/.idea/caches/
 client/.idea/codeStyles/Project.xml
+*.py___jb_tmp___
