@@ -45,7 +45,7 @@ public class Messages{
         return String.valueOf(Instant.now().toEpochMilli());
     }
 
-    private JSONObject MakeJson() {
+    private JSONObject MakeJson() throws Exception{
         JSONObject obj = new JSONObject();
         obj.put("recipient", recipient_);
         obj.put("content", content_);
