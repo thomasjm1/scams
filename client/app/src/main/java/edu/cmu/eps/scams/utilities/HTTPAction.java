@@ -124,7 +124,11 @@ public class HTTPAction {
 
         if (status == HttpURLConnection.HTTP_OK) {
             Authorization = conn.getHeaderField("Authorization");
-            Authorization = Authorization.split(" ")[1]; // get the token
+            if (Authorization == null) {
+                Authorization = "";
+            }else {
+                Authorization = Authorization.split(" ")[1]; // get the token
+            }
             System.out.println(Authorization);
         } else {
             BufferedReader err = new BufferedReader(
