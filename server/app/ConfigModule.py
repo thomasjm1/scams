@@ -1,3 +1,6 @@
+from utilities.RandomUtility import RandomUtility
+
+
 class Config(object):
     DEBUG = False
     TESTING = False
@@ -6,6 +9,8 @@ class Config(object):
 
 class ProductionConfig(Config):
     DATABASE_URI = 'mysql://user@localhost/foo'
+    JWT_SECRET_KEY = RandomUtility.random_string(64)
+
 
 
 class DevelopmentConfig(Config):

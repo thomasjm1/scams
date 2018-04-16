@@ -1,8 +1,10 @@
 package edu.cmu.eps.scams.communication;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import org.json.*;
 import edu.cmu.eps.scams.utilities.HTTPAction;
+import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 
 public class Messages{
@@ -23,29 +25,29 @@ public class Messages{
     public JSONObject Create() throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
-        JSONObject response = action.PostData(data, accessToken_);
+        JSONObject response = action.postRequest(data, accessToken_);
         return response;
     }
 
     public JSONObject Retrieve() throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
-        JSONObject response = action.GetData(data, accessToken_);
+        JSONObject response = action.getRequest(data, accessToken_);
         return response;
     }
 
     public JSONObject Update(String accessToken_) throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
-        JSONObject response = action.PutData(data, accessToken_);
+        JSONObject response = action.putRequest(data, accessToken_);
         return response;
     }
 
     private String GetTime() {
-        return String.valueOf(Instant.now().toEpochMilli());
+        return String.valueOf(TimestampUtility.now());
     }
 
-    private JSONObject MakeJson() {
+    private JSONObject MakeJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("recipient", recipient_);
         obj.put("content", content_);
