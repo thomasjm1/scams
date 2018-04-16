@@ -1,8 +1,5 @@
 package edu.cmu.eps.scams.communication;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.time.Instant;
 import org.json.*;
 import edu.cmu.eps.scams.utilities.HTTPAction;
@@ -12,33 +9,35 @@ public class Messages{
     private String recipient_;
     private String content_;
     private String created;
+    private String accessToken_;
     private String url;
 
-    public Messages(String recipient, String content){
+    public Messages(String recipient, String content, String accessToken){
         recipient_ = recipient;
         content_ = content;
         created = GetTime();
+        accessToken_ = accessToken;
         url = "https://eps-scams.appspot.com/api/messages/";
     }
 
     public JSONObject Create() throws Exception{
         JSONObject data = MakeJson();
-        HTTPAction action = new HTTPAction(url);
-        JSONObject response = action.PostData(data);
+        HTTPAction action = new HTTPAction(url, "application/json");
+        JSONObject response = action.PostData(data, accessToken_);
         return response;
     }
 
     public JSONObject Retrieve() throws Exception{
         JSONObject data = MakeJson();
-        HTTPAction action = new HTTPAction(url);
-        JSONObject response = action.GetData(data);
+        HTTPAction action = new HTTPAction(url, "application/json");
+        JSONObject response = action.GetData(data, accessToken_);
         return response;
     }
 
-    public JSONObject Update() throws Exception{
+    public JSONObject Update(String accessToken_) throws Exception{
         JSONObject data = MakeJson();
-        HTTPAction action = new HTTPAction(url);
-        JSONObject response = action.PutData(data);
+        HTTPAction action = new HTTPAction(url, "application/json");
+        JSONObject response = action.PutData(data, accessToken_);
         return response;
     }
 

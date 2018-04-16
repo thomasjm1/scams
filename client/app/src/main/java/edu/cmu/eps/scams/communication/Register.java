@@ -1,8 +1,5 @@
 package edu.cmu.eps.scams.communication;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import org.json.*;
 import edu.cmu.eps.scams.utilities.HTTPAction;
 
@@ -23,7 +20,7 @@ public class Register{
     }
 
     public JSONObject send() throws Exception{
-        HTTPAction action = new HTTPAction(url);
+        HTTPAction action = new HTTPAction(url, "application/json");
         JSONObject data = new JSONObject();
         data.put("identifier", identifer_);
         data.put("secret", secret_);
