@@ -16,6 +16,7 @@ import java.util.List;
 
 import edu.cmu.eps.scams.logic.ApplicationLogic;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.History;
@@ -24,7 +25,9 @@ import edu.cmu.eps.scams.storage.RoomStorage;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.fail;
 
 @RunWith(AndroidJUnit4.class)
 public class TestApplicationLogic {
@@ -66,5 +69,36 @@ public class TestApplicationLogic {
         AppSettings updatedSettings = this.logic.getAppSettings();
         assertThat(updatedSettings.getIdentifier().length(), greaterThan(0));
         assertThat(updatedSettings.getProfile(), equalTo("Test 1"));
+    }
+
+    @Test
+    public void createAssociation() throws Exception {
+        Association created = this.logic.createAssociation("Test Association 1");
+        assertThat(created.getIdentifier().length(), greaterThan(0));
+        assertThat(created.getIdentifier(), equalTo("Test Association 1"));
+        List<Association> associations = this.logic.getAssociations();
+        assertThat(associations.size(), greaterThan(0));
+    }
+
+    @Test
+    public void getAssociations() throws Exception {
+        this.logic.createAssociation("Test Association 1");
+        this.logic.createAssociation("Test Association 2");
+        this.logic.createAssociation("Test Association 3");
+        List<Association> associations = this.logic.getAssociations();
+        assertThat(associations.size(), greaterThanOrEqualTo(3));
+    }
+
+    @Test
+    public void sendMessage() throws Exception {
+        AppSettings settings = this.logic.getAppSettings();
+        this.logic.createAssociation(settings.getIdentifier());
+        OutgoingMessage message = new OutgoingMessage();
+        try {
+            message.getProperties().put("message", "content");
+            this.logic.sendMessage(message);
+        } catch(Exception e) {
+            fail(e.getMessage());
+        }
     }
 }

@@ -29,7 +29,7 @@ public class Login{
         data.put("profile", profile_);
         data.put("recovery", recovery_);
         JSONObject response = action.postRequest(data);
-        token = resultObj.get("access_token").toString();
+        token = response.get("access_token").toString();
         return response;
     }
 }

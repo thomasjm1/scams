@@ -16,18 +16,20 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.*;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 public class HTTPAction {
 
     private URL urlObj;
-    private HttpURLConnection httpURLConnection;
+    private HttpsURLConnection httpURLConnection;
     private String contentType_;
     private String token;
 
 
     public HTTPAction(String url, String contentType) throws Exception{
         urlObj = new URL(url);
-        httpURLConnection = (HttpURLConnection)urlObj.openConnection();
+        httpURLConnection = (HttpsURLConnection)urlObj.openConnection();
         contentType_ = contentType;
 
     }

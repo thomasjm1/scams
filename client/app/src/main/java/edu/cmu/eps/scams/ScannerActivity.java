@@ -7,14 +7,24 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import java.util.List;
+
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
+import edu.cmu.eps.scams.logic.ApplicationLogicResult;
+import edu.cmu.eps.scams.logic.ApplicationLogicTask;
+import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
+import edu.cmu.eps.scams.logic.model.History;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
     private ZXingScannerView mScannerView;
+    private IApplicationLogic logic;
 
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
+        this.logic = ApplicationLogicFactory.build(this);
         // Programmatically initialize the scanner view
         mScannerView = new ZXingScannerView(this);
         // Set the scanner view as the content view
@@ -49,6 +59,22 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         System.out.println(rawResult.getText());
         System.out.println(rawResult.getBarcodeFormat().toString());
 
+        ApplicationLogicTask task = new ApplicationLogicTask(
+                this.logic,
+                progress -> {
+                },
+                result -> {
+                    finish();
+                }
+        );
+        task.execute((IApplicationLogicCommand) logic ->
+                new ApplicationLogicResult(logic.createAssociation(
+                        rawResult.getText(),
+                        rawResult.getText()
+                )
+                )
+        );
+
         //If you would like to resume scanning, call this method below:
         //mScannerView.resumeCameraPreview(this);
 
@@ -56,6 +82,6 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         //Intent intent = new Intent(this, ConnectActivity.class);
         //intent.putExtra(AppConstants.KEY_QR_CODE, rawResult.getText());
         //setResult(RESULT_OK, intent);
-        finish();
+
     }
 }

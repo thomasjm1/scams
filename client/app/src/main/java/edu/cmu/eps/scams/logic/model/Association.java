@@ -7,12 +7,18 @@ package edu.cmu.eps.scams.logic.model;
 public class Association {
 
     private final String identifier;
+    private final String name;
 
-    public Association(String qrValue) {
+    public Association(String name, String qrValue) {
         this.identifier = qrValue;
+        this.name = name;
     }
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public String getName() {
+        return name;
     }
 }

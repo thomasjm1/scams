@@ -1,12 +1,10 @@
 package edu.cmu.eps.scams;
 
 import android.Manifest;
-import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.MediaCas;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -28,55 +26,79 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
-import java.util.HashMap;
-
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
+import edu.cmu.eps.scams.logic.ApplicationLogicResult;
+import edu.cmu.eps.scams.logic.ApplicationLogicTask;
+import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
+import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.permissions.PermissionsFacade;
 import edu.cmu.eps.scams.services.ServicesFacade;
-import edu.cmu.eps.scams.SessionManagement;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private static final int PERMISSIONS_REQUEST_CODE = 555;
     private static final String TAG = "MainActivity";
+    private IApplicationLogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
+                PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            Log.d(TAG, "Permissions previously granted, starting services");
+            ServicesFacade.startServices(this);
+        } else {
+            Log.d(TAG, "Permissions missing, requesting from user");
+            PermissionsFacade.requestPermission(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
+        }
 
-        SessionManagement checkStatus = new SessionManagement(this);
+        Context context = this;
+        this.logic = ApplicationLogicFactory.build(this);
+        ApplicationLogicTask task = new ApplicationLogicTask(
+                this.logic,
+                progress -> {
 
-        // if the first time login, create a unique ID and QR code for the device & app pair
-        // Choose to be a reviewer or a primary user
-        //checkStatus.clearLoginSession();
-        checkStatus.checkLogin();
+                },
+                result -> {
+                    AppSettings settings = (AppSettings) result.getAppSettings();
+                    Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));
+                    if (settings.isRegistered() == false) {
+                        Log.d(TAG, "Phone is not previously registered");
+                        // user is not logged in redirect him to Login Activity
+                        Intent i = new Intent(context, FirstTimeLogin.class);
+                        // Closing all the Activities
+                        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
+                        // Add new Flag to start new Activity
+                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                        // Staring Login Activity
+                        context.startActivity(i);
+                    } else {
+                        Log.d(TAG, "Phone is previously registered");
+                        // QR code image generation based on user's qrString
+                        ImageView qrCode=(ImageView) findViewById(R.id.my_qrcode);
+
+                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+                        try {
+                            BitMatrix bitMatrix = multiFormatWriter.encode(settings.getIdentifier(), BarcodeFormat.QR_CODE,200,200);
+                            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
+                            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            qrCode.setImageBitmap(bitmap);
+                        } catch (WriterException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+        );
+        task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getAppSettings()));
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-
-        SharedPreferences pref = getSharedPreferences("MyPrefs", this.MODE_PRIVATE);
-        String qrString = pref.getString("qr", "DEFAULT_QR_CODE_VALUE");
-        //System.out.println(qrString);
-
-
-        // QR code image generation based on user's qrString
-        ImageView qrCode=(ImageView) findViewById(R.id.my_qrcode);
-
-        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
-        try {
-            BitMatrix bitMatrix = multiFormatWriter.encode(qrString, BarcodeFormat.QR_CODE,200,200);
-            BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
-            Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
-            qrCode.setImageBitmap(bitmap);
-        } catch (WriterException e) {
-            e.printStackTrace();
-        }
-
-
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,7 +107,6 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -96,14 +117,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
-                PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Log.d(TAG, "Permissions previously granted, starting services");
-            ServicesFacade.startServices(this);
-        } else {
-            Log.d(TAG, "Permissions missing, requesting from user");
-            PermissionsFacade.requestPermission(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
-        }
     }
 
     @Override

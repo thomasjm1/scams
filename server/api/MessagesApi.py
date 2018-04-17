@@ -37,7 +37,7 @@ def create():
         recipient=message_parameters['recipient'],
         content=message_parameters['content'],
         state=MessageState.PENDING,
-        created=message_parameters['created'],
+        created=TimestampUtility.parse(message_parameters['created']),
         received=TimestampUtility.now(),
         recipient_received=None
     ))

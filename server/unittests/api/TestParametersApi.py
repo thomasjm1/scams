@@ -4,8 +4,6 @@ import unittest
 
 import sys
 
-import os
-
 from app import AppFactory
 from utilities.JsonUtility import JsonUtility
 from utilities.RandomUtility import RandomUtility
@@ -26,6 +24,7 @@ class TestParametersApi(unittest.TestCase):
             data=json.dumps({
                 'identifier': identifier,
                 'secret': 'test',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'profile': 'profile',
                 'recovery': 'recovery'}),
             content_type='application/json'

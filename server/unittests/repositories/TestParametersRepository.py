@@ -20,7 +20,7 @@ class TestParametersRepository(DbTest):
         )
         self.assertEqual(item.content, 'ParameterTest')
 
-    def test_retrieve_telemetry(self):
+    def test_retrieve_parameters(self):
         item = self.repository.create_parameters(
             Parameters(
                 content="ParameterTest",

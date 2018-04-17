@@ -18,6 +18,7 @@ import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.storage.ILocalStorage;
 import edu.cmu.eps.scams.storage.StorageException;
+import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 public class ApplicationLogic implements IApplicationLogic {
 
@@ -32,8 +33,8 @@ public class ApplicationLogic implements IApplicationLogic {
     }
 
     @Override
-    public Association createAssociation(String qrValue) {
-        Association toCreate = new Association(qrValue);
+    public Association createAssociation(String name, String qrValue) {
+        Association toCreate = new Association(name, qrValue);
         try {
             storage.insert(toCreate);
         } catch (StorageException e) {
@@ -68,26 +69,12 @@ public class ApplicationLogic implements IApplicationLogic {
     @Override
     public List<History> getHistory() {
         List<History> results = new ArrayList<>();
-
         try {
             results = storage.retrieveHistory();
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to retrieve History due to %s", e.getMessage()));
         }
 
-        return results;
-    }
-
-    @Override
-    public List<Friend> getFriendList() {
-        List<Friend> results = new ArrayList<>();
-        /*
-        try {
-            results = storage.retrieveFriendList();
-        } catch (StorageException e) {
-            Log.d(TAG, String.format("Failed to retrieve History due to %s", e.getMessage()));
-        }
-        */
         return results;
     }
 

@@ -26,6 +26,7 @@ class TestMessagesApi(unittest.TestCase):
             data=json.dumps({
                 'identifier': identifier,
                 'secret': 'test',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'profile': 'profile',
                 'recovery': 'recovery'}),
             content_type='application/json'
@@ -43,7 +44,7 @@ class TestMessagesApi(unittest.TestCase):
         create_response = self.client.post(
             '/api/messages/',
             data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
+                {'recipient': 'test', 'content': 'hello world', 'created': 1523929188}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
@@ -55,7 +56,7 @@ class TestMessagesApi(unittest.TestCase):
         create_response = self.client.post(
             '/api/messages/',
             data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
+                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now().timestamp()}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
@@ -75,7 +76,7 @@ class TestMessagesApi(unittest.TestCase):
         create_response = self.client.post(
             '/api/messages/',
             data=JsonUtility.to_json(
-                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now()}),
+                {'recipient': 'test', 'content': 'hello world', 'created': TimestampUtility.now().timestamp()}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
@@ -84,7 +85,7 @@ class TestMessagesApi(unittest.TestCase):
         update_response = self.client.put(
             '/api/messages/',
             data=JsonUtility.to_json(
-                {'identifier': create_json['result']['identifier'], 'recipient_received': TimestampUtility.now()}),
+                {'identifier': create_json['result']['identifier'], 'recipient_received': TimestampUtility.now().timestamp()}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
