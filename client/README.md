@@ -10,17 +10,34 @@ https://developer.android.com/studio/index.html
 
 2. Open the project folder called 'client' under 'scam' folder from Android Studio 
 
-File -> Open -> 'client' directory from local copy of repository
+File -> New ->Import Project -> 'client' directory from local copy of repository
 
-3. Click the green arrow ('Run') on the top of the toolbar. This will begin running the application on an emulated Android device. We use a 'Nexus 5X' device running 'Android API 25'. 
+Wait while it syncs and processes. If any errors arise regarding whitespace just ignore or click OK.
 
-Once the emulated device is opened, you can walkthough the various UI elements. Additionally, the emulator allows one to simulate a phone call though:
+Click "Install missing platforms if necessary". This may be slow.
+
+3. Click the green arrow ('Run') on the top of the toolbar. This will begin running the application on an emulated Android device. We use a 'Nexus 5X' device running 'Android API 27'. It is best to create a new Android virtual device to provide a clean testing environment. 
+
+Dismiss any "cold boot" messages on the emulated device.
+If any "System UI not responding" messages areise on the emulated  device, click "Wait". This from the compiler taking too long.
+
+Once the emulated device is opened, you can walkthough the various UI elements. First, the user must sleect the type of user:
+
+* Reviewer
+* Primary User
+* Clear (for debugging purposes only!)
+
+After selecting a user type, the app should navigate to the main activity where the user must accept the permissions.
+
+From the main activity the user can view the history, add reviewers, and view settings.
+
+Additionally, the emulator allows one to simulate a phone call though:
 
 1. Click '...' button next to Android device
 2. Click 'Phone' tab
 3. Click 'Call Device'
 
-The recording and transcription is still in progress, but our code identifies the call and begins recording. The recording does not function on the emulated device due to limitations with the emulator. Events appear in the 'Logging' window within Android studio. ('View' -> 'Tool Windows' -> 'Logcat')
+The recording functionality should work and the transcription functionality will fail due to an expired token (usually we update the token when developing, eventually the token will be retrieved from the server).
 
 
 ##Functions need to be completed:
