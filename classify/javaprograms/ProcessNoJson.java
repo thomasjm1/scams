@@ -2,7 +2,7 @@ import java.io.*;
 //import org.json.simple.JSONObject;
 import java.util.*;
 
-public class Classifier {
+public class ProcessNoJson {
  
   public static List<String> common_words = new ArrayList<String>(
     Arrays.asList("the","be","is","are","to","of","and","a","in","that","have","i","it","for","not","on","with","he","as","you","do","at","this","but",
