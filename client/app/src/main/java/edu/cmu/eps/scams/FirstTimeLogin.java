@@ -23,6 +23,7 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
     private static final String TAG = "FirstTimeLogin";
     private IApplicationLogic logic;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +39,8 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
         button3.setOnClickListener(this);
     }
 
+
+    // Define the logic for the initial page
     @Override
     public void onClick(View view) {
         String userType = "";
@@ -53,6 +56,7 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
                 break;
         }
         final String userAction = userType;
+        // Start a new activity to the main page after registration
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
@@ -62,6 +66,7 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
                     startActivity(intent);
                 }
         );
+
         task.execute((IApplicationLogicCommand) logic -> {
             AppSettings settings = logic.getAppSettings();
             Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));

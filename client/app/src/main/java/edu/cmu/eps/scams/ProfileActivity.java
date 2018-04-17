@@ -10,7 +10,7 @@ package edu.cmu.eps.scams;
         import android.view.MenuItem;
 
 public class ProfileActivity extends AppCompatActivity {
-
+    // More targeted data should be displayed here
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

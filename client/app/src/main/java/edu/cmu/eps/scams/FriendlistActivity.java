@@ -35,6 +35,8 @@ public class FriendlistActivity extends AppCompatActivity {
         ListView listView = (ListView) findViewById(R.id.friend_list_view);
 
         this.logic = ApplicationLogicFactory.build(this);
+        // Task to create a list whenever the Connection page is shown
+        // Retrieve updated contact(friendslist) information from the local database
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
@@ -47,11 +49,12 @@ public class FriendlistActivity extends AppCompatActivity {
                     listView.setAdapter(adapter);
                 }
         );
+       // runs the task's code on a background thread
         task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getHistory()));
     }
 
 
-
+    // Customize the list display
     private class MyArrayAdapter extends ArrayAdapter<Association> {
 
         private List<Association> objects;

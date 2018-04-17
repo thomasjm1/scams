@@ -78,7 +78,7 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         //If you would like to resume scanning, call this method below:
         //mScannerView.resumeCameraPreview(this);
 
-        // Add friend based on the qrCode
+        // Add friend based on the qrCode, scanning function here
         //Intent intent = new Intent(this, ConnectActivity.class);
         //intent.putExtra(AppConstants.KEY_QR_CODE, rawResult.getText());
         //setResult(RESULT_OK, intent);
