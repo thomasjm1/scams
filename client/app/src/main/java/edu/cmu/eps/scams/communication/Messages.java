@@ -14,6 +14,13 @@ public class Messages{
     private String accessToken_;
     private String url;
 
+
+    /**
+     * The constructor. Initialize the parameters and set the url.
+     * @param recipient
+     * @param content
+     * @param accessToken
+     */
     public Messages(String recipient, String content, String accessToken){
         recipient_ = recipient;
         content_ = content;
@@ -22,6 +29,12 @@ public class Messages{
         url = "https://eps-scams.appspot.com/api/messages/";
     }
 
+
+    /**
+     * Create the new message on server database.
+     * @return JSONObject. The response from server.
+     * @throws Exception
+     */
     public JSONObject Create() throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
@@ -29,6 +42,12 @@ public class Messages{
         return response;
     }
 
+
+    /**
+     * Retrieve all messages from the server database.
+     * @return JSONObject. The response from server.
+     * @throws Exception
+     */
     public JSONObject Retrieve() throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
@@ -36,6 +55,13 @@ public class Messages{
         return response;
     }
 
+
+    /**
+     * Update the message in server database.
+     * @param accessToken_
+     * @return JSONObject. The response from server.
+     * @throws Exception
+     */
     public JSONObject Update(String accessToken_) throws Exception{
         JSONObject data = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
@@ -43,10 +69,21 @@ public class Messages{
         return response;
     }
 
+
+    /**
+     * Get the current time.
+     * @return JSONObject.
+     */
     private String GetTime() {
         return String.valueOf(TimestampUtility.now());
     }
 
+
+    /**
+     * Pack data to JSON format.
+     * @return JSONObject.
+     * @throws JSONException
+     */
     private JSONObject MakeJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("recipient", recipient_);

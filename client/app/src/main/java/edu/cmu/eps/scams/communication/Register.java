@@ -11,6 +11,14 @@ public class Register{
     private String recovery_;
     private String url;
 
+
+    /**
+     * The constructor. Initialize the parameters and set the url.
+     * @param identifer
+     * @param secret
+     * @param profile
+     * @param recovery
+     */
     public Register(String identifer, String secret, String profile, String recovery) {
         identifer_ = identifer;
         secret_ = secret;
@@ -19,6 +27,12 @@ public class Register{
         url = "https://eps-scams.appspot.com/api/authentication/register";
     }
 
+
+    /**
+     * This func makes a JSON object and send it to the url.
+     * @return JSONObject. This func will return a JSON object, which is the response from server.
+     * @throws Exception
+     */
     public JSONObject send() throws Exception{
         HTTPAction action = new HTTPAction(url, "application/json");
         JSONObject data = new JSONObject();

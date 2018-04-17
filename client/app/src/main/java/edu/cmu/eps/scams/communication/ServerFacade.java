@@ -30,12 +30,24 @@ public class ServerFacade implements IServerFacade {
         this.initialized = false;
     }
 
+
+    /**
+     * Initialize the parameters.
+     * @param isRegistered
+     * @param identifier
+     * @param secret
+     * @param profile
+     * @param recovery
+     * @throws JSONException
+     * @throws CommunicationException
+     */
     public void init(boolean isRegistered, String identifier, String secret, String profile, String recovery) throws JSONException, CommunicationException {
         this.identifier = identifier;
         this.secret = secret;
         this.profile = profile;
         this.recovery = recovery;
         String result = null;
+        // If user has already registered, directly login, else register.
         if (isRegistered) {
             ServerResponse loginResponse = ServerApi.login(this.identifier, this.secret);
             JSONObject response = loginResponse.getBody();
@@ -53,6 +65,12 @@ public class ServerFacade implements IServerFacade {
         this.token = result;
     }
 
+
+    /**
+     * Send messages to server.
+     * @param toSend
+     * @throws CommunicationException
+     */
     @Override
     public void sendMessage(OutgoingMessage toSend) throws CommunicationException {
         try {
@@ -66,6 +84,12 @@ public class ServerFacade implements IServerFacade {
         }
     }
 
+
+    /**
+     * Inform server the messsage has been received.
+     * @param toAcknowledge
+     * @throws CommunicationException
+     */
     @Override
     public void acknowledgeMessage(IncomingMessage toAcknowledge) throws CommunicationException {
         try {
@@ -78,6 +102,12 @@ public class ServerFacade implements IServerFacade {
         }
     }
 
+
+    /**
+     * Get all messages from server.
+     * @return A list of messages.
+     * @throws CommunicationException
+     */
     @Override
     public List<IncomingMessage> retrieveMessages() throws CommunicationException {
         try {
@@ -85,6 +115,7 @@ public class ServerFacade implements IServerFacade {
             ServerResponse response = ServerApi.getMessages(this.token);
             JSONObject responseObject = response.getBody();
             JSONArray resultsArray = responseObject.getJSONArray("result");
+            // Iterate the JSON array and write all the elements into a list.
             for (int resultsIndex = 0; resultsIndex < resultsArray.length(); resultsIndex++) {
                 JSONObject resultObject = resultsArray.getJSONObject(resultsIndex);
                 String identifier = resultObject.getString("identifier");
@@ -116,6 +147,12 @@ public class ServerFacade implements IServerFacade {
         }
     }
 
+
+    /**
+     * Add a telemetry record to server database.
+     * @param toSend
+     * @throws CommunicationException
+     */
     @Override
     public void sendTelemetry(Telemetry toSend) throws CommunicationException {
         try {
@@ -129,6 +166,12 @@ public class ServerFacade implements IServerFacade {
         }
     }
 
+
+    /**
+     * Get classifier parameters from server.
+     * @return
+     * @throws CommunicationException
+     */
     @Override
     public ClassifierParameters retrieveClassifierParameters() throws CommunicationException {
         try {
@@ -142,6 +185,11 @@ public class ServerFacade implements IServerFacade {
         }
     }
 
+
+    /**
+     * Check the state of initialization.
+     * @return
+     */
     public boolean isInitialized() {
         return initialized;
     }

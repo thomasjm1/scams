@@ -14,6 +14,12 @@ public class Telemetry {
     private String accessToken_;
     private String url;
 
+    /**
+     * The Constructor. Initialize the parameters and set the url.
+     * @param dataType
+     * @param content
+     * @param accessToken
+     */
     public Telemetry(String dataType, String content, String accessToken) {
         dataType_ = dataType;
         content_ = content;
@@ -22,6 +28,11 @@ public class Telemetry {
         url = "https://eps-scams.appspot.com/api/telemetry/";
     }
 
+    /**
+     * Create a new telemetry record in server database.
+     * @return JSONObject. The resopnse from server.
+     * @throws Exception
+     */
     public JSONObject create() throws Exception{
         JSONObject obj = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
@@ -29,10 +40,19 @@ public class Telemetry {
         return response;
     }
 
+    /**
+     * Get the current time.
+     * @return
+     */
     private String GetTime() {
         return String.valueOf(TimestampUtility.now());
     }
 
+    /**
+     * Pack data to JSON format.
+     * @return
+     * @throws JSONException
+     */
     private JSONObject MakeJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("data_type", dataType_);
