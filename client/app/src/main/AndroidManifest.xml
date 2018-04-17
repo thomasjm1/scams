@@ -3,6 +3,7 @@
     package="edu.cmu.eps.scams">
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.PROCESS_OUTGOING_CALLS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
@@ -57,7 +58,6 @@
         <service
             android:name=".services.TranscriptionService"
             android:enabled="true"
-
             android:exported="false" />
 
 

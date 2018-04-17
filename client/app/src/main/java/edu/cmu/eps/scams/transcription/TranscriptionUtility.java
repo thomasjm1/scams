@@ -31,7 +31,7 @@ public class TranscriptionUtility {
     private static final String TAG = "TranscriptionUtility";
 
     //gcloud auth print-access-token
-    private static final String KEY = "ya29.Gl2gBZrKPzrA4rmqFaRrqriR3_T_HTMAWW3Z-P5shfr7ktcwwkS_gOT13t4ital5JqaM-x8DK8Mywo6jMl34EN1YdC6ejZ_LjLPl0JT7l-dmx5VnGsNgB2A7-FNBbqg";
+    private static final String KEY = "ya29.Gl2gBZZKg6Mv_UMsXhQcLFV__RXbpQLA5Eul77D3QfGZNiNcZALlGCdWn54w1xUAo4Wfzq7GAoK7Mi63ZKCq3NENaR-Nh_1PAFyUgRUwZaI5vqtikghVx6h8WOZoFn8";
 
     public static TranscriptionResult transcribe(String encoding, int sampleRate, File file) throws IOException, TranscriptionException {
         byte[] data = TranscriptionUtility.readFile(file);

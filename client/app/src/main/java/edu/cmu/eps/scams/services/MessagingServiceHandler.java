@@ -41,7 +41,7 @@ public class MessagingServiceHandler extends Handler {
     public MessagingServiceHandler(Looper looper, Context context) {
         super(looper);
         this.context = context;
-        this.loopEventDelay = 1000;
+        this.loopEventDelay = 5000;
         this.notificationFacade = new NotificationFacade(this.context);
         this.logic = ApplicationLogicFactory.build(this.context);
         this.classifierParameters = null;

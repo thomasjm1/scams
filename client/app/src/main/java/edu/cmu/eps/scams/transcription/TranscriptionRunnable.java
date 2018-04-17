@@ -22,8 +22,8 @@ import edu.cmu.eps.scams.utilities.TimestampUtility;
 public class TranscriptionRunnable implements Runnable {
 
     private static final String TAG = "TranscriptionRunnable";
-    private static final double KNOWN_SCAM_THRESHOLD = 0.90;
-    private static final double REVIEWER_THRESHOLD = .75;
+    private static final double KNOWN_SCAM_THRESHOLD = 0.40;
+    private static final double REVIEWER_THRESHOLD = 0.25;
     private final File file;
     private final String incomingNumber;
     private final long ringTimestamp;

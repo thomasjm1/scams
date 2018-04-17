@@ -40,6 +40,8 @@ public class HistoryActivity extends AppCompatActivity {
 
         Context context = this;
         this.logic = ApplicationLogicFactory.build(this);
+        // Task to create a list whenever the History page is shown
+        // Retrieve updated call history information from the local database
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
@@ -52,6 +54,7 @@ public class HistoryActivity extends AppCompatActivity {
                     listView.setAdapter(adapter);
                 }
         );
+        // runs the task's code on a background thread
         task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getHistory()));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

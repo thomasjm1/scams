@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Get mobile phone permissions
         if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
                 PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
             Log.d(TAG, "Permissions previously granted, starting services");
@@ -55,8 +56,11 @@ public class MainActivity extends AppCompatActivity
             PermissionsFacade.requestPermission(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
         }
 
+
         Context context = this;
+        // Get local settings from local database
         this.logic = ApplicationLogicFactory.build(this);
+        // Start a task to check the session status
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
@@ -65,6 +69,7 @@ public class MainActivity extends AppCompatActivity
                 result -> {
                     AppSettings settings = (AppSettings) result.getAppSettings();
                     Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));
+                    // The first time login for a device
                     if (settings.isRegistered() == false) {
                         Log.d(TAG, "Phone is not previously registered");
                         // user is not logged in redirect him to Login Activity
@@ -77,16 +82,20 @@ public class MainActivity extends AppCompatActivity
 
                         // Staring Login Activity
                         context.startActivity(i);
-                    } else {
+                    }
+                    // Not the first time login
+                    else {
                         Log.d(TAG, "Phone is previously registered");
                         // QR code image generation based on user's qrString
                         ImageView qrCode=(ImageView) findViewById(R.id.my_qrcode);
 
                         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                         try {
+                            // Get the qrString from local database
                             BitMatrix bitMatrix = multiFormatWriter.encode(settings.getIdentifier(), BarcodeFormat.QR_CODE,200,200);
                             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
+                            // Generate the code and put the image to the view
                             qrCode.setImageBitmap(bitmap);
                         } catch (WriterException e) {
                             e.printStackTrace();
@@ -94,6 +103,7 @@ public class MainActivity extends AppCompatActivity
                     }
                 }
         );
+        // runs the task's code on a background thread
         task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getAppSettings()));
 
         setContentView(R.layout.activity_main);

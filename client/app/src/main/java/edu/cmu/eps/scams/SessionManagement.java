@@ -31,7 +31,6 @@ public class SessionManagement {
     // All Shared Preferences Keys
     private static final String IS_LOGIN = "IsLoggedIn";
 
-    // Email address (make variable public to access from outside)
     public static final String KEY_USERTYPE = "usertype";
 
     public static final String KEY_QR = "qr";
