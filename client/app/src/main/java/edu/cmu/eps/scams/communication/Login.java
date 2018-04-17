@@ -10,6 +10,7 @@ public class Login{
     private String profile_;
     private String recovery_;
     private String url;
+    public String token;
 
     public Login(String identifer, String secret, String profile, String recovery){
         identifer_ = identifer;
@@ -17,6 +18,7 @@ public class Login{
         profile_ = profile;
         recovery_ = recovery;
         url = "https://eps-scams.appspot.com/api/authentication/login";
+        token = "";
     }
 
     public JSONObject send() throws Exception{
@@ -27,6 +29,7 @@ public class Login{
         data.put("profile", profile_);
         data.put("recovery", recovery_);
         JSONObject response = action.postRequest(data);
+        token = resultObj.get("access_token").toString();
         return response;
     }
 }
