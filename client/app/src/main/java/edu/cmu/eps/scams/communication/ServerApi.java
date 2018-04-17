@@ -89,9 +89,7 @@ public class ServerApi {
         try {
             HTTPAction action = new HTTPAction(CLASSIFIER_PARAMETERS_URL, "application/json");
             action.setToken(token);
-            JSONObject toSend = new JSONObject();
-            toSend.put("key", PARAMETERS_KEY);
-            JSONObject response = action.postRequest(toSend);
+            JSONObject response = action.getRequest();
             return new ServerResponse(response);
         } catch (Exception e) {
             throw new CommunicationException(e);

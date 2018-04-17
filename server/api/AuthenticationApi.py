@@ -40,7 +40,7 @@ def login():
                         mimetype='application/json')
     identity_repository = IdentityRepository()
     identity = identity_repository.retrieve_identity_by_identifier(identifier)
-    access_token = create_access_token(identity=identity.identifier)
+    access_token = create_access_token(identity=identity.identifier, expires_delta=False)
     return Response(
         ResponseWrapper.wrap(identifier, "authentication.login", {'access_token': access_token}),
         status=200,

@@ -19,3 +19,7 @@ class ParametersRepository(object):
     def retrieve_parameters(self):
         self.logger.debug("Retrieving all parameters")
         return Parameters.select().order_by(Parameters.created.desc())
+
+    def retrieve_parameter(self):
+        self.logger.debug("Retrieving all parameters")
+        return Parameters.select().order_by(Parameters.created.desc()).get()

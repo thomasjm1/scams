@@ -7,12 +7,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import java.util.Date;
+
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.ApplicationLogicResult;
 import edu.cmu.eps.scams.logic.ApplicationLogicTask;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
 import edu.cmu.eps.scams.logic.model.AppSettings;
+import edu.cmu.eps.scams.logic.model.Telemetry;
 
 
 public class FirstTimeLogin extends AppCompatActivity implements View.OnClickListener {
@@ -73,6 +76,9 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
                 ));
             } else {
                 Log.d(TAG, "Updating settings with new user");
+                Telemetry installTelemetry = new Telemetry("system.install", new Date().getTime());
+                installTelemetry.getProperties().put("userType", userAction);
+                logic.sendTelemetry(installTelemetry);
                 logic.updateAppSettings(new AppSettings(
                         settings.getIdentifier(),
                         true,
