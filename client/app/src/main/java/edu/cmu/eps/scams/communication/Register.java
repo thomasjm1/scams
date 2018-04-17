@@ -26,7 +26,7 @@ public class Register{
         data.put("secret", secret_);
         data.put("profile", profile_);
         data.put("recovery", recovery_);
-        JSONObject response = action.PostData(data);
+        JSONObject response = action.postRequest(data);
         return response;
     }
 }

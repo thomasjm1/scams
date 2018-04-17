@@ -4,6 +4,7 @@ package edu.cmu.eps.scams.communication;
 import java.time.Instant;
 import org.json.*;
 import edu.cmu.eps.scams.utilities.HTTPAction;
+import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 
 public class Telemetry {
@@ -24,15 +25,15 @@ public class Telemetry {
     public JSONObject create() throws Exception{
         JSONObject obj = MakeJson();
         HTTPAction action = new HTTPAction(url, "application/json");
-        JSONObject response = action.PostData(obj, accessToken_);
+        JSONObject response = action.postRequest(obj, accessToken_);
         return response;
     }
 
     private String GetTime() {
-        return String.valueOf(Instant.now().toEpochMilli());
+        return String.valueOf(TimestampUtility.now());
     }
 
-    private JSONObject MakeJson() {
+    private JSONObject MakeJson() throws JSONException {
         JSONObject obj = new JSONObject();
         obj.put("data_type", dataType_);
         obj.put("content", content_);

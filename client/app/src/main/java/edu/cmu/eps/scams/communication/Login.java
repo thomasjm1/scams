@@ -1,8 +1,5 @@
 package edu.cmu.eps.scams.communication;
 
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import org.json.*;
 import edu.cmu.eps.scams.utilities.HTTPAction;
 
@@ -29,7 +26,7 @@ public class Login{
         data.put("secret", secret_);
         data.put("profile", profile_);
         data.put("recovery", recovery_);
-        JSONObject response = action.PostData(data);
+        JSONObject response = action.postRequest(data);
         return response;
     }
 }

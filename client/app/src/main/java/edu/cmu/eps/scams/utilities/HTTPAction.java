@@ -16,19 +16,18 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.*;
 
-import javax.net.ssl.HttpsURLConnection;
-
 
 public class HTTPAction {
 
     private URL urlObj;
-    private HttpURLConnection conn;
+    private HttpURLConnection httpURLConnection;
     private String contentType_;
+    private String token;
 
 
     public HTTPAction(String url, String contentType) throws Exception{
         urlObj = new URL(url);
-        conn = (HttpURLConnection)urlObj.openConnection();
+        httpURLConnection = (HttpURLConnection)urlObj.openConnection();
         contentType_ = contentType;
 
     }
@@ -43,19 +42,19 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject GetData(JSONObject jsonObject) throws Exception{
+    public JSONObject getRequest() throws Exception{
 
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("content_type", contentType_);
-        return ReadResponse(conn);
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
+        return ReadResponse(httpURLConnection);
     }
 
-    public JSONObject GetData(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject getRequest(JSONObject jsonObject, String accessToken_) throws Exception{
 
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("content_type", contentType_);
-        conn.setRequestProperty("Authorization", "Bearer " + accessToken_);
-        return ReadResponse(conn);
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " + accessToken_);
+        return ReadResponse(httpURLConnection);
     }
 
 
@@ -65,23 +64,23 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PostData(JSONObject jsonObject) throws Exception{
+    public JSONObject postRequest(JSONObject jsonObject) throws Exception{
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("content_type", contentType_);
+        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
 
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+        WriteInput(httpURLConnection, jsonObject);
+        return ReadResponse(httpURLConnection);
     }
 
-    public JSONObject PostData(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject postRequest(JSONObject jsonObject, String accessToken_) throws Exception{
 
-        conn.setRequestMethod("POST");
-        conn.setRequestProperty("content_type", contentType_);
-        conn.setRequestProperty("Authorization", "Bearer " + accessToken_);
+        httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " + accessToken_);
 
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+        WriteInput(httpURLConnection, jsonObject);
+        return ReadResponse(httpURLConnection);
     }
 
     /**
@@ -90,24 +89,24 @@ public class HTTPAction {
      * @return
      * @throws Exception
      */
-    public JSONObject PutData(JSONObject jsonObject) throws Exception{
+    public JSONObject putRequest(JSONObject jsonObject) throws Exception{
 
-        conn.setRequestMethod("PUT");
-        conn.setRequestProperty("content_type", contentType_);
+        httpURLConnection.setRequestMethod("PUT");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
 
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+        WriteInput(httpURLConnection, jsonObject);
+        return ReadResponse(httpURLConnection);
     }
 
 
-    public JSONObject PutData(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject putRequest(JSONObject jsonObject, String accessToken_) throws Exception{
 
-        conn.setRequestMethod("PUT");
-        conn.setRequestProperty("content_type", contentType_);
-        conn.setRequestProperty("Authorization", "Bearer " + accessToken_);
+        httpURLConnection.setRequestMethod("PUT");
+        httpURLConnection.setRequestProperty("content_type", contentType_);
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " + accessToken_);
 
-        WriteInput(conn, jsonObject);
-        return ReadResponse(conn);
+        WriteInput(httpURLConnection, jsonObject);
+        return ReadResponse(httpURLConnection);
     }
 
 
@@ -124,7 +123,11 @@ public class HTTPAction {
 
         if (status == HttpURLConnection.HTTP_OK) {
             Authorization = conn.getHeaderField("Authorization");
-            Authorization = Authorization.split(" ")[1]; // get the token
+            if (Authorization == null) {
+                Authorization = "";
+            }else {
+                Authorization = Authorization.split(" ")[1]; // get the token
+            }
             System.out.println(Authorization);
         } else {
             BufferedReader err = new BufferedReader(
@@ -136,7 +139,7 @@ public class HTTPAction {
             }
         }
 
-        BufferedReader in = new BufferedReader(
+        BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
 					       );
         StringBuilder stringBuffer = new StringBuilder();
@@ -144,7 +147,7 @@ public class HTTPAction {
         while ((line = bufferedReader.readLine()) != null) {
             stringBuffer.append(line);
         }
-        JSONObject res = new JSONObject(sb.toString());
+        JSONObject res = new JSONObject(stringBuffer.toString());
         res.put("token", Authorization);
         return res;
     }
