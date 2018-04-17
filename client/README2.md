@@ -13,7 +13,9 @@
    users are asked to choose their user type for the first time login
 
 
-## Things need to be completed
+## Things need to be completed in client
 1. A separate page designed for reviewers
 2. Testing connections and integration on real android phones
-3. Refining the interface 
+3. Refining the general interface 
+4. Displaying more specific data in profile page
+5. Implement settings integration logic with mobile system permissions
