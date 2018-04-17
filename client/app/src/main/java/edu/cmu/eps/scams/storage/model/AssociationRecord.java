@@ -13,6 +13,9 @@ public class AssociationRecord {
     @ColumnInfo(name = "identifier")
     private String identifier;
 
+    @ColumnInfo(name = "name")
+    private String name;
+
     public int getId() {
         return id;
     }
@@ -27,5 +30,13 @@ public class AssociationRecord {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

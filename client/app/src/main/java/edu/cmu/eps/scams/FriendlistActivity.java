@@ -2,9 +2,7 @@ package edu.cmu.eps.scams;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,53 +15,49 @@ import android.view.LayoutInflater;
 
 import java.util.List;
 
-import edu.cmu.eps.scams.logic.model.Friend;
-import edu.cmu.eps.scams.logic.HistoryRecords;
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
+import edu.cmu.eps.scams.logic.ApplicationLogicResult;
+import edu.cmu.eps.scams.logic.ApplicationLogicTask;
+import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
+import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
-import edu.cmu.eps.scams.notifications.NotificationFacade;
 
 
 public class FriendlistActivity extends AppCompatActivity {
 
     private static final String TAG = "FriendlistActivity";
+    private IApplicationLogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendlist);
-
-
-        IApplicationLogic InterfaceAction = new HistoryRecords();
-
         ListView listView = (ListView) findViewById(R.id.friend_list_view);
 
-        // **************************************************
-        // Get history information from local storage?
-        List<Friend> friendList = InterfaceAction.getFriendList();
+        this.logic = ApplicationLogicFactory.build(this);
+        ApplicationLogicTask task = new ApplicationLogicTask(
+                this.logic,
+                progress -> {
+                },
+                result -> {
+                    List<Association> associations = result.getAssociations();
+                    MyArrayAdapter adapter = new MyArrayAdapter(this,
+                            android.R.layout.simple_list_item_2, associations);
 
-        //System.out.println(friendList);
-
-        //History example = new History();
-        // System.out.println(example.PhoneNumber);
-        // List phone number in the first line, the time on the second line
-
-
-        MyArrayAdapter adapter = new MyArrayAdapter(this,
-                android.R.layout.simple_list_item_2, friendList);
-
-         listView.setAdapter(adapter);
-
-
+                    listView.setAdapter(adapter);
+                }
+        );
+        task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getHistory()));
     }
 
 
 
-    private class MyArrayAdapter extends ArrayAdapter<Friend> {
+    private class MyArrayAdapter extends ArrayAdapter<Association> {
 
-        private List<Friend> objects;
+        private List<Association> objects;
         private Context context;
 
-        public MyArrayAdapter(Context context, int textViewResourceId, List<Friend> objects) {
+        public MyArrayAdapter(Context context, int textViewResourceId, List<Association> objects) {
             super(context, textViewResourceId, objects);
             this.objects = objects;
             this.context = context;
@@ -85,8 +79,8 @@ public class FriendlistActivity extends AppCompatActivity {
             TextView text1 = twoLineListItem.getText1();
             TextView text2 = twoLineListItem.getText2();
 
-            text1.setText(objects.get(position).getPhoneNumber());
-            text2.setText(objects.get(position).getFriendQr());
+            text1.setText(objects.get(position).getName());
+            text2.setText(objects.get(position).getIdentifier());
 
             return twoLineListItem;
         }

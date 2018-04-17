@@ -1,6 +1,5 @@
 package edu.cmu.eps.scams;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 

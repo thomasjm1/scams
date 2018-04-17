@@ -35,7 +35,7 @@ public class MessagingServiceHandler extends Handler {
     private final Context context;
     private final int loopEventDelay;
     private final IApplicationLogic logic;
-    private final ClassifierParameters classifierParameters;
+    private ClassifierParameters classifierParameters;
     private final NotificationFacade notificationFacade;
 
     public MessagingServiceHandler(Looper looper, Context context) {
@@ -50,25 +50,27 @@ public class MessagingServiceHandler extends Handler {
     @Override
     public void handleMessage(Message message) {
         Log.d(TAG, String.format("Message received: %d %d", message.arg1, message.arg2));
-        try {
-            if (this.classifierParameters == null) {
-                this.logic.getClassifierParameters();
-            }
-            List<IncomingMessage> messages = this.logic.receiveMessages();
-            Log.d(TAG, String.format("Incoming messages: %d", messages.size()));
-            for (IncomingMessage incomingMessage : messages) {
-                switch (MessageType.valueOf(incomingMessage.getType())) {
-                    case NOTIFY: {
-                        NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
-                        Log.d(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
-                        notificationFacade.create(this.context, notifyMessage.getTitle(), notifyMessage.getMessage());
-                        this.logic.acknowledgeMessage(incomingMessage);
+        if (this.logic.getAppSettings().isRegistered() == true) {
+            try {
+                if (this.classifierParameters == null) {
+                    this.classifierParameters = this.logic.getClassifierParameters();
+                }
+                List<IncomingMessage> messages = this.logic.receiveMessages();
+                Log.d(TAG, String.format("Incoming messages: %d", messages.size()));
+                for (IncomingMessage incomingMessage : messages) {
+                    switch (MessageType.valueOf(incomingMessage.getType())) {
+                        case NOTIFY: {
+                            NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
+                            Log.d(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
+                            notificationFacade.create(this.context, notifyMessage.getTitle(), notifyMessage.getMessage());
+                            this.logic.acknowledgeMessage(incomingMessage);
+                        }
                     }
                 }
+                this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
+            } catch (Exception e) {
+                Log.d(TAG, String.format("Encountered exception: %s", e.getMessage()));
             }
-            this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
-        } catch (Exception e) {
-            Log.d(TAG, String.format("Encountered exception: %s", e.getMessage()));
         }
     }
 

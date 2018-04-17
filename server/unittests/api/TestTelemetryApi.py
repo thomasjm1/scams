@@ -24,6 +24,7 @@ class TestTelemetryApi(unittest.TestCase):
             data=json.dumps({
                 'identifier': identifier,
                 'secret': 'test',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'profile': 'profile',
                 'recovery': 'recovery'}),
             content_type='application/json'
@@ -41,7 +42,7 @@ class TestTelemetryApi(unittest.TestCase):
         create_response = self.client.post(
             '/api/telemetry/',
             data=JsonUtility.to_json(
-                {'data_type': 'test.record', 'content': 'hello world', 'created': TimestampUtility.now()}),
+                {'data_type': 'test.record', 'content': 'hello world', 'created': TimestampUtility.timestamp()}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )

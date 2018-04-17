@@ -1,16 +1,14 @@
 import json
 import logging
 import unittest
-
 import sys
 
 from app import AppFactory
 from utilities.JsonUtility import JsonUtility
 from utilities.RandomUtility import RandomUtility
-from utilities.TimestampUtility import TimestampUtility
 
 
-class TestParametersApi(unittest.TestCase):
+class TestSourceApi(unittest.TestCase):
     def setUp(self):
         console_handler = logging.StreamHandler(sys.stdout)
         root_logger = logging.getLogger()
@@ -40,51 +38,35 @@ class TestParametersApi(unittest.TestCase):
 
     def test_create(self):
         create_response = self.client.post(
-            '/api/parameters/',
+            '/api/sources/',
             data=JsonUtility.to_json(
-                {
-                    'content': 'hello world',
-                    'created': TimestampUtility.now(),
-                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
-                }),
-            content_type='application/json')
+                {'value': '123-456-7890', 'source_type': 'blacklist'}),
+            content_type='application/json',
+            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
+        )
         self.assertTrue(create_response.status_code == 200)
         create_json = json.loads(create_response.data)
-        self.assertTrue(create_json['message'] == 'classifier parameters updated')
+        self.assertTrue(create_json['operation'] == 'sources.create')
 
     def test_retrieve(self):
         create_response = self.client.post(
-            '/api/parameters/',
+            '/api/sources/',
             data=JsonUtility.to_json(
-                {
-                    'content': 'hello world',
-                    'created': TimestampUtility.now(),
-                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
-                }),
-            content_type='application/json')
+                {'value': '123-456-7890', 'source_type': 'blacklist'}),
+            content_type='application/json',
+            headers={'Authorization': 'Bearer {}'.format(self.access_token)}
+        )
         self.assertTrue(create_response.status_code == 200)
         create_json = json.loads(create_response.data)
-        self.assertTrue(create_json['message'] == 'classifier parameters updated')
+        self.assertTrue(create_json['operation'] == 'sources.create')
         retrieve_response = self.client.get(
-            '/api/parameters/',
+            '/api/sources/',
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
         self.assertTrue(retrieve_response.status_code == 200)
         retrieve_json = json.loads(retrieve_response.data)
-        self.assertTrue(retrieve_json['operation'] == 'parameters.retrieve')
-
-    def test_results(self):
-        results_response = self.client.post(
-            '/api/parameters/results',
-            data=JsonUtility.to_json(
-                {
-                    'key': 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
-                }),
-            content_type='application/json')
-        self.assertTrue(results_response.status_code == 200)
-        create_json = json.loads(results_response.data)
-        self.assertTrue(create_json['operation'] == 'parameters.results')
+        self.assertTrue(retrieve_json['operation'] == 'sources.retrieve')
 
 
 if __name__ == '__main__':

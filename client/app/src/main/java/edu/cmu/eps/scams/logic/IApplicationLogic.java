@@ -16,15 +16,13 @@ import edu.cmu.eps.scams.logic.model.Telemetry;
 
 public interface IApplicationLogic {
 
-    Association createAssociation(String qrValue);
+    Association createAssociation(String name, String qrValue);
 
     List<Association> getAssociations();
 
     boolean removeAssociation(Association association);
 
     List<History> getHistory();
-
-    List<Friend> getFriendList();
 
     boolean removeHistory(History history);
 

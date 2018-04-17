@@ -18,8 +18,11 @@ import android.view.LayoutInflater;
 
 import java.util.List;
 
+import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
+import edu.cmu.eps.scams.logic.ApplicationLogicResult;
+import edu.cmu.eps.scams.logic.ApplicationLogicTask;
+import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
 import edu.cmu.eps.scams.logic.model.History;
-import edu.cmu.eps.scams.logic.HistoryRecords;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 
@@ -27,36 +30,32 @@ import edu.cmu.eps.scams.notifications.NotificationFacade;
 public class HistoryActivity extends AppCompatActivity {
 
     private static final String TAG = "HistoryActivity";
+    private IApplicationLogic logic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
-
-
-        IApplicationLogic InterfaceAction = new HistoryRecords();
-
-
         ListView listView = (ListView) findViewById(R.id.history_list_view);
 
-        // **************************************************
-        // Get history information from local storage?
-        List<History> historyList = InterfaceAction.getHistory();
-
-
-        //History example = new History();
-        // System.out.println(example.PhoneNumber);
-        // List phone number in the first line, the time on the second line
-        MyArrayAdapter adapter = new MyArrayAdapter(this,
-                android.R.layout.simple_list_item_2, historyList);
-
-        listView.setAdapter(adapter);
-
-
+        Context context = this;
+        this.logic = ApplicationLogicFactory.build(this);
+        ApplicationLogicTask task = new ApplicationLogicTask(
+                this.logic,
+                progress -> {
+                },
+                result -> {
+                    List<History> histories = result.getHistories();
+                    MyArrayAdapter adapter = new MyArrayAdapter(
+                            context,
+                            android.R.layout.simple_list_item_2, histories);
+                    listView.setAdapter(adapter);
+                }
+        );
+        task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getHistory()));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        final Context context = this.getApplicationContext();
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +103,6 @@ public class HistoryActivity extends AppCompatActivity {
 
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -119,12 +116,10 @@ public class HistoryActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

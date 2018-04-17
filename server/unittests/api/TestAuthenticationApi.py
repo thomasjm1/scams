@@ -24,9 +24,11 @@ class TestAuthenticationApi(unittest.TestCase):
             '/api/authentication/register',
             data=json.dumps({
                 'identifier': 'test',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'secret': 'test',
                 'profile': 'profile',
-                'recovery': 'recovery'}),
+                'recovery': 'recovery'
+            }),
             content_type='application/json'
         )
         self.assertTrue(register_response.status_code == 200)
@@ -40,6 +42,7 @@ class TestAuthenticationApi(unittest.TestCase):
             data=json.dumps({
                 'identifier': 'test2',
                 'secret': 'test2',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'profile': 'profile',
                 'recovery': 'recovery'}),
             content_type='application/json'
@@ -61,6 +64,7 @@ class TestAuthenticationApi(unittest.TestCase):
             data=json.dumps({
                 'identifier': 'test3',
                 'secret': 'test3',
+                'code': 'yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ',
                 'profile': 'profile',
                 'recovery': 'recovery'}),
             content_type='application/json'

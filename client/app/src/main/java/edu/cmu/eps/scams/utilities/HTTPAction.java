@@ -16,18 +16,20 @@ import java.nio.charset.StandardCharsets;
 
 import org.json.*;
 
+import javax.net.ssl.HttpsURLConnection;
+
 
 public class HTTPAction {
 
     private URL urlObj;
-    private HttpURLConnection httpURLConnection;
+    private HttpsURLConnection httpURLConnection;
     private String contentType_;
     private String token;
 
 
-    public HTTPAction(String url, String contentType) throws Exception{
+    public HTTPAction(String url, String contentType) throws Exception {
         urlObj = new URL(url);
-        httpURLConnection = (HttpURLConnection)urlObj.openConnection();
+        httpURLConnection = (HttpsURLConnection) urlObj.openConnection();
         contentType_ = contentType;
 
     }
@@ -39,17 +41,18 @@ public class HTTPAction {
 
     /**
      * GET method
+     *
      * @return
      * @throws Exception
      */
-    public JSONObject getRequest() throws Exception{
+    public JSONObject getRequest() throws Exception {
 
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty("content_type", contentType_);
         return ReadResponse(httpURLConnection);
     }
 
-    public JSONObject getRequest(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject getRequest(JSONObject jsonObject, String accessToken_) throws Exception {
 
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.setRequestProperty("content_type", contentType_);
@@ -60,11 +63,12 @@ public class HTTPAction {
 
     /**
      * POST method
+     *
      * @param jsonObject
      * @return
      * @throws Exception
      */
-    public JSONObject postRequest(JSONObject jsonObject) throws Exception{
+    public JSONObject postRequest(JSONObject jsonObject) throws Exception {
 
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setRequestProperty("content_type", contentType_);
@@ -73,7 +77,7 @@ public class HTTPAction {
         return ReadResponse(httpURLConnection);
     }
 
-    public JSONObject postRequest(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject postRequest(JSONObject jsonObject, String accessToken_) throws Exception {
 
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setRequestProperty("content_type", contentType_);
@@ -85,11 +89,12 @@ public class HTTPAction {
 
     /**
      * PUT method
+     *
      * @param jsonObject
      * @return
      * @throws Exception
      */
-    public JSONObject putRequest(JSONObject jsonObject) throws Exception{
+    public JSONObject putRequest(JSONObject jsonObject) throws Exception {
 
         httpURLConnection.setRequestMethod("PUT");
         httpURLConnection.setRequestProperty("content_type", contentType_);
@@ -99,7 +104,7 @@ public class HTTPAction {
     }
 
 
-    public JSONObject putRequest(JSONObject jsonObject, String accessToken_) throws Exception{
+    public JSONObject putRequest(JSONObject jsonObject, String accessToken_) throws Exception {
 
         httpURLConnection.setRequestMethod("PUT");
         httpURLConnection.setRequestProperty("content_type", contentType_);
@@ -112,11 +117,12 @@ public class HTTPAction {
 
     /**
      * Read the response from the server.
+     *
      * @param conn
      * @return
      * @throws Exception
      */
-    private JSONObject ReadResponse(HttpURLConnection conn) throws Exception{
+    private JSONObject ReadResponse(HttpURLConnection conn) throws Exception {
 
         int status = conn.getResponseCode();
         String Authorization = "";
@@ -125,7 +131,7 @@ public class HTTPAction {
             Authorization = conn.getHeaderField("Authorization");
             if (Authorization == null) {
                 Authorization = "";
-            }else {
+            } else {
                 Authorization = Authorization.split(" ")[1]; // get the token
             }
             System.out.println(Authorization);
@@ -141,7 +147,7 @@ public class HTTPAction {
 
         BufferedReader bufferedReader = new BufferedReader(
                 new InputStreamReader(conn.getInputStream())
-					       );
+        );
         StringBuilder stringBuffer = new StringBuilder();
         String line;
         while ((line = bufferedReader.readLine()) != null) {
@@ -155,6 +161,7 @@ public class HTTPAction {
 
     /**
      * Send input data to server.
+     *
      * @param connection
      * @param jsonObject
      * @throws Exception

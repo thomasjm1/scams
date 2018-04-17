@@ -61,4 +61,17 @@ public class AppSettings {
                 "{}"
         );
     }
+
+    @Override
+    public String toString() {
+        StringBuilder result = new StringBuilder();
+        result.append("{");
+        result.append(String.format("\"registered\": \"%s\",", this.registered));
+        result.append(String.format("\"identifier\": \"%s\",", this.identifier));
+        result.append(String.format("\"secret\": \"%s\",", this.secret));
+        result.append(String.format("\"profile\": \"%s\",", this.profile));
+        result.append(String.format("\"recovery\": \"%s\",", this.recovery));
+        result.append("}");
+        return result.toString();
+    }
 }

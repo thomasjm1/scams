@@ -131,6 +131,6 @@ public class ClassifyFacade {
        
         String extracted_words = extract_info(transcript, response);//need to do the number thing
         //return "{\"message\" : \"Hello world\"}";
-        
+        return extracted_words;
     }
 }

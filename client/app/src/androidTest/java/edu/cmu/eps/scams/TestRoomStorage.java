@@ -44,7 +44,7 @@ public class TestRoomStorage {
 
     @Test
     public void insertAssociation() throws Exception {
-        Association toCreate = new Association("test");
+        Association toCreate = new Association("jeremy","test");
         this.storage.insert(toCreate);
         List<Association> results = this.storage.retrieveAssociations();
         assertThat(results.size(), greaterThan(0));
@@ -52,9 +52,9 @@ public class TestRoomStorage {
 
     @Test
     public void deleteAssociation() throws Exception {
-        Association toCreate = new Association("test");
+        Association toCreate = new Association("jeremy","test");
         this.storage.insert(toCreate);
-        Association toCreate2 = new Association("test2");
+        Association toCreate2 = new Association("jeremy","test2");
         this.storage.insert(toCreate2);
         List<Association> results = this.storage.retrieveAssociations();
         assertThat(results.size(), greaterThan(0));

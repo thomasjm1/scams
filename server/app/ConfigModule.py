@@ -12,7 +12,6 @@ class ProductionConfig(Config):
     JWT_SECRET_KEY = RandomUtility.random_string(64)
 
 
-
 class DevelopmentConfig(Config):
     DEBUG = True
 

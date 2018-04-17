@@ -71,8 +71,8 @@ def results():
 def retrieve():
     identifier = g.get('identifier', None)
     parameters_repository = ParametersRepository()
-    results = parameters_repository.retrieve_parameters()
-    result = Response(ResponseWrapper.wrap(identifier, 'parameters.retrieve', results),
+    parameter_set = parameters_repository.retrieve_parameter()
+    result = Response(ResponseWrapper.wrap(identifier, 'parameters.retrieve', parameter_set),
                       status=200,
                       mimetype='application/json')
     return result

@@ -24,6 +24,7 @@ public class RoomStorage implements ILocalStorage {
         try {
             AssociationRecord record = new AssociationRecord();
             record.setIdentifier(toCreate.getIdentifier());
+            record.setName(toCreate.getName());
             this.appDatabase.associationRecordAccess().insertAll(record);
         } catch (Exception e) {
             throw new StorageException(e);
@@ -36,7 +37,7 @@ public class RoomStorage implements ILocalStorage {
         try {
             List<AssociationRecord> records = this.appDatabase.associationRecordAccess().getAll();
             for (AssociationRecord record : records) {
-                results.add(new Association(record.getIdentifier()));
+                results.add(new Association(record.getName(), record.getIdentifier()));
             }
             return results;
         } catch (Exception e) {
@@ -126,6 +127,10 @@ public class RoomStorage implements ILocalStorage {
         try {
             SettingsRecord record = new SettingsRecord();
             record.setIdentifier(settings.getIdentifier());
+            record.setRegistered(settings.isRegistered());
+            record.setProfile(settings.getProfile());
+            record.setRecovery(settings.getRecovery());
+            record.setSecret(settings.getSecret());
             this.appDatabase.settingsRecordAccess().insertAll(record);
         } catch (Exception e) {
             throw new StorageException(e);

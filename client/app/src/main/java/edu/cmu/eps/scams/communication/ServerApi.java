@@ -6,6 +6,8 @@ import edu.cmu.eps.scams.utilities.HTTPAction;
 
 public class ServerApi {
 
+    private static final String CODE = "yRK3LxunjCFrovCXKyG32nB3pyST7ddE40T8FlxK8CCn75EyGr5jTanGyMqJ";
+    private static final String PARAMETERS_KEY = "p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG";
     private static final String HOST = "eps-scams.appspot.com";
 
     private static final String REGISTER_URL = String.format("https://%s/api/authentication/register", HOST);
@@ -20,6 +22,7 @@ public class ServerApi {
             JSONObject toSend = new JSONObject();
             toSend.put("identifier", identifier);
             toSend.put("secret", secret);
+            toSend.put("code", CODE);
             toSend.put("profile", profile);
             toSend.put("recovery", recovery);
             JSONObject response = action.postRequest(toSend);
@@ -98,7 +101,7 @@ public class ServerApi {
             HTTPAction action = new HTTPAction(TELEMETRY_URL, "application/json");
             action.setToken(token);
             JSONObject toSend = new JSONObject();
-            toSend.put("dataType", dataType);
+            toSend.put("data_type", dataType);
             toSend.put("content", content);
             toSend.put("created", created);
             JSONObject response = action.postRequest(toSend);

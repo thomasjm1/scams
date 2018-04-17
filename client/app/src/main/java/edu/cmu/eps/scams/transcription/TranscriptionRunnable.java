@@ -51,40 +51,42 @@ public class TranscriptionRunnable implements Runnable {
     public void run() {
         try {
             this.logic = ApplicationLogicFactory.build(this.context);
-            this.classifierParameters = this.logic.getClassifierParameters();
-            TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
-            double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
-            if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
-                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
-                telemetry.getProperties().put("call.transcript", result.getText());
-                telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
-                telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
-                telemetry.getProperties().put("call.number", this.incomingNumber);
-                telemetry.getProperties().put("call.likelihood", scamLikelihood);
-                this.logic.sendTelemetry(telemetry);
-                this.notifications.create(this.context, "Scam Call Detected!", String.format("Call from %s is likely a scam", this.incomingNumber));
-            } else if (scamLikelihood > REVIEWER_THRESHOLD) {
-                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
-                telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
-                telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
-                telemetry.getProperties().put("call.number", this.incomingNumber);
-                telemetry.getProperties().put("call.likelihood", scamLikelihood);
-                this.logic.sendTelemetry(telemetry);
-                OutgoingMessage message = new OutgoingMessage();
-                message.getProperties().put("call.transcript.confidence", result.getConfidence());
-                message.getProperties().put("call.timestamp", this.ringTimestamp);
-                message.getProperties().put("call.number", this.incomingNumber);
-                message.getProperties().put("call.likelihood", scamLikelihood);
-                this.logic.sendMessage(message);
-            } else {
-                Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
-                telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
-                telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
-                telemetry.getProperties().put("call.number", this.incomingNumber);
-                telemetry.getProperties().put("call.likelihood", scamLikelihood);
-                this.logic.sendTelemetry(telemetry);
+            if (this.logic.getAppSettings().isRegistered() == true) {
+                this.classifierParameters = this.logic.getClassifierParameters();
+                TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
+                double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
+                if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
+                    Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
+                    telemetry.getProperties().put("call.transcript", result.getText());
+                    telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
+                    telemetry.getProperties().put("call.number", this.incomingNumber);
+                    telemetry.getProperties().put("call.likelihood", scamLikelihood);
+                    this.logic.sendTelemetry(telemetry);
+                    this.notifications.create(this.context, "Scam Call Detected!", String.format("Call from %s is likely a scam", this.incomingNumber));
+                } else if (scamLikelihood > REVIEWER_THRESHOLD) {
+                    Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
+                    telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
+                    telemetry.getProperties().put("call.number", this.incomingNumber);
+                    telemetry.getProperties().put("call.likelihood", scamLikelihood);
+                    this.logic.sendTelemetry(telemetry);
+                    OutgoingMessage message = new OutgoingMessage();
+                    message.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    message.getProperties().put("call.timestamp", this.ringTimestamp);
+                    message.getProperties().put("call.number", this.incomingNumber);
+                    message.getProperties().put("call.likelihood", scamLikelihood);
+                    this.logic.sendMessage(message);
+                } else {
+                    Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
+                    telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    telemetry.getProperties().put("call.timestamp", this.ringTimestamp);
+                    telemetry.getProperties().put("call.number", this.incomingNumber);
+                    telemetry.getProperties().put("call.likelihood", scamLikelihood);
+                    this.logic.sendTelemetry(telemetry);
+                }
+                Log.d(TAG, String.format("Transcription: %s with %f likelihood = %f", result.getText(), result.getConfidence(), scamLikelihood));
             }
-            Log.d(TAG, String.format("Transcription: %s with %f likelihood = %f", result.getText(), result.getConfidence(), scamLikelihood));
         } catch (Exception exception) {
             Log.d(TAG, String.format("Transcription encountered error: %s", exception.getMessage()));
         }

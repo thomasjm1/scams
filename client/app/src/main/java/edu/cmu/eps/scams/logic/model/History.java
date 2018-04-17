@@ -12,6 +12,7 @@ public class History {
     private int id;
     public String Time;
     public String PhoneNumber;
+    private String description;
 
     public History(String PhoneNumber, String Time) {
         this.Time = Time;
@@ -33,6 +34,14 @@ public class History {
     public String getPhoneNumber() {
         return this.PhoneNumber;
 
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
 
