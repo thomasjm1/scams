@@ -92,18 +92,22 @@ public class ServerFacade implements IServerFacade {
                 String recipient = resultObject.getString("recipient");
                 String content = resultObject.getString("content");
                 int state = resultObject.getInt("state");
-                Long created = resultObject.getLong("created");
-                Long received = resultObject.getLong("received");
-                Long recipientReceived = resultObject.getLong("recipientReceived");
+                int created = resultObject.getInt("created");
+                int received = resultObject.opt("received") == null ? 0 : resultObject.getInt("received");
+                Object recipientReceivedValue = resultObject.opt("recipient_received");
+                int recipientReceived = 0;
+                if (recipientReceivedValue instanceof Integer) {
+                    recipientReceived = resultObject.getInt("recipient_received");
+                }
                 output.add(new IncomingMessage(
                         identifier,
                         sender,
                         recipient,
                         content,
                         state,
-                        created,
-                        received,
-                        recipientReceived
+                        (long)created,
+                        (long)received,
+                        (long)recipientReceived
                 ));
             }
             return output;

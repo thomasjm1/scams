@@ -7,7 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.sql.Time;
 import java.util.List;
 
 import edu.cmu.eps.scams.communication.ServerFacade;

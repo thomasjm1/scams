@@ -19,4 +19,4 @@ class TimestampUtility(object):
 
     @staticmethod
     def to_timestamp(input_datetime):
-        calendar.timegm(input_datetime.utctimetuple())
+        return calendar.timegm(input_datetime.utctimetuple())
