@@ -1,4 +1,6 @@
+import calendar
 import datetime
+import time
 
 
 class TimestampUtility(object):
@@ -10,3 +12,11 @@ class TimestampUtility(object):
     @staticmethod
     def parse(timestamp):
         return datetime.datetime.fromtimestamp(timestamp)
+
+    @staticmethod
+    def timestamp():
+        return int(time.time())
+
+    @staticmethod
+    def to_timestamp(input_datetime):
+        calendar.timegm(input_datetime.utctimetuple())

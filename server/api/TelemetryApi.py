@@ -37,7 +37,7 @@ def create():
             creator=identifier,
             data_type=telemetry_parameters['data_type'],
             content=telemetry_parameters['content'],
-            created=telemetry_parameters['created'],
+            created=TimestampUtility.parse(telemetry_parameters['created']),
             received=TimestampUtility.now()
         )
     )

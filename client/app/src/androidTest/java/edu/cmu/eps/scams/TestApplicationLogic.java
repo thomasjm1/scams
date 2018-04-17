@@ -73,7 +73,7 @@ public class TestApplicationLogic {
 
     @Test
     public void createAssociation() throws Exception {
-        Association created = this.logic.createAssociation("Test Association 1");
+        Association created = this.logic.createAssociation("Test", "Test Association 1");
         assertThat(created.getIdentifier().length(), greaterThan(0));
         assertThat(created.getIdentifier(), equalTo("Test Association 1"));
         List<Association> associations = this.logic.getAssociations();
@@ -82,9 +82,9 @@ public class TestApplicationLogic {
 
     @Test
     public void getAssociations() throws Exception {
-        this.logic.createAssociation("Test Association 1");
-        this.logic.createAssociation("Test Association 2");
-        this.logic.createAssociation("Test Association 3");
+        this.logic.createAssociation("Test", "Test Association 1");
+        this.logic.createAssociation("Test", "Test Association 2");
+        this.logic.createAssociation("Test", "Test Association 3");
         List<Association> associations = this.logic.getAssociations();
         assertThat(associations.size(), greaterThanOrEqualTo(3));
     }
@@ -92,7 +92,7 @@ public class TestApplicationLogic {
     @Test
     public void sendMessage() throws Exception {
         AppSettings settings = this.logic.getAppSettings();
-        this.logic.createAssociation(settings.getIdentifier());
+        this.logic.createAssociation("Test", settings.getIdentifier());
         OutgoingMessage message = new OutgoingMessage();
         try {
             message.getProperties().put("message", "content");

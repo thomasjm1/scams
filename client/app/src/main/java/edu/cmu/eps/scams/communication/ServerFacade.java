@@ -84,7 +84,7 @@ public class ServerFacade implements IServerFacade {
             List<IncomingMessage> output = new ArrayList<>();
             ServerResponse response = ServerApi.getMessages(this.token);
             JSONObject responseObject = response.getBody();
-            JSONArray resultsArray = responseObject.getJSONArray("results");
+            JSONArray resultsArray = responseObject.getJSONArray("result");
             for (int resultsIndex = 0; resultsIndex < resultsArray.length(); resultsIndex++) {
                 JSONObject resultObject = resultsArray.getJSONObject(resultsIndex);
                 String identifier = resultObject.getString("identifier");
@@ -130,7 +130,7 @@ public class ServerFacade implements IServerFacade {
         try {
             ServerResponse response = ServerApi.getClassifierParameters(this.token);
             JSONObject responseObject = response.getBody();
-            JSONObject resultObject = responseObject.getJSONObject("results");
+            JSONObject resultObject = responseObject.getJSONObject("result");
             String content = resultObject.getString("content");
             return new ClassifierParameters(content);
         } catch (Exception e) {

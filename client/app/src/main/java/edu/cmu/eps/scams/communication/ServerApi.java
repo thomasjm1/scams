@@ -101,7 +101,7 @@ public class ServerApi {
             HTTPAction action = new HTTPAction(TELEMETRY_URL, "application/json");
             action.setToken(token);
             JSONObject toSend = new JSONObject();
-            toSend.put("dataType", dataType);
+            toSend.put("data_type", dataType);
             toSend.put("content", content);
             toSend.put("created", created);
             JSONObject response = action.postRequest(toSend);
