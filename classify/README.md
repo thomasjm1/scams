@@ -34,27 +34,33 @@ To verify that the above steps were successful,
 
 # Current Work:
   The current algorithm focuses on statistical processing of call transcript.
+
 The get_scam_likelihood function takes a transcript and a space separated list of scam-indicating-keywords as String inputs.
+
 1. It removes any numeric value present in the transcript, as a primitive redaction method to clear out personal information such as bank account numbers, etc.
 1. Next, excluding common words, the program counts the number of words in the transcript that are indicative a scam. Words indicative of a scam are keywords read from the database, written into by the python module described later.
 1. Finally, the percentage of 'suspicious' words present in the transcript is printed.
 
-For testing, the get_scam_likelihood function is called from the main function using a test transcript and a basic keyword list derived from threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website.
-  
-  We also have a real time analysis module that is mostly functional. It attempts to mimic an incoming stream of call information from multiple users of the app using the statistical process above by creating multiple worker threads that each process different transcripts at random intervals and report detection of high risk keywords found over time. Currently we are using publically available SMS text message spam and non spam data sets as our test data for this module, so the reported percentages are not indicative of the success of our statistical analysis. However, using this information, we can test the overall functionality of the analysis tool that a professional 3rd party reviewer (potentially representing an insurance company or bank) might be using to analyze large amounts of user data and detect trends in phishing schemes, etc. This tool is available via the process_real_time.py script, which can simply be run as-is with a python interpreter.
+For testing, the get_scam_likelihood function is called from the main function using a test transcript and a basic keyword list.
 
-Describe python module here!
+The extract_info function takes a transcript and a flag indicating whether the call was finally classified as a scam as inputs.
 
-that were created based on threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website as well the python module
+1. It removes any numeric value present in the transcript, as a primitive redaction method to clear out personal information such as bank account numbers, etc.
+1. Next, excluding common words, the program collects the remaining words in the transcript so that they can be given as input, along with scam flag to the python module described later.
+
+For testing, the extract_info function is called from the main function using a test transcript.
+
+These functions and their helper functions are included in the client-side code in scams/tree/develop/client/app/src/main/java/edu/cmu/eps/scams/classify/ClassifyFacade.java. The scam likelihood is calculated whenever a call is recorded and transcribed. The percentage returned is used to determine the action to be taken (ignore, alert reviewer, drop call).
+
+Once a day, call data (extracted words along with whether the call was classified as a scam or not) for all calls in all the clients are collected by the python module to be consolidated to create an updated keyword list. The python module then writes this keyword list to the database. This is the keyword list queried every time get_scam_likelihood is called. Before any call data is consolidated, the initial keyword list is created based on threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website.
+
+This python module is still being tested and modified, but is based on process_real_time.py, which was demonstrated in the demo of the last prototype version.
 
 # Assumptions and Notes:
-  As integration between the Java modules and the classifier could not be set up successfully for this checkpoint, we are testing the classifier against test transcripts of real scams found online, as well as our own transcripts - both malicious and legitimate.
+  The calls to functions in ClassifyFacade has not been tested during an actual call yet. However, to observe and test the actual classification and keyword extraction, the ProcessNoJson program can be used, giving different sample transcripts as input.
 
 # Results and Conclusions:
   The classifier spits out a higher percentage when the call transcript is shorter (or when analyzing the first 20 seconds of the call rather than the whole call). This is due to the fact that our keyword bank is primitive, and needs to be expanded and weightages for each keyword has not been assigned yet.
   
 # Future Work:
-1. Rather than using this statistical processor, we intend to use a logistic regression algorithm to assign weights to keywords. 
-2. We intend to update the basic keyword bank by adding keywords to it based on scam alerts received via email from FTC. We will also implement a retention policy to remove keywords based on the freshness of the news.
-3. We need to fix communication issues with the server, in order to store the keywords and blacklisted numbers on the database, along with passing the transcript as input and results of classification as output.
-4. We intend to improve redaction techniques if possible, to limit the amount of personal information retained in transcripts, so the primary's privacy can be protected from the reviewer.
+1. 
