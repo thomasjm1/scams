@@ -2,9 +2,29 @@
 
 Algorithm to determine the likelihood of a call being a scam, or legitimate.
 
-# Method of Execution
+# Setup Instructions
 
-Simply run the process_keywords.py script in the classify directory, once the repository is cloned. In case Python running capability is not already set up, install Python for Windows using https://www.python.org/downloads/windows/, open IDLE (the Python GUI), navigate to the process_keywords.py script and use F5 as the keyboard shortcut to run it. We are using Python 2.7.10, but any later version should work.
+To run the Java programs, set up the JDK and JRE on Windows 10 using the following steps. (Or refer to https://www3.ntu.edu.sg/home/ehchua/programming/howto/JDK_Howto.html)
+
+1. Since having multiple versions of Java can be messy, if you have previously installed older version(s) of JDK/JRE, un-install ALL of them. Goto "Control Panel" ⇒ "Programs" ⇒ "Programs and Features" ⇒ Un-install ALL programs begin with "Java", such as "Java SE Development Kit ...", "Java SE Runtime ...", "Java X Update ...", and etc.
+2. Goto Java SE download site @ http://www.oracle.com/technetwork/java/javase/downloads/index.html.
+3. Click on the download button under JDK in the Java Platform, Standard Edition section for the latest version.
+4. Accept the License Agreement and download the exe for Windows.
+5. Run the downloaded installer and use the default settings during installation.
+6. Using the File Explorer, goto "C:\Program Files\Java" and note the name of the JDK directory.
+7. Launch "Control Panel" ⇒ System and Security ⇒ System ⇒ Click "Advanced system settings" on the left pane.
+8. Switch to "Advanced" tab ⇒ Push "Environment Variables" button.
+9. Under "System Variables" (the bottom pane), scroll down to select "Path" ⇒ Click "Edit...".
+10. You shall see a TABLE listing all the existing PATH entries. Click "New" ⇒ Enter the JDK's "bin" directory "c:\Program Files\Java\jdk-x.y.z\bin" (Replace x,y,z with your installation number) ⇒ Select "Move Up" to move this entry all the way to the TOP.
+
+To verify that the above steps were successful,
+
+1. Open command prompt.
+2. Type path and check if "c:\Program Files\Java\jdk-x.y.z\bin" is at the beginning of the result.
+3. Type java -version to see if JRE was installed correctly.
+4. Type javac -version to see if JDK was installed correctly.
+
+# Method of Execution
 
 # Current Work:
   The current algorithm focuses on statistical processing and simple redaction of call transcript:
