@@ -63,4 +63,8 @@ This python module is still being tested and modified, but is based on process_r
   The classifier spits out a higher percentage when the call transcript is shorter (or when analyzing the first 20 seconds of the call rather than the whole call). This is due to the fact that our keyword bank is primitive, and needs to be expanded and weightages for each keyword has not been assigned yet.
   
 # Future Work:
-1. 
+  In basic classifier:
+ 1. Redaction can be improved by removing name of primary as well as names present in the primary's phonebook.
+ 1. The blacklist database can be updated by adding the phone numbers from which scam calls are made.
+ 1. The confidence of speech-to-text translator can be taken into consideration for classification (in case of robocalls or calls from those who mask their voice, confidence of the translator may be different).
+ 1. Take into account the format of the phone number from which call is made. Eg: Often if your number is (555) 867-5309, then scammers call you from a number that looks like (555) 867-####.
