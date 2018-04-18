@@ -33,14 +33,20 @@ To verify that the above steps were successful,
   1. Type java ProcessNoJson
 
 # Current Work:
-  The current algorithm focuses on statistical processing and simple redaction of call transcript:
-1. The python program process_keywords.py takes a transcripts as input from the transcripts folder.
-2. It replaces any numeric value present in the transcript with 'x'es, as a primitive redaction method to clear out personal information such as bank account numbers, etc.
-3. Next, excluding common words (read from the flat file present in the keybank folder), the program counts the number of words in the transcript that are indicative a scam. Words indicative of a scam are keywords present in the keybank file, that were created based on threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website.
-4. Finally, the percentage of 'suspicious' words is printed.
+  The current algorithm focuses on statistical processing of call transcript.
+The get_scam_likelihood function takes a transcript and a space separated list of scam-indicating-keywords as String inputs.
+1. It removes any numeric value present in the transcript, as a primitive redaction method to clear out personal information such as bank account numbers, etc.
+1. Next, excluding common words, the program counts the number of words in the transcript that are indicative a scam. Words indicative of a scam are keywords read from the database, written into by the python module described later.
+1. Finally, the percentage of 'suspicious' words present in the transcript is printed.
+
+For testing, the get_scam_likelihood function is called from the main function using a test transcript and a basic keyword list derived from threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website.
   
   We also have a real time analysis module that is mostly functional. It attempts to mimic an incoming stream of call information from multiple users of the app using the statistical process above by creating multiple worker threads that each process different transcripts at random intervals and report detection of high risk keywords found over time. Currently we are using publically available SMS text message spam and non spam data sets as our test data for this module, so the reported percentages are not indicative of the success of our statistical analysis. However, using this information, we can test the overall functionality of the analysis tool that a professional 3rd party reviewer (potentially representing an insurance company or bank) might be using to analyze large amounts of user data and detect trends in phishing schemes, etc. This tool is available via the process_real_time.py script, which can simply be run as-is with a python interpreter.
-  
+
+Describe python module here!
+
+that were created based on threat profile research done from a number of sources including Phone Scam Information posted on the FTC's website as well the python module
+
 # Assumptions and Notes:
   As integration between the Java modules and the classifier could not be set up successfully for this checkpoint, we are testing the classifier against test transcripts of real scams found online, as well as our own transcripts - both malicious and legitimate.
 
