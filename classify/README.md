@@ -2,7 +2,7 @@
 
 Algorithm to determine the likelihood of a call being a scam, or legitimate.
 
-# Setup Instructions
+# Setup Instructions:
 
 To run the Java programs, set up the JDK and JRE on Windows 10 using the following steps. (Or refer to https://www3.ntu.edu.sg/home/ehchua/programming/howto/JDK_Howto.html)
 
@@ -24,7 +24,13 @@ To verify that the above steps were successful,
 3. Type java -version to see if JRE was installed correctly.
 4. Type javac -version to see if JDK was installed correctly.
 
-# Method of Execution
+# Method of Execution:
+
+  To test whether scam likelihood is being printed correctly and to view significant words extracted from a transcript, follow these steps:
+  1. Open the command prompt. 
+  1. Traverse to the scams/classify/javaprograms/ folder in the local copy of the repo.
+  1. Type javac ProcessNoJson.java
+  1. Type java ProcessNoJson
 
 # Current Work:
   The current algorithm focuses on statistical processing and simple redaction of call transcript:
