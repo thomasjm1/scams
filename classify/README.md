@@ -68,3 +68,39 @@ This python module is still being tested and modified, but is based on process_r
  1. The blacklist database can be updated by adding the phone numbers from which scam calls are made.
  1. The confidence of speech-to-text translator can be taken into consideration for classification (in case of robocalls or calls from those who mask their voice, confidence of the translator may be different).
  1. Take into account the format of the phone number from which call is made. Eg: Often if your number is (555) 867-5309, then scammers call you from a number that looks like (555) 867-####.
+
+A second iteration classifier was also developed but not integrated into the application for this project checkpoint. With the new functionality included in the naive_bayes_helper.py file, we attempted to build a smarter classifier that was still reasonable to implement from scratch and stayed within the scope of the project. This updated classifier is based on the Naive Bayes text classification approach (more info: https://www.inf.ed.ac.uk/teaching/courses/inf2b/learnnotes/inf2b-learn-note07-2up.pdf), specifically using the bag of words approach that allows us to continue simply analyzing keywords without consideration of order which helps with both simplicity of implementing the algorithm and efficiency during run time classification.
+
+The algorithm works by converting input scam and non scram training data/transcripts into frequency tables needed by the classifier. I begin by building a full dictionary of words found within any of the input transcripts (scam or not scam) and then remove duplicate words and the most common words in the English language. For every word in the dictionary, I use the input transcripts again to calculate frequency tables of of the conditional probabilities for each word. For example, if the word "account" is in the general dictionary, I can calculate the likelihood of the word "account" being found in a scam call. For our two classes, scam (S) and non scam (N), these likelihoods translate to the conditional probability P(W|S) that I'll see the word, W, in a scam transcript and 1 - P(W|S) = P(W|N) is the likelihood that the word is found in a non scam transcript.
+
+The algorithm also needs to know P(S) and P(N) the general probabilities of a given call being a scam call or a non scam call. I had to manually calculate these values myself based on recent scam reports and statistics (sources cited below). This value ended up being estimated to approximately 9.41% of calls are (automated or non automated) phishing attempts.
+
+For this algorithm, we needed training data comprised of both scam and non scam transcripts (found in ./transcripts/training). This was actually the hardest part in comparison to building the classifier because we wanted to be very careful about the way that the training data biased our classifier. Overall, we decided we wanted to first and foremost prioritize usability and therefore reduce false positives or even false "grey" area scenarios that would involve a third party reviewer. Realistically, the worst our app should perform should be equivalent to a phone that doesn't have our application installed. If we erred too much on the side of caution and raised a notification or forcibly hung up the phone in a false positive too often, then the phone would basically be renderred unusable. Of course, this does not mean that we want to have false negatives and provide a false sense of security to the user without any substance. To combat this issue and also due to a lack of useful phishing training data available online, I have had to partially modify training data that originated from a spam email data set online (http://csmining.org/index.php/spam-email-datasets-.html) and in some cases completely write my own training transcripts from scratch. In an attempt to get the best results, I have tried to get a diverse set of likey/most common phishing call scenarios based on reports online (https://www.ag.state.mn.us/consumer/publications/VoicePhishing.asp and https://www.rd.com/advice/saving-money/phone-call-scams/). However, due to limited time I have only been able to build training data in the following categories:
+    Card services
+    Phony debt collection
+    High tech computer scam
+    Financial information
+    IRS impersonations
+    Bank calls
+    Lucky winner 
+    Donation collections
+
+This naturally overlap with the testing process, and I plan to include training data transcripts in the following categories as well:
+    Medical alert
+    Bogus gift card offer
+    Work at home scam
+    Government grant scam
+    New medicare card
+    Can you hear me?
+    Virtual kidnapping
+    Grandparent scam
+    Jury eligibility
+
+Unfortunately other integration issues as well as a lack of proof of concept testing for this new classifier due to lack of complete training data meant that it couldn't be incorporated into the application for this checkpoint. We hope to have the original classifier working with the application first and then eventually transition into using the new classifier parameters in the java application.
+
+Scam likelihood calculation sources:
+http://www.pewresearch.org/fact-tank/2017/01/12/evolution-of-technology/
+http://www.mtab.com/statistics-say-phone-scams-escalating/
+https://www.theverge.com/2018/1/1/16837814/robocall-spam-phone-call-increase-2017-ftc-report
+https://www.robokiller.com/robocalltaskforce
+https://www.scamwatch.gov.au/about-scamwatch/scam-statistics?scamid=all&date=2018-02
