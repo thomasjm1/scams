@@ -6,6 +6,11 @@ import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.History;
 
+
+/**
+ *
+ * Wrapper around background task results that are executed for application logic
+ */
 public class ApplicationLogicResult {
     private final Object result;
 

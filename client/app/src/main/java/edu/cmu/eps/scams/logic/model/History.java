@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by thoma on 4/13/2018.
+ * Created by jeremy on 4/13/2018.
+ * Represent a past action by the software such as classifying a call
  */
 
 public class History {

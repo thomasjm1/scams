@@ -23,7 +23,8 @@ import javax.net.ssl.HttpsURLConnection;
 import static android.util.Base64.DEFAULT;
 
 /**
- * Created by thoma on 3/19/2018.
+ * Created by jeremy on 3/19/2018.
+ * Ugly HTTP code to get google speech API to transcribe our audio recordings.
  */
 
 public class TranscriptionUtility {

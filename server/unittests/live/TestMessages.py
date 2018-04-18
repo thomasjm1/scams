@@ -5,6 +5,10 @@ import requests
 from utilities.RandomUtility import RandomUtility
 from utilities.TimestampUtility import TimestampUtility
 
+"""
+Test the live production version of the server running on Google App Engine
+"""
+
 
 class TestMessages(unittest.TestCase):
 

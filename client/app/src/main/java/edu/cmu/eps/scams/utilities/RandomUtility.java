@@ -4,6 +4,9 @@ import android.util.Base64;
 
 import java.util.Random;
 
+/*
+* Create random strings.
+* */
 public class RandomUtility {
 
     public static String getString(int length) {

@@ -11,6 +11,10 @@ from utilities.TimestampUtility import TimestampUtility
 
 messages = Blueprint('messages', __name__, url_prefix='/api/messages')
 
+"""
+The Messages API allows devices to send messages to other devices and receive pending messages from other devices.
+"""
+
 
 @messages.before_request
 def before_request():

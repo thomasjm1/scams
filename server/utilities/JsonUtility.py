@@ -2,6 +2,10 @@ import json
 
 from utilities.DateTimeEncoder import DateTimeEncoder
 
+"""
+Convert objects to and from json
+"""
+
 
 class JsonUtility(object):
 

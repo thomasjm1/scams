@@ -2,6 +2,10 @@ import logging
 from model.messages.Message import Message
 from repositories.PersistenceError import PersistenceError
 
+"""
+Contains Message table accesses.
+"""
+
 
 class MessageRepository(object):
     logger = logging.getLogger(__name__)

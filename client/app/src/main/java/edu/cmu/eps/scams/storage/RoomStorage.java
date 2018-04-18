@@ -11,6 +11,9 @@ import edu.cmu.eps.scams.storage.model.HistoryRecord;
 import edu.cmu.eps.scams.storage.model.SettingsRecord;
 import edu.cmu.eps.scams.utilities.TimestampUtility;
 
+/**
+ * Implementation of local storage interfacae using "Room" library from android
+ */
 public class RoomStorage implements ILocalStorage {
 
     private final AppDatabase appDatabase;

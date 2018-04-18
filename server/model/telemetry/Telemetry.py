@@ -4,6 +4,11 @@ from peewee import *
 from model.BaseModel import BaseModel
 
 
+"""
+Telemetries represnt the event objects recorded by the client devices.
+"""
+
+
 class Telemetry(BaseModel):
     creator = CharField(null=False)
     data_type = CharField(null=False)

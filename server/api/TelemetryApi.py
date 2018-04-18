@@ -1,6 +1,4 @@
-import json
-
-from flask import Blueprint, logging, Response, request
+from flask import Blueprint, Response, request
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from api.BaseApi import authentication_required, logger
@@ -12,6 +10,11 @@ from utilities.TimestampUtility import TimestampUtility
 
 telemetry = Blueprint('telemetry', __name__, url_prefix='/api/telemetry')
 
+
+"""
+The Telemetry API allows client devices to upload details of events from the devices. Such as scam call, application 
+installation, application crashes and debugging details.
+"""
 
 @telemetry.before_request
 def before_request():

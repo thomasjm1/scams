@@ -8,7 +8,10 @@ import android.arch.persistence.room.Query;
 import java.util.List;
 
 import edu.cmu.eps.scams.storage.model.HistoryRecord;
-
+/**
+ *
+ * Access for history records on the devices storage.
+ */
 @Dao
 public interface HistoryRecordAccess {
     @Query("SELECT * FROM historyrecord")

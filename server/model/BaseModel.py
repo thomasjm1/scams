@@ -5,6 +5,10 @@ from utilities.JsonUtility import JsonUtility
 
 database_proxy = Proxy()
 
+"""
+A base class for all model objects. Each model object represent a table in a relational database
+"""
+
 
 class BaseModel(Model):
     id = PrimaryKeyField()

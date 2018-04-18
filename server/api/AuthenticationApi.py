@@ -11,6 +11,10 @@ from repositories.IdentityRepository import IdentityRepository
 
 authentication = Blueprint('authentication', __name__, url_prefix='/api/authentication')
 
+"""
+The Authentication API allows devices to gain access to the server. This is accomplished using JSON web tokens.
+"""
+
 
 @authentication.before_request
 def before_request():

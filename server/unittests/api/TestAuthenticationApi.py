@@ -8,6 +8,10 @@ import os
 
 from app import AppFactory
 
+"""
+Test the authentication API
+"""
+
 
 class TestAuthenticationApi(unittest.TestCase):
 

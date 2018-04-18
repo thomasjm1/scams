@@ -8,7 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 /**
- * Created by thoma on 3/10/2018.
+ * Created by jeremy on 3/10/2018.
+ * The class wraps around the permissions API in android.
  */
 
 public class PermissionsFacade {

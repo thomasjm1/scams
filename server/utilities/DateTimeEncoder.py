@@ -3,6 +3,10 @@ import json
 
 from utilities.TimestampUtility import TimestampUtility
 
+"""
+Encode datetime in json format
+"""
+
 
 class DateTimeEncoder(json.JSONEncoder):
     def default(self, o):

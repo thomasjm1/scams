@@ -5,9 +5,9 @@ import android.util.Base64;
 import java.security.SecureRandom;
 
 /**
- * Created by thoma on 4/13/2018.
+ * Created by jeremy on 4/13/2018.
+ * Some application settings classes for application logic
  */
-
 public class AppSettings {
 
     private static final int IDENTIFIER_BYTES = 64;

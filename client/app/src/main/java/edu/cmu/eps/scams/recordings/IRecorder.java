@@ -4,7 +4,8 @@ import java.io.File;
 import java.util.Collection;
 
 /**
- * Created by thoma on 3/17/2018.
+ * Created by jeremy on 3/17/2018.
+ * An interface for abstracting recording events
  */
 
 public interface IRecorder {

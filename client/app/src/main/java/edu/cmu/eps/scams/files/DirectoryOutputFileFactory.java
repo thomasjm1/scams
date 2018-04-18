@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.UUID;
 
 /**
- * Created by thoma on 3/5/2018.
+ * Created by jeremy on 3/5/2018.
  * This class gets new files in local storage for recordings.
  */
 

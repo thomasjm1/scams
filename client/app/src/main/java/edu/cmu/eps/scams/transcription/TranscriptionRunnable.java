@@ -9,16 +9,16 @@ import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
-import edu.cmu.eps.scams.logic.OutgoingMessage;
+import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.recordings.AudioRecording;
 import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 /**
- * Created by thoma on 3/19/2018.
+ * Created by jeremy on 3/19/2018.
+ * Thread runnnable for getting a transcription of a call recording.
  */
-
 public class TranscriptionRunnable implements Runnable {
 
     private static final String TAG = "TranscriptionRunnable";

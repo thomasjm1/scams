@@ -26,9 +26,10 @@ import edu.cmu.eps.scams.recordings.PhoneCallResult;
 import static edu.cmu.eps.scams.logic.model.MessageType.NOTIFY;
 
 /**
- * Created by thoma on 3/10/2018.
+ * Created by jeremy on 4/15/2018.
+ * The background handler that runs on another thread. Actually does the work of polling the server
+ * for messages
  */
-
 public class MessagingServiceHandler extends Handler {
 
     private static final String TAG = "MessagingServiceHandler";

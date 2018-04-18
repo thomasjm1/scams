@@ -10,6 +10,11 @@ import java.util.List;
 import edu.cmu.eps.scams.storage.model.AssociationRecord;
 import edu.cmu.eps.scams.storage.model.HistoryRecord;
 
+/**
+ *
+ * Access for association records on the devices storage.
+ */
+
 @Dao
 public interface AssociationRecordAccess {
 

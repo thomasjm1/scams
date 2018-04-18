@@ -14,6 +14,9 @@ import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.transcription.TranscriptionRunnable;
 
+/**
+ * Another background service. This one handles sending audio recordings to google for transcription.
+ */
 public class TranscriptionService extends Service {
 
     private static final String TAG = "TranscriptionService";

@@ -32,12 +32,10 @@ public class PhoneEventService extends Service {
 
     private void setup() {
         Log.d(TAG, "Phone event service created, listening for phone events");
-        /*
         Intent intent = new Intent(getApplicationContext(), PhoneEventService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 60000, 60000, pendingIntent);
-        */
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 60000, 10000, pendingIntent);
         TelephonyManager telephonyManager = this.getSystemService(TelephonyManager.class);
         telephonyManager.listen(new RecordingPhoneStateListener(this), PhoneStateListener.LISTEN_CALL_STATE);
         this.setupFlag = true;

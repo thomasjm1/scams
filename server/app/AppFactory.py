@@ -22,6 +22,13 @@ from model.telemetry.Telemetry import Telemetry
 logger = logging.getLogger(__name__)
 
 
+"""
+This factory class builds the application in either test or production mode. In test, a SQLite database is built on
+the local filesystem. In production a database URI is provided through the application configuration (which is read
+from the environment variables.
+"""
+
+
 def create_app(test_flag):
     app = Flask(__name__)
 

@@ -3,6 +3,9 @@ package edu.cmu.eps.scams.logic.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/*
+* Messages received from the server
+* */
 public class IncomingMessage {
 
     private final String identifier;

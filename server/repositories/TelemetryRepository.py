@@ -2,6 +2,10 @@ import logging
 from model.telemetry.Telemetry import Telemetry
 from repositories.PersistenceError import PersistenceError
 
+"""
+Contains Telemetry table accesses.
+"""
+
 
 class TelemetryRepository(object):
     logger = logging.getLogger(__name__)

@@ -3,6 +3,9 @@ package edu.cmu.eps.scams.logic.model;
 import java.util.Map;
 import java.util.TreeMap;
 
+/*
+* Telemetry model for sending to server.
+* */
 public class Telemetry {
     private final TreeMap<String, Object> properties;
     private final String dataType;

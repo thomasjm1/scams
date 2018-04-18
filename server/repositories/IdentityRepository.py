@@ -3,6 +3,11 @@ from model.identities.Identity import Identity
 from repositories.PersistenceError import PersistenceError
 
 
+"""
+Contains Identity table accesses.
+"""
+
+
 class IdentityRepository(object):
     logger = logging.getLogger(__name__)
 

@@ -6,9 +6,9 @@ import android.media.MediaRecorder;
 import java.io.File;
 
 /**
- * Created by thoma on 3/18/2018.
+ * Created by jeremy on 3/18/2018.
+ * A class to represent details of an audio recording.
  */
-
 public class AudioRecording {
 
 

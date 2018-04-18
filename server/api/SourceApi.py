@@ -11,6 +11,12 @@ from utilities.TimestampUtility import TimestampUtility
 sources = Blueprint('sources', __name__, url_prefix='/api/sources')
 
 
+"""
+The source API allows the server to maintain the blacklist of phone numbers. It is intended to be expandable for future
+communication sources (email addresses, social media accounts, etc.) blacklists.
+"""
+
+
 @sources.before_request
 def before_request():
     if database_proxy.is_closed():

@@ -2,6 +2,10 @@ import calendar
 import datetime
 import time
 
+"""
+Build timestamps
+"""
+
 
 class TimestampUtility(object):
 

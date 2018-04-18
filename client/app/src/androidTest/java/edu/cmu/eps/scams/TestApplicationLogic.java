@@ -16,10 +16,9 @@ import java.util.List;
 
 import edu.cmu.eps.scams.logic.ApplicationLogic;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
-import edu.cmu.eps.scams.logic.OutgoingMessage;
+import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
-import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.storage.AppDatabase;
 import edu.cmu.eps.scams.storage.RoomStorage;
 
@@ -28,7 +27,9 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
-
+/*
+* Test the application logic, running on an android device.
+* */
 @RunWith(AndroidJUnit4.class)
 public class TestApplicationLogic {
 

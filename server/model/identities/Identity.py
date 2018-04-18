@@ -4,6 +4,10 @@ from peewee import *
 from model.BaseModel import BaseModel
 
 
+"""
+Identities represent device identities. So each phone has a unique identity.
+"""
+
 class Identity(BaseModel):
     identifier = CharField(null=False)
     secret = CharField(null=False)

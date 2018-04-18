@@ -1,6 +1,10 @@
 import random
 import string
 
+"""
+Create random strings
+"""
+
 
 class RandomUtility(object):
 

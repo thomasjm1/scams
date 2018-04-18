@@ -1,7 +1,7 @@
 package edu.cmu.eps.scams.services;
 
 /**
- * Created by thoma on 3/5/2018.
+ * Created by jeremy on 3/5/2018.
  * Represents the events we need to support for recording
  */
 

@@ -16,9 +16,9 @@ import static edu.cmu.eps.scams.recordings.AudioRecording.READ_BUFFER_SIZE;
 import static edu.cmu.eps.scams.recordings.AudioRecording.SAMPLE_RATE;
 
 /**
- * Created by thoma on 3/11/2018.
+ * Created by jeremy on 3/11/2018.
+ * A bunch of android audio recording garbage. Basically record the audio and write to file.
  */
-
 public class AudioRecordFacade extends BaseRecorder {
 
     private static final String TAG = "AudioRecordFacade";

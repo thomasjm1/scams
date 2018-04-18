@@ -5,6 +5,10 @@ from peewee import *
 
 from model.BaseModel import BaseModel
 
+"""
+Messages are sent between devices. The server facilitates this mechanism.
+"""
+
 
 class Message(BaseModel):
     identifier = CharField(null=False)

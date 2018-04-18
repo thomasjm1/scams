@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import java.util.List;
 
 import edu.cmu.eps.scams.communication.ServerFacade;
-import edu.cmu.eps.scams.logic.OutgoingMessage;
+import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
@@ -20,6 +20,9 @@ import edu.cmu.eps.scams.utilities.TimestampUtility;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
+/*
+* Test the server API calls over HTTP.
+* */
 @RunWith(AndroidJUnit4.class)
 public class TestServerFacade {
 

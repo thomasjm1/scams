@@ -3,6 +3,10 @@ package edu.cmu.eps.scams.classify;
 import java.util.*;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 
+
+/*
+ * Simple wrapper around classification algorithm.
+ */
 public class ClassifyFacade {
     
     public static List<String> common_words = new ArrayList<String>(

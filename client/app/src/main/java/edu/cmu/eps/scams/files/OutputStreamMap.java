@@ -8,9 +8,10 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Created by thoma on 3/17/2018.
+ * Created by jeremy on 3/17/2018.
+ * Build a map of output streams. Used to write audio recording to multiple streams for different
+ * recording lengths: 0-10 seconds, 0-30 seconds, 0-60 seconds
  */
-
 public class OutputStreamMap {
 
     private static final String TAG = "OutputStreamMap";

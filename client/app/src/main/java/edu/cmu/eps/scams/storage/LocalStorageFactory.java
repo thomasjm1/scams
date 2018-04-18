@@ -3,6 +3,9 @@ package edu.cmu.eps.scams.storage;
 import android.arch.persistence.room.Room;
 import android.content.Context;
 
+/*
+* Factory for local storage structure, its expensive, so only create a few...
+* */
 public class LocalStorageFactory {
 
     private static AppDatabase appDatabase;

@@ -6,7 +6,8 @@ import java.io.File;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
- * Created by thoma on 3/17/2018.
+ * Created by jeremy on 3/17/2018.
+ * A base recording class, in case we every want to change the recording functionality again.
  */
 
 public abstract class BaseRecorder implements IRecorder {

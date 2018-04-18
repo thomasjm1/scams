@@ -1,6 +1,11 @@
 from utilities.RandomUtility import RandomUtility
 
 
+"""
+The Config Module provides simple configurations for deployment version of the application such as production, development,
+and testing.
+"""
+
 class Config(object):
     DEBUG = False
     TESTING = False

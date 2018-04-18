@@ -1,5 +1,8 @@
 package edu.cmu.eps.scams.logic.model;
 
+/**
+ * Classifier parameters again
+ */
 public class ClassifierParameters {
     private final String content;
 

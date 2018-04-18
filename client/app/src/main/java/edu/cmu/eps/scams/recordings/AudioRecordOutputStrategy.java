@@ -19,9 +19,9 @@ import static edu.cmu.eps.scams.recordings.AudioRecording.ENCODING;
 import static edu.cmu.eps.scams.recordings.AudioRecording.SAMPLE_RATE;
 
 /**
- * Created by thoma on 3/18/2018.
+ * Created by jeremy on 3/18/2018.
+ * An implementation of handling audio recording output by writing it to sets of files.
  */
-
 public class AudioRecordOutputStrategy {
 
     private static final String TAG = "AudioRecordOutputStrategy";

@@ -24,6 +24,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertThat;
 
+/*
+* Test the local storage implementation
+* */
 @RunWith(AndroidJUnit4.class)
 public class TestRoomStorage {
 

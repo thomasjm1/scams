@@ -5,6 +5,10 @@ import requests
 
 from utilities.RandomUtility import RandomUtility
 
+"""
+Test the live production version of the server running on Google App Engine
+"""
+
 
 class TestClassifierParameters(unittest.TestCase):
 

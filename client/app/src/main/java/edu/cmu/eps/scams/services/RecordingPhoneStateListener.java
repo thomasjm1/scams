@@ -11,7 +11,7 @@ import edu.cmu.eps.scams.services.RecordingEvents;
 import edu.cmu.eps.scams.services.RecordingService;
 
 /**
- * Created by thoma on 3/5/2018.
+ * Created by jeremy on 3/5/2018.
  * Listens for changes to phone state and broadcasts
  */
 

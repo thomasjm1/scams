@@ -1,7 +1,10 @@
-package edu.cmu.eps.scams.logic;
+package edu.cmu.eps.scams.logic.model;
 
 import java.util.TreeMap;
 
+/**
+ * Model for messages to send to the server to deliver to other devices.
+ */
 public class OutgoingMessage {
 
     private final TreeMap<String, Object> properties;

@@ -2,6 +2,10 @@ import logging
 from model.telemetry.Source import Source
 from repositories.PersistenceError import PersistenceError
 
+"""
+Contains Source table accesses.
+"""
+
 
 class SourceRepository(object):
     logger = logging.getLogger(__name__)

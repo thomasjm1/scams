@@ -15,6 +15,12 @@ parameters = Blueprint('parameters', __name__, url_prefix='/api/parameters')
 
 PARAMETERS_KEY = 'p4ZfOJxhXJOU5VE9mdPX8Mo5V8dveda1bCUQaQ4QzHo06nrklJxRvdNpUZSE4WnG'
 
+"""
+The Parameters API allows the client devices to retrieve classifier parameters and the classification training process
+to update the parameters stored in the database. The classification training process can also retrieve the resulting 
+classifications reported by clients.
+"""
+
 
 @parameters.before_request
 def before_request():

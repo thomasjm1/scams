@@ -2,6 +2,10 @@ import json
 
 from flask import Response
 
+"""
+Build standard HTTP responses
+"""
+
 
 class ResponseUtility(object):
 

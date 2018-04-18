@@ -4,6 +4,9 @@ import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+/*
+* Local storage model, persisted in a sqlite database on the device.
+* */
 @Entity
 public class AssociationRecord {
 

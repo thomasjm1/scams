@@ -9,12 +9,15 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.cmu.eps.scams.logic.OutgoingMessage;
+import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.utilities.TimestampUtility;
 
+/**
+ * Contains logic for interacting with server (mostly authentication wrapping server calls)
+ */
 public class ServerFacade implements IServerFacade {
 
     private String identifier;

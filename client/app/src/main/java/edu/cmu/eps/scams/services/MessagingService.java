@@ -11,6 +11,9 @@ import android.util.Log;
 
 import edu.cmu.eps.scams.files.DirectoryOutputFileFactory;
 
+/*
+* Another background service in Android. This one handles polling the server for new messages.
+* */
 public class MessagingService extends Service {
 
     private static final String TAG = "MessagingService";

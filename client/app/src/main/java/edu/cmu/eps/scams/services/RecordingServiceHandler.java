@@ -16,9 +16,9 @@ import edu.cmu.eps.scams.recordings.IRecorder;
 import edu.cmu.eps.scams.recordings.PhoneCallResult;
 
 /**
- * Created by thoma on 3/10/2018.
+ * Created by jeremy on 3/10/2018.
+ * The background Handler that runs on another thread and does the work of recording audio
  */
-
 public class RecordingServiceHandler extends Handler {
 
     private static final String TAG = "RecordingServiceHandler";

@@ -10,7 +10,9 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 /**
- * Created by thoma on 3/17/2018.
+ * Created by jeremy on 3/17/2018.
+ * Ugliest code ever. We store the recordings as WAV files so apparently we need to write header
+ * and this was the best code I could find.
  */
 
 public class WavUtility {

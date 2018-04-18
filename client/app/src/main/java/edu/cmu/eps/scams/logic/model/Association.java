@@ -1,9 +1,9 @@
 package edu.cmu.eps.scams.logic.model;
 
 /**
- * Created by thoma on 4/13/2018.
+ * Created by jeremy on 4/13/2018.
+ * Reviewer and Primary users are associations for each other
  */
-
 public class Association {
 
     private final String identifier;

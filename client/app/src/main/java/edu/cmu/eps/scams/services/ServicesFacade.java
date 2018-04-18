@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.util.Log;
 
 /**
- * Created by thoma on 3/10/2018.
- * Starts background services, run from main activity
+ * Created by jeremy on 3/10/2018.
+ * Starts background services since there are too many, run from main activity
  */
 
 public class ServicesFacade {

@@ -3,7 +3,8 @@ package edu.cmu.eps.scams.recordings;
 import java.io.File;
 
 /**
- * Created by thoma on 3/19/2018.
+ * Created by jeremy on 3/19/2018.
+ * The results of phone call that we recorded
  */
 
 public class PhoneCallResult {

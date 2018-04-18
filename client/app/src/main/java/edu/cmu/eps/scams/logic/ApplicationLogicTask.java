@@ -2,6 +2,12 @@ package edu.cmu.eps.scams.logic;
 
 import android.os.AsyncTask;
 
+
+/**
+ *
+ * Android requires file and network functions to run on background threads, so we use this AsyncTask
+ * class to accomplish this. Built specifically for wrapping application logic functions.
+ */
 public class ApplicationLogicTask extends AsyncTask<IApplicationLogicCommand, Integer, ApplicationLogicResult> {
 
     private final IApplicationLogic logic;

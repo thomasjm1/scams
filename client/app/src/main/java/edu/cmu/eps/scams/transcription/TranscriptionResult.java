@@ -1,5 +1,7 @@
 package edu.cmu.eps.scams.transcription;
-
+/*
+* Results of a tracsription.
+* */
 public class TranscriptionResult {
 
     private final String text;

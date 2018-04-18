@@ -12,14 +12,16 @@ import edu.cmu.eps.scams.communication.ServerFacade;
 import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
-import edu.cmu.eps.scams.logic.model.Friend;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
+import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.storage.ILocalStorage;
 import edu.cmu.eps.scams.storage.StorageException;
-import edu.cmu.eps.scams.utilities.TimestampUtility;
 
+/**
+ * Implementation of applciation logic for interfacing with UI.
+ */
 public class ApplicationLogic implements IApplicationLogic {
 
     private static final String TAG = "ApplicationLogic";

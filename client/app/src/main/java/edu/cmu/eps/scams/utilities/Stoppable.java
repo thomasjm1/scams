@@ -3,7 +3,7 @@ package edu.cmu.eps.scams.utilities;
 import android.util.Log;
 
 /**
- * Created by thoma on 3/5/2018.
+ * Created by jeremy on 3/5/2018.
  */
 
 public abstract class Stoppable implements Runnable {
