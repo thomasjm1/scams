@@ -75,32 +75,32 @@ The algorithm works by converting input scam and non scram training data/transcr
 
 The algorithm also needs to know P(S) and P(N) the general probabilities of a given call being a scam call or a non scam call. I had to manually calculate these values myself based on recent scam reports and statistics (sources cited below). This value ended up being estimated to approximately 9.41% of calls are (automated or non automated) phishing attempts.
 
-For this algorithm, we needed training data comprised of both scam and non scam transcripts (found in ./transcripts/training). This was actually the hardest part in comparison to building the classifier because we wanted to be very careful about the way that the training data biased our classifier. Overall, we decided we wanted to first and foremost prioritize usability and therefore reduce false positives or even false "grey" area scenarios that would involve a third party reviewer. Realistically, the worst our app should perform should be equivalent to a phone that doesn't have our application installed. If we erred too much on the side of caution and raised a notification or forcibly hung up the phone in a false positive too often, then the phone would basically be renderred unusable. Of course, this does not mean that we want to have false negatives and provide a false sense of security to the user without any substance. To combat this issue and also due to a lack of useful phishing training data available online, I have had to partially modify training data that originated from a spam email data set online (http://csmining.org/index.php/spam-email-datasets-.html) and in some cases completely write my own training transcripts from scratch. In an attempt to get the best results, I have tried to get a diverse set of likey/most common phishing call scenarios based on reports online (https://www.ag.state.mn.us/consumer/publications/VoicePhishing.asp and https://www.rd.com/advice/saving-money/phone-call-scams/). However, due to limited time I have only been able to build training data in the following categories:
-    Card services
-    Phony debt collection
-    High tech computer scam
-    Financial information
-    IRS impersonations
-    Bank calls
-    Lucky winner 
-    Donation collections
+For this algorithm, we needed training data comprised of both scam and non scam transcripts (found in ./transcripts/training). This was actually the hardest part in comparison to building the classifier because we wanted to be very careful about the way that the training data biased our classifier. Overall, we decided we wanted to first and foremost prioritize usability and therefore reduce false positives or even false "grey" area scenarios that would involve a third party reviewer. Realistically, the worst our app should perform should be equivalent to a phone that doesn't have our application installed. If we erred too much on the side of caution and raised a notification or forcibly hung up the phone in a false positive too often, then the phone would basically be renderred unusable. Of course, this does not mean that we want to have false negatives and provide a false sense of security to the user without any substance. To combat this issue and also due to a lack of useful phishing training data available online, I have had to partially modify training data that originated from a spam email data set online (http://csmining.org/index.php/spam-email-datasets-.html) and in some cases completely write my own training transcripts from scratch. In an attempt to get the best results, I have tried to get a diverse set of likely/most common phishing call scenarios based on reports online (https://www.ag.state.mn.us/consumer/publications/VoicePhishing.asp and https://www.rd.com/advice/saving-money/phone-call-scams/). However, due to limited time I have only been able to build training data in the following categories:
+1. Card services
+1. Phony debt collection
+1. High tech computer scam
+1. Financial Information
+1. IRS impersonations
+1. Bank calls
+1. Lucky winner 
+1. Donation collections
 
-This naturally overlap with the testing process, and I plan to include training data transcripts in the following categories as well:
-    Medical alert
-    Bogus gift card offer
-    Work at home scam
-    Government grant scam
-    New medicare card
-    Can you hear me?
-    Virtual kidnapping
-    Grandparent scam
-    Jury eligibility
+As future work, I also plan to add training data in the following categories, which should only help during the upcoming testing process anyway:
+1. Medical alert
+1. Bogus gift card offer
+1. Work at home scam
+1. Government grant scam
+1. New medicare card
+1. Can you hear me?
+1. Virtual kidnapping
+1. Grandparent scam
+1. Jury eligibility
 
-Unfortunately other integration issues as well as a lack of proof of concept testing for this new classifier due to lack of complete training data meant that it couldn't be incorporated into the application for this checkpoint. We hope to have the original classifier working with the application first and then eventually transition into using the new classifier parameters in the java application.
+Unfortunately other integration issues as well as a lack of proof of concept testing for this new classifier due to lack of complete training data meant that it couldn't be incorporated into the application for this checkpoint. For future work, we hope to have the original classifier working with the application first and then eventually transition into using the new classifier parameters in the java application.
 
 Scam likelihood calculation sources:
-http://www.pewresearch.org/fact-tank/2017/01/12/evolution-of-technology/
-http://www.mtab.com/statistics-say-phone-scams-escalating/
-https://www.theverge.com/2018/1/1/16837814/robocall-spam-phone-call-increase-2017-ftc-report
-https://www.robokiller.com/robocalltaskforce
-https://www.scamwatch.gov.au/about-scamwatch/scam-statistics?scamid=all&date=2018-02
+1. http://www.pewresearch.org/fact-tank/2017/01/12/evolution-of-technology/
+1. http://www.mtab.com/statistics-say-phone-scams-escalating/
+1. https://www.theverge.com/2018/1/1/16837814/robocall-spam-phone-call-increase-2017-ftc-report
+1. https://www.robokiller.com/robocalltaskforce
+1. https://www.scamwatch.gov.au/about-scamwatch/scam-statistics?scamid=all&date=2018-02
