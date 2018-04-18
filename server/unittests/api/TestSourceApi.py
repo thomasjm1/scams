@@ -52,7 +52,7 @@ class TestSourceApi(unittest.TestCase):
         create_response = self.client.post(
             '/api/sources/',
             data=JsonUtility.to_json(
-                {'value': '123-456-7890', 'source_type': 'blacklist'}),
+                {'value': '123-456-7899', 'source_type': 'blacklist'}),
             content_type='application/json',
             headers={'Authorization': 'Bearer {}'.format(self.access_token)}
         )
