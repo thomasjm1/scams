@@ -3,6 +3,7 @@ import java.util.*;
 
 public class ProcessNoJson {
  
+  //List of common words in the English language - these don't add value during processing, so are stripped from the transcript
   public static List<String> common_words = new ArrayList<String>(
     Arrays.asList("the","be","is","are","to","of","and","a","in","that","have","i","it","for","not","on","with","he","as","you","do","at","this","but",
       "his","by","from","they","we","say","her","she","or","will","an","my","one","all","would","there","their","what","so","up","out","if","about",
@@ -16,6 +17,7 @@ public class ProcessNoJson {
     return line.replaceAll("[^\\x00-\\x7F]", "");
   }
  
+  //Extract list of words from a transcript, removing non-ascii characters and numbers
   public static List<String> get_transcript_words(String transcript)
   {
     String line;
@@ -32,6 +34,7 @@ public class ProcessNoJson {
     return words;
   }
 
+  //Get the list of scam-indicative keywords actually present in the transcript
   public static List<String> get_same_words(List<String> keywords, List<String> words)
   {
     List<String> subset = new ArrayList<String> (keywords.size() > words.size() ? keywords.size() : words.size());
@@ -40,6 +43,7 @@ public class ProcessNoJson {
     return subset;
   }
 
+  //Remove the common words from the transcript
   public static List<String> remove_common_words(List<String> words)
   {
     List<String> subset = new ArrayList<String> (words.size() > common_words.size() ? words.size() : common_words.size());
@@ -53,6 +57,7 @@ public class ProcessNoJson {
     return java.util.Collections.frequency(words, word);
   }
 
+  //Get the percentage of words in the transcript that are actually scam-indicative keywords
   public static double get_percentage_subset(List<String> subset, List<String> master, int reduced_transcript_len)
   {
     int total=0;
@@ -74,7 +79,8 @@ public class ProcessNoJson {
     }
   }
 
-  public static double get_scam_likelihood (String transcript, String keywordsobj)//JSONObject keywordsobj )//(String filename, JSONObject keywords)
+  //Get the likelihood that a call is a scam by determining the percentage of words in the transcript that are scam-indicative
+  public static double get_scam_likelihood (String transcript, String keywordsobj)
   {
     
     //String keywordlist = keywordsobj.get("keywords");
@@ -93,7 +99,7 @@ public class ProcessNoJson {
     return (match_percent*100);
   }
   
-  //public static JSONObject extract_info(String transcript, boolean scam_flag)
+  //Extract useful words from the transcript of the call to be used later for keyword updation
   public static String extract_info(String transcript, boolean scam_flag)
   {
     List<String> call_words_list = get_transcript_words(transcript);
@@ -107,6 +113,8 @@ public class ProcessNoJson {
     return extracted_words_list;
 
   }
+  
+  //Driver for testing the above methods
   public static void main(String[] args) 
   {
     //The following transcript is for a non-scam call
