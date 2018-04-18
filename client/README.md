@@ -40,6 +40,19 @@ Additionally, the emulator allows one to simulate a phone call though:
 The recording functionality should work and the transcription functionality will fail due to an expired token (usually we update the token when developing, eventually the token will be retrieved from the server).
 
 
+## Main activity & class Specification
+under app/java/edu.cmu.eps.scams
+MainActivity.java    The main page of the application, shows the navigation bar and qrCode image
+FirstTimeLogin.java   Create user information and stored in local database
+FriendlistActivity.java    User contact list page
+HistoryActivity.java     Blocked phone call history list page
+ProfileActivity.java   Shows user profile
+ScannerActivity.java   Opens a camera for scanning qrCode
+
+under app/java/edu.cmu.eps.scams/logic/models
+classes defining user information
+methods to store information into local database
+
 ## Functions completed in client
 1. Voice recording for phone calls
 2. Text transformation from audio recording to transcript
