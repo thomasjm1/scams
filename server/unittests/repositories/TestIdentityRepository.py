@@ -36,7 +36,6 @@ class TestIdentityRepository(DbTest):
         client_identities = self.repository.retrieve_identities()
         self.assertGreater(len(client_identities), 1)
 
-
     def test_update_identity(self):
         client_identity = self.repository.create_identity(
             Identity(

@@ -116,9 +116,15 @@ public class ApplicationLogic implements IApplicationLogic {
         boolean result = true;
         try {
             storage.insert(appSettings);
-            this.serverFacade.updateIdentity()
+            this.serverFacade.updateIdentity(appSettings.getProfile(), appSettings.getRecovery());
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to insert Settings due to %s", e.getMessage()));
+            result = false;
+        } catch (JSONException e) {
+            result = false;
+            e.printStackTrace();
+        } catch (CommunicationException e) {
+            Log.d(TAG, String.format("Failed send settings to server due to %s", e.getMessage()));
             result = false;
         }
         return result;

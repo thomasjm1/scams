@@ -47,7 +47,10 @@ public class RecordingService extends Service {
         if (intent != null) {
             Message message = this.serviceHandler.obtainMessage();
             message.arg1 = startId;
+            String incomingNumber = intent.getStringExtra("incomingNumber");
             message.arg2 = intent.getIntExtra("operation", RecordingEvents.NONE.ordinal());
+            message.getData().putString("incomingNumber", incomingNumber);
+            Log.i(TAG, String.format("Recording service received: call from %s", incomingNumber));
             this.serviceHandler.sendMessage(message);
         } else {
             Message message = this.serviceHandler.obtainMessage();

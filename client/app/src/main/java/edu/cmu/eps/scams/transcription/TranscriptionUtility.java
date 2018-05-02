@@ -42,6 +42,7 @@ public class TranscriptionUtility {
 
     public static TranscriptionResult transcribe(String encoding, int sampleRate, String dataString) throws IOException, TranscriptionException {
         String postString = TranscriptionUtility.buildJsonRequest(encoding, sampleRate, dataString);
+        String result = "{}";
         byte[] postData = postString.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
         String request = String.format("https://speech.googleapis.com/v1/speech:recognize?key=%s", KEY);
@@ -51,7 +52,6 @@ public class TranscriptionUtility {
             connection.setDoOutput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("POST");
-            //connection.setRequestProperty("Authorization", String.format("Bearer %s", KEY));
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
             connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
@@ -59,14 +59,14 @@ public class TranscriptionUtility {
             try (DataOutputStream dataOutputStream = new DataOutputStream(connection.getOutputStream())) {
                 dataOutputStream.write(postData);
             }
-            String result = TranscriptionUtility.readInputStreamToString(connection.getInputStream());
+            result = TranscriptionUtility.readInputStreamToString(connection.getInputStream());
             return TranscriptionUtility.parseJsonResults(result);
         } catch (IOException exception) {
             String errorMessage = TranscriptionUtility.readInputStreamToString(connection.getErrorStream());
             Log.d(TAG, String.format("Encountered error on request to Google: %s", errorMessage));
             throw new TranscriptionException(errorMessage);
         } catch (JSONException exception) {
-            throw new TranscriptionException(String.format("Failed to parse results as JSON: %s", exception.getMessage()));
+            throw new TranscriptionException(String.format("Failed to parse results as JSON %s: %s", result, exception.getMessage()));
         }
     }
 

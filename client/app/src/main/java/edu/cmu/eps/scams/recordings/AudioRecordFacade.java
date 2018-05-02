@@ -101,10 +101,6 @@ public class AudioRecordFacade extends BaseRecorder {
             Log.d(TAG, "Releasing AudioRecord");
             this.recorder.release();
         }
-        AudioRecording recording = recordings.toArray(new AudioRecording[10])[0];
-        return new PhoneCallResult(
-                recording.startTime,
-                recording.file,
-                (recording.endTime - recording.startTime));
+        return null;
     }
 }

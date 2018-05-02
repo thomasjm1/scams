@@ -14,6 +14,7 @@ import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.MessageType;
 import edu.cmu.eps.scams.logic.model.NotifyMessageContent;
+import edu.cmu.eps.scams.logic.model.ReviewMessageContent;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
 
 /**
@@ -62,6 +63,17 @@ public class MessagingServiceHandler extends Handler {
                             NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
                             Log.i(TAG, String.format("Block Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
                             notificationFacade.create(this.context, notifyMessage.getTitle(), notifyMessage.getMessage());
+                            this.logic.acknowledgeMessage(incomingMessage);
+                            break;
+                        }
+                        case REVIEW: {
+                            ReviewMessageContent reviewMessage = new ReviewMessageContent(incomingMessage.getContent());
+                            Log.i(TAG, String.format("Review Message to view: %s %s", reviewMessage.getTranscript(), reviewMessage.getPhoneNumber()));
+                            notificationFacade.createWithResponse(
+                                    this.context,
+                                    String.format("Potential Scam from %s?", reviewMessage.getPhoneNumber()),
+                                    String.format("%s", reviewMessage.getTranscript()),
+                                    incomingMessage.getSender());
                             this.logic.acknowledgeMessage(incomingMessage);
                             break;
                         }

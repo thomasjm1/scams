@@ -31,6 +31,8 @@ public class RecordingServiceHandler extends Handler {
     private final TelephonyManager telephonyManager;
     private String incomingNumber;
 
+    private boolean stopFlag;
+
     public RecordingServiceHandler(Looper looper, IOutputFileFactory fileFactory, Context context) {
         super(looper);
         this.context = context;
@@ -38,6 +40,7 @@ public class RecordingServiceHandler extends Handler {
         this.loopEventDelay = 1000;
         this.recorder = new AudioRecordFacade();
         this.telephonyManager = this.context.getSystemService(TelephonyManager.class);
+        this.stopFlag = false;
     }
 
     @Override
@@ -56,6 +59,7 @@ public class RecordingServiceHandler extends Handler {
                     if (this.recorder.isRecording() == false) {
                         Log.i(TAG, "Start recording event");
                         this.incomingNumber = message.getData().getString("incomingNumber");
+                        Log.i(TAG, String.format("Start recording event due to call from: %s", this.incomingNumber));
                         this.recorder.start(this.fileFactory.build());
                         this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
                     } else {
@@ -65,16 +69,7 @@ public class RecordingServiceHandler extends Handler {
                 case STOP:
                     Log.i(TAG, "Stop recording event");
                     PhoneCallResult stoppedResult = this.recorder.stop();
-                    Log.i(TAG, "Loop event sending start to transcription service");
-                    if (stoppedResult != null) {
-                        TranscriptionLogic.handle(
-                                this.context,
-                                stoppedResult.audioRecording.getAbsoluteFile(),
-                                new NotificationFacade(this.context),
-                                stoppedResult.ringTimestamp,
-                                this.incomingNumber
-                        );
-                    }
+                    this.stopFlag = true;
                     break;
                 case LOOP:
                     Log.i(TAG, "Loop recording event");
@@ -91,12 +86,16 @@ public class RecordingServiceHandler extends Handler {
                                     input.ringTimestamp,
                                     this.incomingNumber
                             );
-                        }
-                        if (this.telephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
+                            Log.i(TAG, "Stop recording after completing recording");
+                            this.recorder.stop();
+                            this.stopFlag = true;
+                        } else if (this.telephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
                             Log.i(TAG, "Stop recording due to idle state");
                             this.recorder.stop();
+                            this.stopFlag = true;
+                        } else {
+                            this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
                         }
-                        this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
                     }
                     break;
                 default:

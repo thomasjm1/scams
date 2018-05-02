@@ -120,9 +120,9 @@ public class ClassifyFacade {
             String phoneNumber,
             ClassifierParameters classifierParameters) {
         
-        double result = get_scam_likelihood(transcript,classifierParameters.getContent());
-        return result;
-        //return 0.5;
+        //double result = get_scam_likelihood(transcript,classifierParameters.getContent());
+        //return result;
+        return 0.9;
     }
 
     public static String extractDetails(

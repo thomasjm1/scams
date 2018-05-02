@@ -9,6 +9,7 @@ import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.model.MessageType;
 import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
@@ -54,6 +55,7 @@ public class TranscriptionRunnable implements Runnable {
             if (this.logic.getAppSettings().isRegistered() == true) {
                 this.classifierParameters = this.logic.getClassifierParameters();
                 TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
+                Log.d(TAG, String.format("Transcribed: %s", result.getText()));
                 this.notifications.create(this.context, "Transcribed", result.getText());
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
                 if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
@@ -74,9 +76,11 @@ public class TranscriptionRunnable implements Runnable {
                     this.logic.sendTelemetry(telemetry);
                     OutgoingMessage message = new OutgoingMessage();
                     message.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    message.getProperties().put("call.transcript", result.getText());
                     message.getProperties().put("call.timestamp", this.ringTimestamp);
                     message.getProperties().put("call.number", this.incomingNumber);
                     message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("type", MessageType.REVIEW);
                     this.logic.sendMessage(message);
                 } else {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());

@@ -38,16 +38,15 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                 this.notificationFacade.create(this.context, "Phone Status", "Phone is idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
-                Log.i(TAG, "PHONE IS OFF THE HOOK");
+                Log.i(TAG, String.format("Phone is off hook from: %s", incomingNumber));
                 context.startService(new Intent(context, RecordingService.class)
-                        .putExtra("operation", RecordingEvents.START.ordinal()));
-                this.notificationFacade.create(this.context, "Phone Status", "Phone is off hook");
+                        .putExtra("operation", RecordingEvents.START.ordinal())
+                        .putExtra("incomingNumber", incomingNumber));
+                this.notificationFacade.create(this.context, "Phone Status", String.format("Phone is off hook from: %s", incomingNumber));
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
-                Log.i(TAG, "PHONE IS RINGING");
-                //context.startService(new Intent(context, RecordingService.class)
-                //        .putExtra("operation", RecordingEvents.START.ordinal()));
-                this.notificationFacade.create(this.context, "Phone Status", "Phone is ringing");
+                Log.i(TAG, String.format("Phone is ringing from: %s", incomingNumber));
+                this.notificationFacade.create(this.context, "Phone Status", String.format("Phone is ringing from: %s", incomingNumber));
                 break;
             default:
                 Log.i(TAG, String.format("Unknown phone event: %d", state));
