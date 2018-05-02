@@ -34,6 +34,8 @@ public interface IApplicationLogic {
 
     OutgoingMessage sendMessage(OutgoingMessage outgoingMessage);
 
+    void createHistory(History item);
+
     List<IncomingMessage> receiveMessages();
 
     IncomingMessage acknowledgeMessage(IncomingMessage message);

@@ -1,5 +1,6 @@
 package edu.cmu.eps.scams.notifications;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -37,6 +38,15 @@ public class NotificationFacade {
             NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
+    }
+
+    public Notification buildService(Context context, PendingIntent pendingIntent, String title, String text) {
+        return new NotificationCompat.Builder(context, CHANNEL_ID)
+                        .setContentTitle(title)
+                        .setContentText(text)
+                        .setSmallIcon(R.drawable.ic_mode_comment_black_24dp)
+                        .setContentIntent(pendingIntent)
+                        .build();
     }
 
     public void create(Context context, String title, String text) {

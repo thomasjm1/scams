@@ -2,13 +2,17 @@ package edu.cmu.eps.scams;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TwoLineListItem;
@@ -42,45 +46,69 @@ public class FriendlistActivity extends AppCompatActivity {
                 result -> {
                     List<Association> associations = result.getAssociations();
                     Log.d(TAG, String.format("Retrieved list of %d total associations", associations.size()));
-                    MyArrayAdapter adapter = new MyArrayAdapter(this,
-                            android.R.layout.simple_list_item_2, associations);
-
+                    MyArrayAdapter adapter = new MyArrayAdapter(
+                            this,
+                            android.R.layout.simple_list_item_1,
+                            associations,
+                            this.logic);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            Association item = (Association) parent.getItemAtPosition(position);
+                            adapter.remove(adapter.getItem(position));
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
         );
        // runs the task's code on a background thread
-        task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getHistory()));
+        task.execute((IApplicationLogicCommand) logic -> new ApplicationLogicResult(logic.getAssociations()));
     }
 
 
     // Customize the list display
     private class MyArrayAdapter extends ArrayAdapter<Association> {
 
+        private final IApplicationLogic logic;
         private List<Association> objects;
         private Context context;
 
-        public MyArrayAdapter(Context context, int textViewResourceId, List<Association> objects) {
+        public MyArrayAdapter(Context context, int textViewResourceId, List<Association> objects, IApplicationLogic logic) {
             super(context, textViewResourceId, objects);
             this.objects = objects;
             this.context = context;
+            this.logic = logic;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TwoLineListItem twoLineListItem;
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                twoLineListItem = (TwoLineListItem) inflater.inflate(
-                        android.R.layout.simple_list_item_2, null);
-            } else {
-                twoLineListItem = (TwoLineListItem) convertView;
-            }
-            TextView text1 = twoLineListItem.getText1();
-            TextView text2 = twoLineListItem.getText2();
-            text1.setText(objects.get(position).getName());
-            text2.setText(objects.get(position).getIdentifier());
-            return twoLineListItem;
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.friend_row_layout, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.friend_name);
+            textView.setText(objects.get(position).getName());
+            return rowView;
+        }
+
+        @Override
+        public void remove(@Nullable Association object) {
+            super.remove(object);
+            ApplicationLogicTask task = new ApplicationLogicTask(
+                    this.logic,
+                    progress -> {
+                    },
+                    result -> {
+                        List<Association> associations = result.getAssociations();
+                        Log.d(TAG, String.format("Retrieved list of %d total associations", associations.size()));
+                        this.objects = associations;
+                    }
+            );
+            // runs the task's code on a background thread
+            task.execute((IApplicationLogicCommand) logic -> {
+                logic.removeAssociation(object);
+                return new ApplicationLogicResult(logic.getAssociations());
+            });
         }
     }
 
@@ -93,6 +121,7 @@ public class FriendlistActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "Item selected");
         return super.onOptionsItemSelected(item);
     }
 }

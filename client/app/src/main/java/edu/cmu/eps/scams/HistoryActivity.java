@@ -2,13 +2,16 @@ package edu.cmu.eps.scams;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -22,9 +25,11 @@ import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.ApplicationLogicResult;
 import edu.cmu.eps.scams.logic.ApplicationLogicTask;
 import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
+import edu.cmu.eps.scams.logic.model.Association;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
+import edu.cmu.eps.scams.utilities.TimestampUtility;
 
 
 public class HistoryActivity extends AppCompatActivity {
@@ -37,21 +42,28 @@ public class HistoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
         ListView listView = (ListView) findViewById(R.id.history_list_view);
-
-        Context context = this;
         this.logic = ApplicationLogicFactory.build(this);
-        // Task to create a list whenever the History page is shown
-        // Retrieve updated call history information from the local database
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
                 },
                 result -> {
-                    List<History> histories = result.getHistories();
+                    List<History> items = result.getHistories();
+                    Log.d(TAG, String.format("Retrieved list of %d total histories", items.size()));
                     MyArrayAdapter adapter = new MyArrayAdapter(
-                            context,
-                            android.R.layout.simple_list_item_2, histories);
+                            this,
+                            android.R.layout.simple_list_item_1,
+                            items,
+                            this.logic);
                     listView.setAdapter(adapter);
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            History item = (History) parent.getItemAtPosition(position);
+                            adapter.remove(adapter.getItem(position));
+                            adapter.notifyDataSetChanged();
+                        }
+                    });
                 }
         );
         // runs the task's code on a background thread
@@ -64,35 +76,48 @@ public class HistoryActivity extends AppCompatActivity {
 
     private class MyArrayAdapter extends ArrayAdapter<History> {
 
+        private final IApplicationLogic logic;
         private List<History> objects;
         private Context context;
 
-        public MyArrayAdapter(Context context, int textViewResourceId, List<History> objects) {
+        public MyArrayAdapter(Context context, int textViewResourceId, List<History> objects, IApplicationLogic logic) {
             super(context, textViewResourceId, objects);
             this.objects = objects;
             this.context = context;
+            this.logic = logic;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TwoLineListItem twoLineListItem;
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View rowView = inflater.inflate(R.layout.friend_row_layout, parent, false);
+            TextView textView = (TextView) rowView.findViewById(R.id.friend_name);
+            textView.setText(
+                    String.format("%s @ %s",
+                            objects.get(position).getDescription(),
+                            TimestampUtility.format(objects.get(position).getTimeOfCall())));
+            return rowView;
+        }
 
-            if (convertView == null) {
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                twoLineListItem = (TwoLineListItem) inflater.inflate(
-                        android.R.layout.simple_list_item_2, null);
-            } else {
-                twoLineListItem = (TwoLineListItem) convertView;
-            }
-
-            TextView text1 = twoLineListItem.getText1();
-            TextView text2 = twoLineListItem.getText2();
-
-            text1.setText(objects.get(position).getPhoneNumber());
-            text2.setText(objects.get(position).getTimeOfCall());
-
-            return twoLineListItem;
+        @Override
+        public void remove(@Nullable History object) {
+            super.remove(object);
+            ApplicationLogicTask task = new ApplicationLogicTask(
+                    this.logic,
+                    progress -> {
+                    },
+                    result -> {
+                        List<History> items = result.getHistories();
+                        Log.d(TAG, String.format("Retrieved list of %d total histories", items.size()));
+                        this.objects = items;
+                    }
+            );
+            // runs the task's code on a background thread
+            task.execute((IApplicationLogicCommand) logic -> {
+                logic.removeHistory(object);
+                return new ApplicationLogicResult(logic.getHistory());
+            });
         }
 
     }

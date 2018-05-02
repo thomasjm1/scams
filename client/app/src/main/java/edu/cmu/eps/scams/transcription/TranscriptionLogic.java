@@ -9,6 +9,8 @@ import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
+import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.logic.model.MessageType;
 import edu.cmu.eps.scams.logic.model.OutgoingMessage;
 import edu.cmu.eps.scams.logic.model.Telemetry;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
@@ -27,7 +29,6 @@ public class TranscriptionLogic {
             if (logic.getAppSettings().isRegistered() == true) {
                 ClassifierParameters classifierParameters = logic.getClassifierParameters();
                 TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, file);
-                notifications.create(context, "Transcribed", result.getText());
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, classifierParameters);
                 if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
@@ -37,7 +38,16 @@ public class TranscriptionLogic {
                     telemetry.getProperties().put("call.number", incomingNumber);
                     telemetry.getProperties().put("call.likelihood", scamLikelihood);
                     logic.sendTelemetry(telemetry);
+                    OutgoingMessage message = new OutgoingMessage();
+                    message.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    message.getProperties().put("call.transcript", result.getText());
+                    message.getProperties().put("call.timestamp", ringTimestamp);
+                    message.getProperties().put("call.number", incomingNumber);
+                    message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("type", MessageType.KNOWN);
+                    logic.sendMessage(message);
                     notifications.create(context, "Scam Call Detected!", String.format("Call from %s is likely a scam", incomingNumber));
+                    logic.createHistory(new History("Scam call detected", incomingNumber, ringTimestamp));
                 } else if (scamLikelihood > REVIEWER_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                     telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());
@@ -47,10 +57,13 @@ public class TranscriptionLogic {
                     logic.sendTelemetry(telemetry);
                     OutgoingMessage message = new OutgoingMessage();
                     message.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    message.getProperties().put("call.transcript", result.getText());
                     message.getProperties().put("call.timestamp", ringTimestamp);
                     message.getProperties().put("call.number", incomingNumber);
                     message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("type", MessageType.REVIEW);
                     logic.sendMessage(message);
+                    logic.createHistory(new History("Suspicious call", incomingNumber, ringTimestamp));
                 } else {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                     telemetry.getProperties().put("call.transcript.confidence", result.getConfidence());

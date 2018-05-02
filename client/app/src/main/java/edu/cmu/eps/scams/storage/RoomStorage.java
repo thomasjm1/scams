@@ -64,7 +64,7 @@ public class RoomStorage implements ILocalStorage {
         try {
             List<HistoryRecord> records = this.appDatabase.historyRecordAccess().getAll();
             for (HistoryRecord record : records) {
-                History result = new History(record.getNumber(), TimestampUtility.format(record.getTimestamp()));
+                History result = new History(record.getDescription(), record.getNumber(), record.getTimestamp());
                 result.setId(record.getId());
                 results.add(result);
             }

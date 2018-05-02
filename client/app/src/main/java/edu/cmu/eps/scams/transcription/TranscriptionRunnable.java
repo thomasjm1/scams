@@ -65,6 +65,14 @@ public class TranscriptionRunnable implements Runnable {
                     telemetry.getProperties().put("call.number", this.incomingNumber);
                     telemetry.getProperties().put("call.likelihood", scamLikelihood);
                     this.logic.sendTelemetry(telemetry);
+                    OutgoingMessage message = new OutgoingMessage();
+                    message.getProperties().put("call.transcript.confidence", result.getConfidence());
+                    message.getProperties().put("call.transcript", result.getText());
+                    message.getProperties().put("call.timestamp", this.ringTimestamp);
+                    message.getProperties().put("call.number", this.incomingNumber);
+                    message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("type", MessageType.KNOWN);
+                    this.logic.sendMessage(message);
                     this.notifications.create(this.context, "Scam Call Detected!", String.format("Call from %s is likely a scam", this.incomingNumber));
                 } else if (scamLikelihood > REVIEWER_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());

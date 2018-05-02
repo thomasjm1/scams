@@ -77,6 +77,17 @@ public class MessagingServiceHandler extends Handler {
                             this.logic.acknowledgeMessage(incomingMessage);
                             break;
                         }
+                        case KNOWN: {
+                            ReviewMessageContent reviewMessage = new ReviewMessageContent(incomingMessage.getContent());
+                            Log.i(TAG, String.format("Known Message to view: %s %s", reviewMessage.getTranscript(), reviewMessage.getPhoneNumber()));
+                            notificationFacade.createWithResponse(
+                                    this.context,
+                                    String.format("Known Scam from %s?", reviewMessage.getPhoneNumber()),
+                                    String.format("%s", reviewMessage.getTranscript()),
+                                    incomingMessage.getSender());
+                            this.logic.acknowledgeMessage(incomingMessage);
+                            break;
+                        }
                     }
                 }
                 this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);

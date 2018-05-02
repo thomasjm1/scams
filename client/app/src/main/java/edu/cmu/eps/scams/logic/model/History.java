@@ -11,11 +11,12 @@ import java.util.List;
 public class History {
 
     private int id;
-    public String Time;
+    public long Time;
     public String PhoneNumber;
     private String description;
 
-    public History(String PhoneNumber, String Time) {
+    public History(String description, String PhoneNumber, long Time) {
+        this.description = description;
         this.Time = Time;
         this.PhoneNumber = PhoneNumber;
     }
@@ -28,7 +29,7 @@ public class History {
         this.id = id;
     }
 
-    public String getTimeOfCall() {
+    public long getTimeOfCall() {
         return this.Time;
     }
 

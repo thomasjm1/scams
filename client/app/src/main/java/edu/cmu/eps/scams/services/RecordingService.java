@@ -1,5 +1,7 @@
 package edu.cmu.eps.scams.services;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Environment;
@@ -9,7 +11,9 @@ import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 
+import edu.cmu.eps.scams.MainActivity;
 import edu.cmu.eps.scams.files.DirectoryOutputFileFactory;
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 
 /*
 * This class provides an Android "Service" that instructs a background thread to start and stop
@@ -57,6 +61,11 @@ public class RecordingService extends Service {
             message.arg1 = startId;
             message.arg2 = RecordingEvents.NONE.ordinal();
         }
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        NotificationFacade facade = new NotificationFacade(this);
+        Notification notification = facade.buildService(this, pendingIntent,"Scam Detector", "Protection Enabled!");
+        startForeground(999888, notification);
         return START_STICKY;
     }
 

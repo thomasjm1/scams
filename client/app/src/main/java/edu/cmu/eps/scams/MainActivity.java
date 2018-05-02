@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -19,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -43,20 +42,11 @@ public class MainActivity extends AppCompatActivity
     private static final int PERMISSIONS_REQUEST_CODE = 555;
     private static final String TAG = "MainActivity";
     private IApplicationLogic logic;
+    private AppSettings settings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Get mobile phone permissions
-        if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
-                PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            Log.d(TAG, "Permissions previously granted, starting services");
-            ServicesFacade.startServices(this);
-        } else {
-            Log.d(TAG, "Permissions missing, requesting from user");
-            PermissionsFacade.requestPermission(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
-        }
 
 
         Context context = this;
@@ -70,6 +60,7 @@ public class MainActivity extends AppCompatActivity
                 },
                 result -> {
                     AppSettings settings = (AppSettings) result.getAppSettings();
+                    this.settings = settings;
                     Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));
                     // The first time login for a device
                     if (settings.isRegistered() == false) {
@@ -88,6 +79,29 @@ public class MainActivity extends AppCompatActivity
                     // Not the first time login
                     else {
                         Log.d(TAG, "Phone is previously registered");
+                        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+                        View headerView = navigationView.getHeaderView(0);
+                        TextView navNameView = (TextView) headerView.findViewById(R.id.navNameView);
+                        try {
+                            if (navNameView != null) {
+                                navNameView.setText(settings.getName());
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        // Get mobile phone permissions
+                        if (PermissionsFacade.isPermissionGranted(this, Manifest.permission.RECORD_AUDIO) &&
+                                PermissionsFacade.isPermissionGranted(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                            Log.d(TAG, "Permissions previously granted, starting services");
+                            try {
+                                ServicesFacade.startServices(this, settings.getUserType());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            Log.d(TAG, "Permissions missing, requesting from user");
+                            PermissionsFacade.requestPermission(this, new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, PERMISSIONS_REQUEST_CODE);
+                        }
                         // QR code image generation based on user's qrString
                         ImageView qrCode=(ImageView) findViewById(R.id.my_qrcode);
 
@@ -187,7 +201,11 @@ public class MainActivity extends AppCompatActivity
             case PERMISSIONS_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Log.d(TAG, "User granted permissions, starting services");
-                    ServicesFacade.startServices(this);
+                    try {
+                        ServicesFacade.startServices(this, this.settings.getUserType());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 } else {
                 }
             }

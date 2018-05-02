@@ -76,7 +76,6 @@ public class ApplicationLogic implements IApplicationLogic {
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to retrieve History due to %s", e.getMessage()));
         }
-
         return results;
     }
 
@@ -95,7 +94,9 @@ public class ApplicationLogic implements IApplicationLogic {
     @Override
     public AppSettings getAppSettings() {
         try {
-            return storage.retrieveSettings();
+            AppSettings result = storage.retrieveSettings();
+            Log.d(TAG, String.format("Retrieved settings = %s", result.toString()));
+            return result;
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to retrieve Settings due to %s", e.getMessage()));
             try {
@@ -156,7 +157,7 @@ public class ApplicationLogic implements IApplicationLogic {
     public OutgoingMessage sendMessage(OutgoingMessage outgoingMessage) {
         try {
             this.initializeServer();
-            if (outgoingMessage.getRecipient().isEmpty()) {
+            if (outgoingMessage.getRecipient() == null || outgoingMessage.getRecipient().isEmpty()) {
                 List<Association> associations = this.getAssociations();
                 for (Association association : associations) {
                     outgoingMessage.setRecipient(association.getIdentifier());
@@ -169,6 +170,15 @@ public class ApplicationLogic implements IApplicationLogic {
         } catch (StorageException | JSONException | CommunicationException e) {
             Log.d(TAG, String.format("Failed to send message due to %s", e.getMessage()));
             return outgoingMessage;
+        }
+    }
+
+    @Override
+    public void createHistory(History item) {
+        try {
+            this.storage.insertHistory(item.getDescription(), item.getTimeOfCall(), item.getPhoneNumber());
+        } catch (StorageException e) {
+            Log.d(TAG, String.format("Failed to create history due to %s", e.getMessage()));
         }
     }
 

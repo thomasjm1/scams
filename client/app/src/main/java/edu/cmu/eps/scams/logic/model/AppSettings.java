@@ -83,4 +83,8 @@ public class AppSettings {
     public String getName() throws JSONException {
         return this.profileJson.getString("name");
     }
+
+    public String getUserType() throws JSONException {
+        return this.profileJson.getString("userType");
+    }
 }
