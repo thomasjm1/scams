@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.google.zxing.Result;
 
+import org.json.JSONObject;
+
 import java.util.List;
 
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
@@ -15,6 +17,7 @@ import edu.cmu.eps.scams.logic.ApplicationLogicTask;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.IApplicationLogicCommand;
 import edu.cmu.eps.scams.logic.model.History;
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
@@ -64,15 +67,23 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
                 progress -> {
                 },
                 result -> {
+                    NotificationFacade facade = new NotificationFacade(this);
+                    facade.create(this, "Added new friend", "");
                     finish();
                 }
         );
-        task.execute((IApplicationLogicCommand) logic ->
-                new ApplicationLogicResult(logic.createAssociation(
-                        rawResult.getText(),
-                        rawResult.getText()
-                )
-                )
+        task.execute((IApplicationLogicCommand) logic -> {
+            String rawText = rawResult.getText();
+            JSONObject json = new JSONObject(rawText);
+            String name = json.getString("name");
+            String identifier = json.getString("identifier");
+            return new ApplicationLogicResult(logic.createAssociation(
+                    name,
+                    identifier
+            )
+            );
+        }
+
         );
 
         //If you would like to resume scanning, call this method below:

@@ -54,8 +54,16 @@ public class MessagingServiceHandler extends Handler {
                         case NOTIFY: {
                             NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
                             Log.i(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
+                            notificationFacade.createWithResponse(this.context, notifyMessage.getTitle(), notifyMessage.getMessage(), incomingMessage.getSender());
+                            this.logic.acknowledgeMessage(incomingMessage);
+                            break;
+                        }
+                        case BLOCK: {
+                            NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
+                            Log.i(TAG, String.format("Block Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
                             notificationFacade.create(this.context, notifyMessage.getTitle(), notifyMessage.getMessage());
                             this.logic.acknowledgeMessage(incomingMessage);
+                            break;
                         }
                     }
                 }

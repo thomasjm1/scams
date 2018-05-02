@@ -2,6 +2,9 @@ package edu.cmu.eps.scams.logic.model;
 
 import android.util.Base64;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.security.SecureRandom;
 
 /**
@@ -10,19 +13,21 @@ import java.security.SecureRandom;
  */
 public class AppSettings {
 
-    private static final int IDENTIFIER_BYTES = 4;
+    private static final int IDENTIFIER_BYTES = 16;
     private final String identifier;
     private final boolean registered;
     private final String secret;
     private final String profile;
     private final String recovery;
+    private final JSONObject profileJson;
 
-    public AppSettings(String identifier, boolean registered, String secret, String profile, String recovery) {
+    public AppSettings(String identifier, boolean registered, String secret, String profile, String recovery) throws JSONException {
         this.identifier = identifier;
         this.registered = registered;
         this.secret = secret;
         this.profile = profile;
         this.recovery = recovery;
+        this.profileJson = new JSONObject(this.profile);
     }
 
     public String getIdentifier() {
@@ -45,7 +50,7 @@ public class AppSettings {
         return recovery;
     }
 
-    public static AppSettings defaults() {
+    public static AppSettings defaults() throws JSONException {
         SecureRandom random = new SecureRandom();
         byte identifierBytes[] = new byte[IDENTIFIER_BYTES];
         random.nextBytes(identifierBytes);
@@ -73,5 +78,9 @@ public class AppSettings {
         result.append(String.format("\"recovery\": \"%s\",", this.recovery));
         result.append("}");
         return result.toString();
+    }
+
+    public String getName() throws JSONException {
+        return this.profileJson.getString("name");
     }
 }

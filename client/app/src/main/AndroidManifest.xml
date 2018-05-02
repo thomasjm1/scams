@@ -65,6 +65,13 @@
             android:label="@string/title_login">
         </activity>
 
+        <receiver android:name=".notifications.MessageResponseReceiver"  android:exported="true">
+            <intent-filter>
+                <action android:name="edu.cmu.eps.scams.ALLOW_MESSAGE"/>
+                <action android:name="edu.cmu.eps.scams.BLOCK_MESSAGE" />
+            </intent-filter>
+        </receiver>
+
 
         <activity android:name=".ScannerActivity" />
         <activity android:name=".FriendlistActivity"

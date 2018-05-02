@@ -22,8 +22,6 @@ public class ApplicationLogicResult {
         return (AppSettings) this.result;
     }
 
-
-
     public List<History> getHistories() {
         return (List<History>) this.result;
     }

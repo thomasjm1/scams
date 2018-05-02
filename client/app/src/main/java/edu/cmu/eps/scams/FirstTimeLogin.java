@@ -58,7 +58,7 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
         }
         final String userAction = userType;
         final String name = nameEdit.getText().toString();
-        if (name.isEmpty() || name.equalsIgnoreCase("email")) {
+        if (name.isEmpty() || name.equalsIgnoreCase("name")) {
             return;
         } else {
             ApplicationLogicTask task = new ApplicationLogicTask(

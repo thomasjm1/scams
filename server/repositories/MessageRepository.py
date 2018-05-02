@@ -27,7 +27,7 @@ class MessageRepository(object):
 
     def retrieve_messages_by_sender(self, identifier):
         self.logger.debug("Retrieving all messages from {}".format(identifier))
-        return Message.select().where(Message.sender == identifier)
+        return Message.select().where(Message.sender == identifier and Message.state == 0)
 
     def update_message(self, identifier, recipient_received, state):
         message = self.retrieve_message_by_identifier(identifier)
@@ -38,8 +38,7 @@ class MessageRepository(object):
             self.logger.debug("Successfully updated message: {}".format(message.identifier))
             return message
         else:
-            self.logger.debug("Update of message: {} returned {}".format(message.identifier, str(updates)))
-            raise PersistenceError("Failed to update message: {}".format(message.identifier))
+            self.logger.error("Update of message: {} returned {}".format(identifier, str(updates)))
 
     def retrieve_message_by_identifier(self, identifier):
         self.logger.debug('Retrieving message: {}'.format(identifier))

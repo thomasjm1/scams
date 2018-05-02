@@ -26,6 +26,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import org.json.JSONException;
+
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.ApplicationLogicResult;
 import edu.cmu.eps.scams.logic.ApplicationLogicTask;
@@ -92,12 +94,15 @@ public class MainActivity extends AppCompatActivity
                         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
                         try {
                             // Get the qrString from local database
-                            BitMatrix bitMatrix = multiFormatWriter.encode(settings.getIdentifier(), BarcodeFormat.QR_CODE,200,200);
+                            String codeString = String.format("{\"identifier\": \"%s\", \"name\": \"%s\"}", settings.getIdentifier(), settings.getName());
+                            BitMatrix bitMatrix = multiFormatWriter.encode(codeString, BarcodeFormat.QR_CODE,200,200);
                             BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                             Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                             // Generate the code and put the image to the view
                             qrCode.setImageBitmap(bitmap);
                         } catch (WriterException e) {
+                            e.printStackTrace();
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }

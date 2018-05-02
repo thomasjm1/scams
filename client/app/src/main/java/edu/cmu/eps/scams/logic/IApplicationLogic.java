@@ -32,11 +32,11 @@ public interface IApplicationLogic {
 
     void sendTelemetry(Telemetry telemetry);
 
-    void sendMessage(OutgoingMessage outgoingMessage);
+    OutgoingMessage sendMessage(OutgoingMessage outgoingMessage);
 
     List<IncomingMessage> receiveMessages();
 
-    void acknowledgeMessage(IncomingMessage message);
+    IncomingMessage acknowledgeMessage(IncomingMessage message);
 
     ClassifierParameters getClassifierParameters();
 }

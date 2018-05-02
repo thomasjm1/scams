@@ -9,8 +9,8 @@ public class Association {
     private final String identifier;
     private final String name;
 
-    public Association(String name, String qrValue) {
-        this.identifier = qrValue;
+    public Association(String name, String identifier) {
+        this.identifier = identifier;
         this.name = name;
     }
 

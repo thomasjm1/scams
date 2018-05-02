@@ -59,15 +59,6 @@ public class HistoryActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                NotificationFacade facade = new NotificationFacade(context);
-                facade.create(context, "Hello World", "Option selected!");
-            }
-        });
     }
 
 

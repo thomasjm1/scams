@@ -98,13 +98,16 @@ public class ApplicationLogic implements IApplicationLogic {
             return storage.retrieveSettings();
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to retrieve Settings due to %s", e.getMessage()));
-            AppSettings settings = AppSettings.defaults();
             try {
+                AppSettings settings = AppSettings.defaults();
                 storage.insert(settings);
+                return settings;
             } catch (StorageException e1) {
                 Log.d(TAG, String.format("Failed to insert default Settings due to %s", e1.getMessage()));
+            } catch (JSONException e1) {
+                Log.d(TAG, String.format("Failed to build default Settings due to %s", e1.getMessage()));
             }
-            return settings;
+            return null;
         }
     }
 
@@ -143,16 +146,22 @@ public class ApplicationLogic implements IApplicationLogic {
     }
 
     @Override
-    public void sendMessage(OutgoingMessage outgoingMessage) {
+    public OutgoingMessage sendMessage(OutgoingMessage outgoingMessage) {
         try {
             this.initializeServer();
-            List<Association> associations = this.getAssociations();
-            for (Association association : associations) {
-                outgoingMessage.setRecipient(association.getIdentifier());
+            if (outgoingMessage.getRecipient().isEmpty()) {
+                List<Association> associations = this.getAssociations();
+                for (Association association : associations) {
+                    outgoingMessage.setRecipient(association.getIdentifier());
+                    this.serverFacade.sendMessage(outgoingMessage);
+                }
+            } else {
                 this.serverFacade.sendMessage(outgoingMessage);
             }
+            return outgoingMessage;
         } catch (StorageException | JSONException | CommunicationException e) {
             Log.d(TAG, String.format("Failed to send message due to %s", e.getMessage()));
+            return outgoingMessage;
         }
     }
 
@@ -168,12 +177,14 @@ public class ApplicationLogic implements IApplicationLogic {
     }
 
     @Override
-    public void acknowledgeMessage(IncomingMessage message) {
+    public IncomingMessage acknowledgeMessage(IncomingMessage message) {
         try {
             this.initializeServer();
             this.serverFacade.acknowledgeMessage(message);
+            return message;
         } catch (StorageException | JSONException | CommunicationException e) {
             Log.d(TAG, String.format("Failed to acknowledge message due to %s", e.getMessage()));
+            return message;
         }
     }
 
