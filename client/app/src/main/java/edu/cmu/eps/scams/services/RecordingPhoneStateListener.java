@@ -23,6 +23,8 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
 
     private final NotificationFacade notificationFacade;
 
+    private String lastPhoneNumber;
+
     public RecordingPhoneStateListener(Context context) {
         this.context = context;
         this.notificationFacade = new NotificationFacade(context);
@@ -35,18 +37,20 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                 Log.i(TAG, "PHONE IS IDLE");
                 context.startService(new Intent(context, RecordingService.class)
                         .putExtra("operation", RecordingEvents.STOP.ordinal()));
-                this.notificationFacade.create(this.context, "Phone Status", "Phone is idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
-                Log.i(TAG, String.format("Phone is off hook from: %s", incomingNumber));
+                String number = incomingNumber;
+                Log.i(TAG, String.format("Phone is off hook from: %s", number));
+                if (number.isEmpty()) {
+                    number = lastPhoneNumber;
+                }
                 context.startService(new Intent(context, RecordingService.class)
                         .putExtra("operation", RecordingEvents.START.ordinal())
-                        .putExtra("incomingNumber", incomingNumber));
-                this.notificationFacade.create(this.context, "Phone Status", String.format("Phone is off hook from: %s", incomingNumber));
+                        .putExtra("incomingNumber", number));
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 Log.i(TAG, String.format("Phone is ringing from: %s", incomingNumber));
-                this.notificationFacade.create(this.context, "Phone Status", String.format("Phone is ringing from: %s", incomingNumber));
+                this.lastPhoneNumber = incomingNumber;
                 break;
             default:
                 Log.i(TAG, String.format("Unknown phone event: %d", state));

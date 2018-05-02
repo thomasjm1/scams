@@ -63,10 +63,11 @@ public class TranscriptionUtility {
             return TranscriptionUtility.parseJsonResults(result);
         } catch (IOException exception) {
             String errorMessage = TranscriptionUtility.readInputStreamToString(connection.getErrorStream());
-            Log.d(TAG, String.format("Encountered error on request to Google: %s", errorMessage));
-            throw new TranscriptionException(errorMessage);
+            Log.e(TAG, String.format("Encountered error on request to Google: %s", errorMessage));
+            return new TranscriptionResult("", 0);
         } catch (JSONException exception) {
-            throw new TranscriptionException(String.format("Failed to parse results as JSON %s: %s", result, exception.getMessage()));
+            Log.e(TAG, String.format("Encountered json error on request to Google: %s", exception.getMessage()));
+            return new TranscriptionResult("", 0);
         }
     }
 
