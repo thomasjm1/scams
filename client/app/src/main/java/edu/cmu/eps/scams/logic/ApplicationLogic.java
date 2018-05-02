@@ -116,6 +116,7 @@ public class ApplicationLogic implements IApplicationLogic {
         boolean result = true;
         try {
             storage.insert(appSettings);
+            this.serverFacade.updateIdentity()
         } catch (StorageException e) {
             Log.d(TAG, String.format("Failed to insert Settings due to %s", e.getMessage()));
             result = false;

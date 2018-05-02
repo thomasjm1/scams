@@ -45,8 +45,8 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
                 Log.i(TAG, "PHONE IS RINGING");
-                context.startService(new Intent(context, RecordingService.class)
-                        .putExtra("operation", RecordingEvents.START.ordinal()));
+                //context.startService(new Intent(context, RecordingService.class)
+                //        .putExtra("operation", RecordingEvents.START.ordinal()));
                 this.notificationFacade.create(this.context, "Phone Status", "Phone is ringing");
                 break;
             default:

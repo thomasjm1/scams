@@ -68,6 +68,14 @@ public class ServerFacade implements IServerFacade {
         this.token = result;
     }
 
+    public void updateIdentity(String profile, String recovery) throws JSONException, CommunicationException {
+        this.profile = profile;
+        this.recovery = recovery;
+        ServerApi.updateIdentity(
+                this.token,
+                this.profile,
+                this.recovery);
+    }
 
     /**
      * Send messages to server.

@@ -1,6 +1,7 @@
 package edu.cmu.eps.scams.logic;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 
 /**
@@ -10,6 +11,7 @@ import android.os.AsyncTask;
  */
 public class ApplicationLogicTask extends AsyncTask<IApplicationLogicCommand, Integer, ApplicationLogicResult> {
 
+    private static final String TAG = "ApplicationLogicTask";
     private final IApplicationLogic logic;
     private final TaskProgressCommand progressCommand;
     private final TaskCompletionCommand completionCommand;
@@ -22,7 +24,12 @@ public class ApplicationLogicTask extends AsyncTask<IApplicationLogicCommand, In
 
     @Override
     protected ApplicationLogicResult doInBackground(IApplicationLogicCommand... command) {
-        return command[0].execute(this.logic);
+        try {
+            return command[0].execute(this.logic);
+        } catch (Exception e) {
+            Log.e(TAG, String.format("Failed on execution due to json format error"));
+            return null;
+        }
     }
 
     @Override

@@ -88,12 +88,19 @@ def register():
                         status=400, mimetype='application/json')
 
 
-@authentication.route('/protected', methods=['GET'])
+@authentication.route('/identity', methods=['PUT'])
 @jwt_required
 @authentication_required
-def protected():
+def update_identity():
     identifier = g.identifier
-    return Response(json.dumps({'logged_in_as': identifier}), status=200, mimetype='application/json')
+    json_data = request.get_json()
+    profile = json_data['profile']
+    recovery = json_data['recovery']
+    identity_repository = IdentityRepository()
+    identity = identity_repository.retrieve_identity_by_identifier(identifier)
+    identity_repository.update_identity(identifier, profile, recovery, 1)
+    return Response(ResponseWrapper.wrap(identifier, "authentication.update", identity), status=200,
+                    mimetype='application/json')
 
 
 @authentication.errorhandler(500)

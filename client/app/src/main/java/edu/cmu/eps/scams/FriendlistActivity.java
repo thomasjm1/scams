@@ -3,6 +3,7 @@ package edu.cmu.eps.scams;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,16 +34,14 @@ public class FriendlistActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendlist);
         ListView listView = (ListView) findViewById(R.id.friend_list_view);
-
         this.logic = ApplicationLogicFactory.build(this);
-        // Task to create a list whenever the Connection page is shown
-        // Retrieve updated contact(friendslist) information from the local database
         ApplicationLogicTask task = new ApplicationLogicTask(
                 this.logic,
                 progress -> {
                 },
                 result -> {
                     List<Association> associations = result.getAssociations();
+                    Log.d(TAG, String.format("Retrieved list of %d total associations", associations.size()));
                     MyArrayAdapter adapter = new MyArrayAdapter(this,
                             android.R.layout.simple_list_item_2, associations);
 
@@ -69,7 +68,6 @@ public class FriendlistActivity extends AppCompatActivity {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TwoLineListItem twoLineListItem;
-
             if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context
                         .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -78,19 +76,13 @@ public class FriendlistActivity extends AppCompatActivity {
             } else {
                 twoLineListItem = (TwoLineListItem) convertView;
             }
-
             TextView text1 = twoLineListItem.getText1();
             TextView text2 = twoLineListItem.getText2();
-
             text1.setText(objects.get(position).getName());
             text2.setText(objects.get(position).getIdentifier());
-
             return twoLineListItem;
         }
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

@@ -32,8 +32,8 @@ public class AudioRecordFacade extends BaseRecorder {
 
     public AudioRecordFacade() {
         this.buffer = new byte[READ_BUFFER_SIZE];
-        this.intervals = 10;
-        this.intervalLength = 10000;
+        this.intervals = 1;
+        this.intervalLength = 30000;
     }
 
     @Override

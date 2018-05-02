@@ -11,6 +11,7 @@ public class ServerApi {
     private static final String HOST = "eps-scams.appspot.com";
 
     private static final String REGISTER_URL = String.format("https://%s/api/authentication/register", HOST);
+    private static final String IDENTITY_URL = String.format("https://%s/api/authentication/identity", HOST);
     private static final String LOGIN_URL = String.format("https://%s/api/authentication/login", HOST);
     private static final String MESSAGES_URL = String.format("https://%s/api/messages/", HOST);
     private static final String CLASSIFIER_PARAMETERS_URL = String.format("https://%s/api/parameters/", HOST);
@@ -121,6 +122,28 @@ public class ServerApi {
             JSONObject toSend = new JSONObject();
             toSend.put("identifier", identifier);
             toSend.put("recipient_received", received);
+            JSONObject response = action.putRequest(toSend);
+            return new ServerResponse(response);
+        } catch (Exception e) {
+            throw new CommunicationException(e);
+        }
+    }
+
+    /**
+     * Update identity.
+     * @param token
+     * @param profile
+     * @param recovery
+     * @return ServerResponse
+     * @throws CommunicationException
+     */
+    public static ServerResponse updateIdentity(String token, String profile, String recovery) throws CommunicationException {
+        try {
+            HTTPAction action = new HTTPAction(IDENTITY_URL, "application/json");
+            action.setToken(token);
+            JSONObject toSend = new JSONObject();
+            toSend.put("profile", profile);
+            toSend.put("recovery", recovery);
             JSONObject response = action.putRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {
