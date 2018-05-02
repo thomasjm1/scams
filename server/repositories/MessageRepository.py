@@ -27,7 +27,7 @@ class MessageRepository(object):
 
     def retrieve_messages_by_sender(self, identifier):
         self.logger.debug("Retrieving all messages to {}".format(identifier))
-        return Message.select().where(Message.recipient == identifier and Message.state == 0)
+        return Message.select().where((Message.recipient == identifier) & (Message.state == 0))
 
     def update_message(self, identifier, recipient_received, state):
         message = self.retrieve_message_by_identifier(identifier)
