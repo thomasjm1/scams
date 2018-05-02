@@ -1,6 +1,7 @@
 import logging
 from model.messages.Message import Message
 from repositories.PersistenceError import PersistenceError
+from utilities.TimestampUtility import TimestampUtility
 
 """
 Contains Message table accesses.
@@ -30,7 +31,7 @@ class MessageRepository(object):
 
     def update_message(self, identifier, recipient_received, state):
         message = self.retrieve_message_by_identifier(identifier)
-        message.recipient_received = recipient_received
+        message.recipient_received = TimestampUtility.parse(recipient_received)
         message.state = state
         updates = message.save()
         if updates == 1:

@@ -6,51 +6,59 @@
     android:layout_height="match_parent"
     tools:context="edu.cmu.eps.scams.FirstTimeLogin">
 
-    <Button
-        android:id="@+id/button1"
-        android:layout_width="160dp"
-        android:layout_height="55dp"
 
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="72dp"
-
-
-        android:text="I'm a Reviwer"
-        android:textSize="8sp"
-
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="55dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/nameTextEdit"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/primaryRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Primary User"
+            tools:layout_editor_absoluteX="123dp"
+            tools:layout_editor_absoluteY="88dp" />
+
+        <RadioButton
+            android:id="@+id/reviewerRadioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Reviewer" />
+    </RadioGroup>
+
+    <EditText
+        android:id="@+id/nameTextEdit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="55dp"
+        android:layout_marginStart="55dp"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        android:text="Email"
+        app:layout_constraintBottom_toTopOf="@+id/submitButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup" />
 
     <Button
-        android:id="@+id/button2"
-        android:layout_width="160dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="104dp"
-        android:text="I'm a Primary User"
-
-
-        android:textSize="8sp"
-
-
-        app:layout_constraintEnd_toEndOf="@id/button1"
-        app:layout_constraintTop_toTopOf="@id/button1" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="160dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="100dp"
-        android:text="Clear User History"
-
-
-        android:textSize="8sp"
-
-
-        app:layout_constraintEnd_toEndOf="@id/button2"
-        app:layout_constraintTop_toTopOf="@id/button2" />
-
-
-
-
+        android:id="@+id/submitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="253dp"
+        android:text="Submit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/nameTextEdit"
+        app:layout_constraintStart_toStartOf="@+id/nameTextEdit"
+        app:layout_constraintTop_toBottomOf="@+id/nameTextEdit" />
 
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import java.util.Date;
 
@@ -31,13 +34,9 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_first_time_login);
         this.logic = ApplicationLogicFactory.build(this);
 
-        Button button1 = (Button) findViewById(R.id.button1);
-        Button button2 = (Button) findViewById(R.id.button2);
-        Button button3 = (Button) findViewById(R.id.button2);
+        Button submitButton = (Button) findViewById(R.id.submitButton);
 
-        button1.setOnClickListener(this);
-        button2.setOnClickListener(this);
-        button3.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
     }
 
 
@@ -45,42 +44,35 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onClick(View view) {
         String userType = "";
-        switch (view.getId()) {
-            case R.id.button1:
-                userType = "Reviewer";
-                break;
-            case R.id.button2:
-                userType = "Primary User";
-                break;
-            case R.id.button3:
-                userType = "DELETE";
-                break;
+        EditText nameEdit = (EditText) findViewById(R.id.nameTextEdit);
+        boolean primaryChecked = ((RadioButton) findViewById(R.id.primaryRadioButton)).isChecked();
+        boolean reviewerChecked = ((RadioButton) findViewById(R.id.reviewerRadioButton)).isChecked();
+        if (primaryChecked) {
+            userType = "Primary User";
+        }
+        if (reviewerChecked) {
+            userType = "Reviewer";
+        }
+        if (!primaryChecked && !reviewerChecked) {
+            return;
         }
         final String userAction = userType;
-        // Start a new activity to the main page after registration
-        ApplicationLogicTask task = new ApplicationLogicTask(
-                this.logic,
-                progress -> {
-                },
-                result -> {
-                    Intent intent = new Intent(FirstTimeLogin.this, MainActivity.class);
-                    startActivity(intent);
-                }
-        );
-
-        task.execute((IApplicationLogicCommand) logic -> {
-            AppSettings settings = logic.getAppSettings();
-            Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));
-            if (userAction.equals("DELETE")) {
-                Log.d(TAG, "Updating settings with removing user");
-                logic.updateAppSettings(new AppSettings(
-                        settings.getIdentifier(),
-                        false,
-                        settings.getSecret(),
-                        String.format("{ \"userType\": \"%s\" }", userAction),
-                        settings.getRecovery()
-                ));
-            } else {
+        final String name = nameEdit.getText().toString();
+        if (name.isEmpty() || name.equalsIgnoreCase("email")) {
+            return;
+        } else {
+            ApplicationLogicTask task = new ApplicationLogicTask(
+                    this.logic,
+                    progress -> {
+                    },
+                    result -> {
+                        Intent intent = new Intent(FirstTimeLogin.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+            );
+            task.execute((IApplicationLogicCommand) logic -> {
+                AppSettings settings = logic.getAppSettings();
+                Log.d(TAG, String.format("Retrieved settings: %s", settings.toString()));
                 Log.d(TAG, "Updating settings with new user");
                 Telemetry installTelemetry = new Telemetry("system.install", TimestampUtility.now());
                 installTelemetry.getProperties().put("userType", userAction);
@@ -89,13 +81,12 @@ public class FirstTimeLogin extends AppCompatActivity implements View.OnClickLis
                         settings.getIdentifier(),
                         true,
                         settings.getSecret(),
-                        String.format("{ \"userType\": \"%s\" }", userAction),
+                        String.format("{ \"userType\": \"%s\", \"name\": \"%s\" }", userAction, name),
                         settings.getRecovery()
                 ));
-            }
-            return new ApplicationLogicResult(logic.getAppSettings());
-        });
-
+                return new ApplicationLogicResult(logic.getAppSettings());
+            });
+        }
     }
 
 }

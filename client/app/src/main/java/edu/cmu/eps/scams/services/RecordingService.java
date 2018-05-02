@@ -43,7 +43,7 @@ public class RecordingService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Recording service onStartCommand received");
+        Log.i(TAG, "Recording service onStartCommand received");
         if (intent != null) {
             Message message = this.serviceHandler.obtainMessage();
             message.arg1 = startId;
@@ -64,13 +64,13 @@ public class RecordingService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "RecordingService is being destroyed by system");
+        Log.w(TAG, "RecordingService is being destroyed by system");
         this.handlerThread.quitSafely();
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG, "RecordingService task removed");
+        Log.w(TAG, "RecordingService task removed");
         super.onTaskRemoved(rootIntent);
     }
 }

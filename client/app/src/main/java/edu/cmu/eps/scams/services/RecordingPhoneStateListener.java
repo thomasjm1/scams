@@ -32,25 +32,25 @@ public class RecordingPhoneStateListener extends PhoneStateListener {
     public void onCallStateChanged(int state, String incomingNumber) {
         switch (state) {
             case TelephonyManager.CALL_STATE_IDLE:
-                Log.d(TAG, "PHONE IS IDLE");
+                Log.i(TAG, "PHONE IS IDLE");
                 context.startService(new Intent(context, RecordingService.class)
                         .putExtra("operation", RecordingEvents.STOP.ordinal()));
                 this.notificationFacade.create(this.context, "Phone Status", "Phone is idle");
                 break;
             case TelephonyManager.CALL_STATE_OFFHOOK:
-                Log.d(TAG, "PHONE IS OFF THE HOOK");
+                Log.i(TAG, "PHONE IS OFF THE HOOK");
                 context.startService(new Intent(context, RecordingService.class)
                         .putExtra("operation", RecordingEvents.START.ordinal()));
                 this.notificationFacade.create(this.context, "Phone Status", "Phone is off hook");
                 break;
             case TelephonyManager.CALL_STATE_RINGING:
-                Log.d(TAG, "PHONE IS RINGING");
+                Log.i(TAG, "PHONE IS RINGING");
                 context.startService(new Intent(context, RecordingService.class)
                         .putExtra("operation", RecordingEvents.START.ordinal()));
                 this.notificationFacade.create(this.context, "Phone Status", "Phone is ringing");
                 break;
             default:
-                Log.d(TAG, String.format("Unknown phone event: %d", state));
+                Log.i(TAG, String.format("Unknown phone event: %d", state));
                 break;
         }
     }

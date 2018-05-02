@@ -20,6 +20,8 @@ public class PhoneEventService extends Service {
     private static final String TAG = "PhoneEventService";
 
     private boolean setupFlag;
+    private TelephonyManager telephonyManager;
+    private PhoneStateListener listener;
 
     public PhoneEventService() {
         this.setupFlag = false;
@@ -31,21 +33,22 @@ public class PhoneEventService extends Service {
     }
 
     private void setup() {
-        Log.d(TAG, "Phone event service created, listening for phone events");
+        Log.i(TAG, "Phone event service created, listening for phone events");
         Intent intent = new Intent(getApplicationContext(), PhoneEventService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 60000, 10000, pendingIntent);
-        TelephonyManager telephonyManager = this.getSystemService(TelephonyManager.class);
-        telephonyManager.listen(new RecordingPhoneStateListener(this), PhoneStateListener.LISTEN_CALL_STATE);
+        this.telephonyManager = this.getSystemService(TelephonyManager.class);
+        this.listener = new RecordingPhoneStateListener(this);
+        telephonyManager.listen(this.listener, PhoneStateListener.LISTEN_CALL_STATE);
         this.setupFlag = true;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d(TAG, "Starting phone event service");
+        Log.i(TAG, "Starting phone event service");
         if (this.setupFlag == false) {
-            Log.d(TAG, "Running setup of phone event service");
+            Log.i(TAG, "Running setup of phone event service");
             this.setup();
         }
         return START_STICKY;
@@ -58,12 +61,17 @@ public class PhoneEventService extends Service {
 
     @Override
     public void onDestroy() {
-        Log.d(TAG, "PhoneEventService is being destroyed by system");
+        Log.w(TAG, "PhoneEventService is being destroyed by system");
+        Intent intent = new Intent(getApplicationContext(), PhoneEventService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 1000, pendingIntent);
+        super.onDestroy();
     }
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        Log.d(TAG, "PhoneEventService task removed");
+        Log.w(TAG, "PhoneEventService task removed");
         Intent intent = new Intent(getApplicationContext(), PhoneEventService.class);
         PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);

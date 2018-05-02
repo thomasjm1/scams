@@ -11,9 +11,11 @@ import android.util.Log;
 import java.util.Collection;
 
 import edu.cmu.eps.scams.files.IOutputFileFactory;
+import edu.cmu.eps.scams.notifications.NotificationFacade;
 import edu.cmu.eps.scams.recordings.AudioRecordFacade;
 import edu.cmu.eps.scams.recordings.IRecorder;
 import edu.cmu.eps.scams.recordings.PhoneCallResult;
+import edu.cmu.eps.scams.transcription.TranscriptionLogic;
 
 /**
  * Created by jeremy on 3/10/2018.
@@ -40,45 +42,58 @@ public class RecordingServiceHandler extends Handler {
 
     @Override
     public void handleMessage(Message message) {
-        Log.d(TAG, String.format("OutgoingMessage received: %d %d", message.arg1, message.arg2));
+        Log.i(TAG, String.format("Recording event received: %d %d", message.arg1, message.arg2));
         RecordingEvents event = RecordingEvents.fromInt(message.arg2);
         try {
             switch (event) {
                 case NONE:
-                    Log.d(TAG, "No recording event");
+                    Log.i(TAG, "No recording event");
                     break;
                 case RESET:
-                    Log.d(TAG, "No recording event, verifying functionality");
+                    Log.i(TAG, "No recording event, verifying functionality");
                     break;
                 case START:
-                    Log.d(TAG, "Start recording event");
                     if (this.recorder.isRecording() == false) {
+                        Log.i(TAG, "Start recording event");
                         this.incomingNumber = message.getData().getString("incomingNumber");
                         this.recorder.start(this.fileFactory.build());
                         this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
+                    } else {
+                        Log.i(TAG, "Continue recording event");
                     }
                     break;
                 case STOP:
-                    Log.d(TAG, "Stop recording event");
-                    this.recorder.stop();
+                    Log.i(TAG, "Stop recording event");
+                    PhoneCallResult stoppedResult = this.recorder.stop();
+                    Log.i(TAG, "Loop event sending start to transcription service");
+                    if (stoppedResult != null) {
+                        TranscriptionLogic.handle(
+                                this.context,
+                                stoppedResult.audioRecording.getAbsoluteFile(),
+                                new NotificationFacade(this.context),
+                                stoppedResult.ringTimestamp,
+                                this.incomingNumber
+                        );
+                    }
                     break;
                 case LOOP:
-                    Log.d(TAG, "Loop recording event");
+                    Log.i(TAG, "Loop recording event");
                     if (this.recorder.isRecording()) {
                         Collection<PhoneCallResult> results = this.recorder.loopEvent();
                         if (results.size() > 0) {
-                            Log.d(TAG, "Loop event returned a PhoneCallResult to process");
+                            Log.i(TAG, "Loop event returned a PhoneCallResult to process");
                             PhoneCallResult input = results.iterator().next();
-                            Log.d(TAG, "Loop event sending start to transcription service");
-                            this.context.startService(new Intent(context, TranscriptionService.class)
-                                    .putExtra("audio_recording", input.audioRecording.getAbsolutePath())
-                                    .putExtra("incoming_number", this.incomingNumber)
-                                    .putExtra("ring_timestamp", input.ringTimestamp)
-                                    .putExtra("audio_length", input.audioLength)
+                            Log.i(TAG, "Loop event sending start to transcription service");
+                            TranscriptionLogic.handle(
+                                    this.context,
+                                    input.audioRecording.getAbsoluteFile(),
+                                    new NotificationFacade(this.context),
+                                    input.ringTimestamp,
+                                    this.incomingNumber
                             );
                         }
                         if (this.telephonyManager.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
-                            Log.d(TAG, "Stop recording due to idle state");
+                            Log.i(TAG, "Stop recording due to idle state");
                             this.recorder.stop();
                         }
                         this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
@@ -88,7 +103,7 @@ public class RecordingServiceHandler extends Handler {
                     break;
             }
         } catch (Exception e) {
-            Log.d(TAG, String.format("Encountered exception: %s", e.getMessage()));
+            Log.i(TAG, String.format("Encountered exception: %s", e.getMessage()));
         }
     }
 

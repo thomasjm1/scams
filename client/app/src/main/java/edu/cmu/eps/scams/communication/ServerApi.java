@@ -120,7 +120,7 @@ public class ServerApi {
             action.setToken(token);
             JSONObject toSend = new JSONObject();
             toSend.put("identifier", identifier);
-            toSend.put("received", received);
+            toSend.put("recipient_received", received);
             JSONObject response = action.putRequest(toSend);
             return new ServerResponse(response);
         } catch (Exception e) {

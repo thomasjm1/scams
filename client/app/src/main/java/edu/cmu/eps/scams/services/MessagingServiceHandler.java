@@ -1,17 +1,13 @@
 package edu.cmu.eps.scams.services;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
-import android.telephony.TelephonyManager;
 import android.util.Log;
 
-import java.util.Collection;
 import java.util.List;
 
-import edu.cmu.eps.scams.files.IOutputFileFactory;
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
@@ -19,11 +15,6 @@ import edu.cmu.eps.scams.logic.model.IncomingMessage;
 import edu.cmu.eps.scams.logic.model.MessageType;
 import edu.cmu.eps.scams.logic.model.NotifyMessageContent;
 import edu.cmu.eps.scams.notifications.NotificationFacade;
-import edu.cmu.eps.scams.recordings.AudioRecordFacade;
-import edu.cmu.eps.scams.recordings.IRecorder;
-import edu.cmu.eps.scams.recordings.PhoneCallResult;
-
-import static edu.cmu.eps.scams.logic.model.MessageType.NOTIFY;
 
 /**
  * Created by jeremy on 4/15/2018.
@@ -62,7 +53,7 @@ public class MessagingServiceHandler extends Handler {
                     switch (MessageType.valueOf(incomingMessage.getType())) {
                         case NOTIFY: {
                             NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
-                            Log.d(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
+                            Log.i(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
                             notificationFacade.create(this.context, notifyMessage.getTitle(), notifyMessage.getMessage());
                             this.logic.acknowledgeMessage(incomingMessage);
                         }
@@ -70,7 +61,7 @@ public class MessagingServiceHandler extends Handler {
                 }
                 this.sendMessageDelayed(this.buildLoopEventMessage(), this.loopEventDelay);
             } catch (Exception e) {
-                Log.d(TAG, String.format("Encountered exception: %s", e.getMessage()));
+                Log.i(TAG, String.format("Encountered exception: %s", e.getMessage()));
             }
         }
     }

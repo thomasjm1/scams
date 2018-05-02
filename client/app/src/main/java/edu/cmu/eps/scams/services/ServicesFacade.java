@@ -19,9 +19,6 @@ public class ServicesFacade {
                 .putExtra("operation", RecordingEvents.NONE.name());
         activity.startService(recordingServiceIntent);
 
-        Intent transcriptionServiceIntent = new Intent(activity, TranscriptionService.class);
-        activity.startService(transcriptionServiceIntent);
-
         Intent messagingServiceIntent = new Intent(activity, MessagingService.class);
         activity.startService(messagingServiceIntent);
     }

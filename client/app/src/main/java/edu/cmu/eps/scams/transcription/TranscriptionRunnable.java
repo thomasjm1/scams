@@ -54,6 +54,7 @@ public class TranscriptionRunnable implements Runnable {
             if (this.logic.getAppSettings().isRegistered() == true) {
                 this.classifierParameters = this.logic.getClassifierParameters();
                 TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, this.file);
+                this.notifications.create(this.context, "Transcribed", result.getText());
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, this.classifierParameters);
                 if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
@@ -88,7 +89,7 @@ public class TranscriptionRunnable implements Runnable {
                 Log.d(TAG, String.format("Transcription: %s with %f likelihood = %f", result.getText(), result.getConfidence(), scamLikelihood));
             }
         } catch (Exception exception) {
-            Log.d(TAG, String.format("Transcription encountered error: %s", exception.getMessage()));
+            Log.w(TAG, String.format("Transcription encountered error: %s", exception.getMessage()));
         }
     }
 }

@@ -32,7 +32,7 @@ public class TranscriptionUtility {
     private static final String TAG = "TranscriptionUtility";
 
     //gcloud auth print-access-token
-    private static final String KEY = "ya29.Gl2gBZZKg6Mv_UMsXhQcLFV__RXbpQLA5Eul77D3QfGZNiNcZALlGCdWn54w1xUAo4Wfzq7GAoK7Mi63ZKCq3NENaR-Nh_1PAFyUgRUwZaI5vqtikghVx6h8WOZoFn8";
+    private static final String KEY = "AIzaSyDLSInp1mdGsuOgEzZ0LsI5Me5ZwGPlipQ";
 
     public static TranscriptionResult transcribe(String encoding, int sampleRate, File file) throws IOException, TranscriptionException {
         byte[] data = TranscriptionUtility.readFile(file);
@@ -44,14 +44,14 @@ public class TranscriptionUtility {
         String postString = TranscriptionUtility.buildJsonRequest(encoding, sampleRate, dataString);
         byte[] postData = postString.getBytes(StandardCharsets.UTF_8);
         int postDataLength = postData.length;
-        String request = "https://speech.googleapis.com/v1/speech:recognize";
+        String request = String.format("https://speech.googleapis.com/v1/speech:recognize?key=%s", KEY);
         URL url = new URL(request);
         HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
         try {
             connection.setDoOutput(true);
             connection.setInstanceFollowRedirects(false);
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Authorization", String.format("Bearer %s", KEY));
+            //connection.setRequestProperty("Authorization", String.format("Bearer %s", KEY));
             connection.setRequestProperty("Content-Type", "application/json");
             connection.setRequestProperty("charset", "utf-8");
             connection.setRequestProperty("Content-Length", Integer.toString(postDataLength));
@@ -94,6 +94,7 @@ public class TranscriptionUtility {
 
     public static String buildJsonRequest(String encoding, int sampleRate, String content) {
         return "{\n" +
+                //String.format("'key': '%s'\n", KEY) +
                 "'config': {\n" +
                 String.format("'encoding': '%s',\n", encoding) +
                 String.format("'sampleRateHertz': %d,\n", sampleRate) +
