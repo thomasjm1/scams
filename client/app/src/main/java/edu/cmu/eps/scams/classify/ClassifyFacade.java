@@ -84,7 +84,7 @@ public class ClassifyFacade {
     {
     
         //String keywordlist = keywordsobj.get("keywords");
-        String keywordlist = keywordsobj;
+        String keywordlist = "scam money dollar dollars bank banks late urgent immediate opportunity win deadline deadlines amount rich poor generous charity charities profit profits selected offer offers free bonus bonuses buy valuable prize prizes foreign lottery winner credit card investment investments stock stocks risk risks passport birth certificate social security return trust check order company charge charges shipping travel loan interest irs charitable registration offer savings confirm password user name username account address security key billing sensitive debt collection audit tax taxes court seized seize report unpaid case form license amount license owe confidential bill private arrest arrested warrant unpaid property insurance retirement fund funds emergency cash withdraw fee interest legal lawsuit accountant investment investigation panic revenue deposit wire federal transaction accounting recorded payment assurance risk payments paperwork tax problem federal department internal revenue service legal randomly selected";
         String[] kwarray = keywordlist.split("\\s+");
 
         List<String> key_words = new ArrayList<String>(Arrays.asList(kwarray));
@@ -120,9 +120,8 @@ public class ClassifyFacade {
             String phoneNumber,
             ClassifierParameters classifierParameters) {
         
-        //double result = get_scam_likelihood(transcript,classifierParameters.getContent());
-        //return result;
-        return 0.9;
+        double result = get_scam_likelihood(transcript, classifierParameters.getContent());
+        return result;
     }
 
     public static String extractDetails(

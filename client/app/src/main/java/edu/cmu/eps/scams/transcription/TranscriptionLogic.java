@@ -20,16 +20,17 @@ import edu.cmu.eps.scams.utilities.TimestampUtility;
 public class TranscriptionLogic {
 
     private static final String TAG = "TranscriptionLogic";
-    private static final double KNOWN_SCAM_THRESHOLD = 0.40;
-    private static final double REVIEWER_THRESHOLD = 0.25;
+    private static final double KNOWN_SCAM_THRESHOLD = 40.0;
+    private static final double REVIEWER_THRESHOLD = 25.0;
 
     public static void handle(Context context, File file, NotificationFacade notifications, long ringTimestamp, String incomingNumber) {
         try {
             IApplicationLogic logic = ApplicationLogicFactory.build(context);
             if (logic.getAppSettings().isRegistered() == true) {
                 ClassifierParameters classifierParameters = logic.getClassifierParameters();
-                TranscriptionResult result = TranscriptionUtility.transcribe(AudioRecording.ENCODING_NAME, AudioRecording.SAMPLE_RATE, file);
+                TranscriptionResult result = IbmTranscriptionUtility.transcribe(file);
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, classifierParameters);
+                Log.d(TAG, String.format("%s => %f", result.getText(), scamLikelihood));
                 if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                     telemetry.getProperties().put("call.transcript", result.getText());

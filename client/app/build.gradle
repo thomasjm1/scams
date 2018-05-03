@@ -53,5 +53,9 @@ dependencies {
 
     implementation 'me.dm7.barcodescanner:zxing:1.8.1'
     implementation 'me.dm7.barcodescanner:zbar:1.8.1'
+    implementation 'com.ibm.watson.developer_cloud:android-sdk:0.4.3'
+    implementation 'com.ibm.watson.developer_cloud:speech-to-text:5.4.0'
+
+
 
 }
