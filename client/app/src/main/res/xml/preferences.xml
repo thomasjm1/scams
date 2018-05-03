@@ -24,19 +24,13 @@
 
 
         <EditTextPreference
+            android:defaultValue="Emal"
+            android:dialogMessage="Enter Your Email"
+            android:dialogTitle="Your Email"
+            android:inputType="textEmailAddress"
             android:key="full_name"
-            android:title="Name"
-            android:summary="Enter Your Complete Name"
-            android:dialogTitle="Your Name"
-            android:dialogMessage="Enter Your Complete Name"
-            android:defaultValue="Name"
-            android:inputType="textCapWords"/>
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:title="Customisations"
-        android:key="custom_category">
+            android:summary="Enter Your Email"
+            android:title="Email" />
 
     </PreferenceCategory>
 
