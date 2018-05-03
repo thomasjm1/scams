@@ -8,6 +8,7 @@ import java.io.File;
 import edu.cmu.eps.scams.classify.ClassifyFacade;
 import edu.cmu.eps.scams.logic.ApplicationLogicFactory;
 import edu.cmu.eps.scams.logic.IApplicationLogic;
+import edu.cmu.eps.scams.logic.model.AppSettings;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 import edu.cmu.eps.scams.logic.model.History;
 import edu.cmu.eps.scams.logic.model.MessageType;
@@ -28,6 +29,7 @@ public class TranscriptionLogic {
             IApplicationLogic logic = ApplicationLogicFactory.build(context);
             if (logic.getAppSettings().isRegistered() == true) {
                 ClassifierParameters classifierParameters = logic.getClassifierParameters();
+                AppSettings settings = logic.getAppSettings();
                 TranscriptionResult result = IbmTranscriptionUtility.transcribe(file);
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, classifierParameters);
                 Log.d(TAG, String.format("%s => %f", result.getText(), scamLikelihood));
@@ -45,9 +47,10 @@ public class TranscriptionLogic {
                     message.getProperties().put("call.timestamp", ringTimestamp);
                     message.getProperties().put("call.number", incomingNumber);
                     message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("caller", settings.getName());
                     message.getProperties().put("type", MessageType.KNOWN);
                     logic.sendMessage(message);
-                    notifications.create(context, "Scam Call Detected!", String.format("Call from %s is likely a scam", incomingNumber));
+                    notifications.create(context, "Scam Call Detected!", String.format("Current call is likely a scam", incomingNumber));
                     logic.createHistory(new History("Scam call detected", incomingNumber, ringTimestamp));
                 } else if (scamLikelihood > REVIEWER_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
@@ -62,6 +65,7 @@ public class TranscriptionLogic {
                     message.getProperties().put("call.timestamp", ringTimestamp);
                     message.getProperties().put("call.number", incomingNumber);
                     message.getProperties().put("call.likelihood", scamLikelihood);
+                    message.getProperties().put("caller", settings.getName());
                     message.getProperties().put("type", MessageType.REVIEW);
                     logic.sendMessage(message);
                     logic.createHistory(new History("Suspicious call", incomingNumber, ringTimestamp));

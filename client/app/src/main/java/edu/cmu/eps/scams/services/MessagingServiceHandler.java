@@ -55,7 +55,11 @@ public class MessagingServiceHandler extends Handler {
                         case NOTIFY: {
                             NotifyMessageContent notifyMessage = new NotifyMessageContent(incomingMessage.getContent());
                             Log.i(TAG, String.format("Notify Message to view: %s %s", notifyMessage.getTitle(), notifyMessage.getMessage()));
-                            notificationFacade.createWithResponse(this.context, notifyMessage.getTitle(), notifyMessage.getMessage(), incomingMessage.getSender());
+                            notificationFacade.createWithResponse(
+                                    this.context,
+                                    notifyMessage.getTitle(),
+                                    notifyMessage.getMessage(),
+                                    incomingMessage.getSender());
                             this.logic.acknowledgeMessage(incomingMessage);
                             break;
                         }
@@ -71,7 +75,7 @@ public class MessagingServiceHandler extends Handler {
                             Log.i(TAG, String.format("Review Message to view: %s %s", reviewMessage.getTranscript(), reviewMessage.getPhoneNumber()));
                             notificationFacade.createWithResponse(
                                     this.context,
-                                    String.format("Potential Scam from %s?", reviewMessage.getPhoneNumber()),
+                                    String.format("Potential Scam against %s", reviewMessage.getCaller()),
                                     String.format("%s", reviewMessage.getTranscript()),
                                     incomingMessage.getSender());
                             this.logic.acknowledgeMessage(incomingMessage);
@@ -82,7 +86,7 @@ public class MessagingServiceHandler extends Handler {
                             Log.i(TAG, String.format("Known Message to view: %s %s", reviewMessage.getTranscript(), reviewMessage.getPhoneNumber()));
                             notificationFacade.create(
                                     this.context,
-                                    String.format("Known Scam from %s", reviewMessage.getPhoneNumber()),
+                                    String.format("Known Scam against %s", reviewMessage.getCaller()),
                                     String.format("%s", reviewMessage.getTranscript()));
                             this.logic.acknowledgeMessage(incomingMessage);
                             break;

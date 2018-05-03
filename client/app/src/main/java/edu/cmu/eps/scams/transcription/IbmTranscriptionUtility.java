@@ -18,14 +18,15 @@ public class IbmTranscriptionUtility {
         RecognizeOptions options = new RecognizeOptions.Builder()
                 .contentType("audio/wav")
                 .audio(file)
-                .maxAlternatives(1)
                 .build();
         SpeechRecognitionResults results = service.recognize(options).execute();
         StringBuilder output = new StringBuilder();
         double confidence = 1.0;
-        for (SpeechRecognitionAlternative item : results.getResults().get(0).getAlternatives()) {
-            output.append(item.getTranscript());
-            confidence = confidence + item.getConfidence();
+        for (SpeechRecognitionResult result : results.getResults()) {
+            for (SpeechRecognitionAlternative item : result.getAlternatives()) {
+                output.append(item.getTranscript());
+                confidence = confidence * item.getConfidence();
+            }
         }
         return new TranscriptionResult(output.toString(), confidence);
     }

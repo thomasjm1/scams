@@ -21,6 +21,7 @@ import edu.cmu.eps.scams.notifications.NotificationFacade;
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 
 public class ScannerActivity extends AppCompatActivity implements ZXingScannerView.ResultHandler {
+    private static final String TAG = "ScannerActivity";
     private ZXingScannerView mScannerView;
     private IApplicationLogic logic;
 
@@ -51,26 +52,27 @@ public class ScannerActivity extends AppCompatActivity implements ZXingScannerVi
         String TAG2 = "";
         Log.v(TAG1, rawResult.getText());
         Log.v(TAG2, rawResult.getBarcodeFormat().toString());
-        System.out.println(rawResult.getText());
-        System.out.println(rawResult.getBarcodeFormat().toString());
-
-        ApplicationLogicTask task = new ApplicationLogicTask(
-                this.logic,
-                progress -> {
-                },
-                result -> {
-                    NotificationFacade facade = new NotificationFacade(this);
-                    facade.create(this, "Added new friend", "");
-                    finish();
-                }
-        );
-        task.execute((IApplicationLogicCommand) logic -> {
-            String rawText = rawResult.getText();
+        String rawText = rawResult.getText();
+        try {
             JSONObject json = new JSONObject(rawText);
             String name = json.getString("name");
             String identifier = json.getString("identifier");
-            return new ApplicationLogicResult(logic.createAssociation(name, identifier));
-        });
+            ApplicationLogicTask task = new ApplicationLogicTask(
+                    this.logic,
+                    progress -> {
+                    },
+                    result -> {
+                        NotificationFacade facade = new NotificationFacade(this);
+                        facade.create(this, "Added new friend!", String.format("%s is now your friend!", name));
+                        finish();
+                    }
+            );
+            task.execute((IApplicationLogicCommand) logic ->
+                new ApplicationLogicResult(logic.createAssociation(name, identifier))
+            );
+        } catch (Exception e) {
+            Log.d(TAG, e.getMessage());
+        }
 
     }
 }

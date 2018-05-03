@@ -38,12 +38,8 @@ public class TestTranscriptionUtility {
         byte[] content = TranscriptionUtility.readFile(file);
         String contentString = Base64.getEncoder().encodeToString(content);
         try {
-            List<SpeechRecognitionResult> results = IbmTranscriptionUtility.transcribe(file);
-            for (SpeechRecognitionResult result : results) {
-                for (SpeechRecognitionAlternative alternative : result.getAlternatives()) {
-                    System.out.println(alternative.getTranscript());
-                }
-            }
+            TranscriptionResult results = IbmTranscriptionUtility.transcribe(file);
+            System.out.println(results.getText());
         } catch (Exception e) {
             fail(e.getMessage());
         }

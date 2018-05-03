@@ -19,5 +19,9 @@ public class ReviewMessageContent extends MessageContent {
         return this.jsonObject.getString("call.number");
     }
 
+    public String getCaller() throws JSONException {
+        return this.jsonObject.getString("caller");
+    }
+
 
 }
