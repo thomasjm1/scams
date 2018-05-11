@@ -13,7 +13,7 @@ public class IbmTranscriptionUtility {
 
     public static TranscriptionResult transcribe(File file) throws FileNotFoundException {
         SpeechToText service = new SpeechToText();
-        service.setUsernameAndPassword("bae01637-45a9-43bf-8237-c81450b3e863", "gEDb3lNiFTga");
+        service.setUsernameAndPassword("####", "#####");
         service.setEndPoint("https://stream.watsonplatform.net/speech-to-text/api");
         RecognizeOptions options = new RecognizeOptions.Builder()
                 .contentType("audio/wav")

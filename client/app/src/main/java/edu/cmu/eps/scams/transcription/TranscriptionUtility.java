@@ -32,7 +32,7 @@ public class TranscriptionUtility {
     private static final String TAG = "TranscriptionUtility";
 
     //gcloud auth print-access-token
-    private static final String KEY = "AIzaSyDLSInp1mdGsuOgEzZ0LsI5Me5ZwGPlipQ";
+    private static final String KEY = "########";
 
     public static TranscriptionResult transcribe(String encoding, int sampleRate, File file) throws IOException, TranscriptionException {
         byte[] data = TranscriptionUtility.readFile(file);

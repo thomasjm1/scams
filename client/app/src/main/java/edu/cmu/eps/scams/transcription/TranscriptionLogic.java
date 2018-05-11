@@ -33,6 +33,7 @@ public class TranscriptionLogic {
                 TranscriptionResult result = IbmTranscriptionUtility.transcribe(file);
                 double scamLikelihood = ClassifyFacade.isScam(result.getText(), result.getConfidence(), ringTimestamp, incomingNumber, classifierParameters);
                 Log.d(TAG, String.format("%s => %f", result.getText(), scamLikelihood));
+                notifications.create(context, String.format("Transcript (%f)", scamLikelihood), String.format("\"%s\"", result.getText()));
                 if (scamLikelihood > KNOWN_SCAM_THRESHOLD) {
                     Telemetry telemetry = new Telemetry("call", TimestampUtility.now());
                     telemetry.getProperties().put("call.transcript", result.getText());
