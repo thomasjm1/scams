@@ -3,12 +3,9 @@ package edu.cmu.eps.scams.classify;
 import java.util.*;
 import edu.cmu.eps.scams.logic.model.ClassifierParameters;
 
-
-/*
- * Simple wrapper around classification algorithm.
- */
 public class ClassifyFacade {
-    
+  
+    //List of common words in the English language - these don't add value during processing, so are stripped from the transcript
     public static List<String> common_words = new ArrayList<String>(
     Arrays.asList("the","be","is","are","to","of","and","a","in","that","have","i","it","for","not","on","with","he","as","you","do","at","this","but",
       "his","by","from","they","we","say","her","she","or","will","an","my","one","all","would","there","their","what","so","up","out","if","about",
@@ -22,6 +19,7 @@ public class ClassifyFacade {
         return line.replaceAll("[^\\x00-\\x7F]", "");
     }
     
+    //Extract list of words from a transcript, removing non-ascii characters and numbers
     public static List<String> get_transcript_words(String transcript)
     {
         String line;
@@ -38,6 +36,7 @@ public class ClassifyFacade {
         return words;
     }
     
+    //Get the list of scam-indicative keywords actually present in the transcript
     public static List<String> get_same_words(List<String> keywords, List<String> words)
     {
         List<String> subset = new ArrayList<String> (keywords.size() > words.size() ? keywords.size() : words.size());
@@ -46,6 +45,7 @@ public class ClassifyFacade {
         return subset;
     }
 
+    //Remove the common words from the transcript
     public static List<String> remove_common_words(List<String> words)
     {
         List<String> subset = new ArrayList<String> (words.size() > common_words.size() ? words.size() : common_words.size());
@@ -59,6 +59,7 @@ public class ClassifyFacade {
         return java.util.Collections.frequency(words, word);
     }
 
+    //Get the percentage of words in the transcript that are actually scam-indicative keywords
     public static double get_percentage_subset(List<String> subset, List<String> master, int reduced_transcript_len)
     {
         int total=0;
@@ -80,11 +81,12 @@ public class ClassifyFacade {
         }
     }
     
-    public static double get_scam_likelihood (String transcript, String keywordsobj)//JSONObject keywordsobj )//(String filename, JSONObject keywords)
+    //Get the likelihood that a call is a scam by determining the percentage of words in the transcript that are scam-indicative
+    public static double get_scam_likelihood (String transcript, String keywordsobj)
     {
     
-        //String keywordlist = keywordsobj.get("keywords");
-        String keywordlist = "scam money dollar dollars bank banks late urgent immediate opportunity win deadline deadlines amount rich poor generous charity charities profit profits selected offer offers free bonus bonuses buy valuable prize prizes foreign lottery winner credit card investment investments stock stocks risk risks passport birth certificate social security return trust check order company charge charges shipping travel loan interest irs charitable registration offer savings confirm password user name username account address security key billing sensitive debt collection audit tax taxes court seized seize report unpaid case form license amount license owe confidential bill private arrest arrested warrant unpaid property insurance retirement fund funds emergency cash withdraw fee interest legal lawsuit accountant investment investigation panic revenue deposit wire federal transaction accounting recorded payment assurance risk payments paperwork tax problem federal department internal revenue service legal randomly selected";
+        String keywordlist = keywordsobj.get("keywords");
+        //String keywordlist = "scam money dollar dollars bank banks late urgent immediate opportunity win deadline deadlines amount rich poor generous charity charities profit profits selected offer offers free bonus bonuses buy valuable prize prizes foreign lottery winner credit card investment investments stock stocks risk risks passport birth certificate social security return trust check order company charge charges shipping travel loan interest irs charitable registration offer savings confirm password user name username account address security key billing sensitive debt collection audit tax taxes court seized seize report unpaid case form license amount license owe confidential bill private arrest arrested warrant unpaid property insurance retirement fund funds emergency cash withdraw fee interest legal lawsuit accountant investment investigation panic revenue deposit wire federal transaction accounting recorded payment assurance risk payments paperwork tax problem federal department internal revenue service legal randomly selected";
         String[] kwarray = keywordlist.split("\\s+");
 
         List<String> key_words = new ArrayList<String>(Arrays.asList(kwarray));
@@ -99,6 +101,7 @@ public class ClassifyFacade {
         return (match_percent*100);
     }
     
+    //Extract useful words from the transcript of the call to be used later for keyword updation
     public static String extract_info(String transcript, double scam_flag)
     {
         List<String> call_words_list = get_transcript_words(transcript);
@@ -113,6 +116,7 @@ public class ClassifyFacade {
 
     }
 
+    //Called once transcript is ready
     public static double isScam(
             String transcript,
             double confidence,
@@ -124,6 +128,7 @@ public class ClassifyFacade {
         return result;
     }
 
+    //Called once a day indirectly by the Python keyword bank builder
     public static String extractDetails(
             String transcript,
             double confidence,
@@ -132,8 +137,7 @@ public class ClassifyFacade {
             ClassifierParameters classifierParameters,
             double response) {
        
-        String extracted_words = extract_info(transcript, response);//need to do the number thing
-        //return "{\"message\" : \"Hello world\"}";
+        String extracted_words = extract_info(transcript, response);
         return extracted_words;
     }
 }
